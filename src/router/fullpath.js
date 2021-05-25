@@ -1,0 +1,231 @@
+// export default [{
+//     path: '/',
+//     name: '首页',
+//     component: (resolve) => require(['./../views/home/home/Home'], resolve),
+//     children: [{
+//         path: '/roles',
+//         name: '平台-角色管理',
+//         meta: {
+//             name: '角色管理'
+//         },
+//         component: (resolve) => require(['./../views/home/home/Home'], resolve)
+//     }, {
+//         path: '/accounts',
+//         name: '平台-账号管理',
+//         meta: {
+//             name: '账号管理'
+//         },
+//         component: (resolve) => require(['./../views/home/home/Home'], resolve)
+//     }, {
+//         path: '/goods',
+//         name: '商品管理',
+//         meta: {
+//             icon: '&#xe62e;'
+//         },
+//         component: (resolve) => require(['./../views/home/home/Home'], resolve),
+//         // component: Abstract,
+//         children: [{
+//             path: 'list',
+//             name: '商品信息',
+//             meta: {
+//
+//             },
+//             component: (resolve) => require(['./../views/home/home/Home'], resolve)
+//         }]
+//     }]
+// }];
+
+
+
+export default  [
+    // {
+    //     path: '/dashboard',
+    //     redirect: '/dashboard/home',
+    //     component: () => import( './../views/home/dashboard/DashBoard'),
+    //     children: [
+    //         {path: 'home',
+    //             component: () => import( './../views/home/home/Home'),
+    //         },
+    //         {path: 'progress',
+    //             component: () => import('./../views/home/progress/Progress'),
+    //         },
+    //         {path: 'learn/:lesson_id',
+    //             component: () => import( './../views/home/learn/Learn'),
+    //         },
+    //
+    //     ],
+    //
+    // },
+
+
+
+    {path: '/',
+        component: () => import( './../views/home/dashboard/RootDashboard'),
+        children: [
+            {
+                path: '/dashboard',
+                redirect: '/dashboard/home',
+                component: () => import( './../views/home/dashboard/DashBoard'),
+                // component: () => import( './../views/home/home/Home'),
+                children: [
+                    {path: 'home',
+                        component: () => import( './../views/home/home/Home'),
+                    },
+                    {path: 'progress',
+                        component: () => import('./../views/home/progress/Progress'),
+                    },
+                    {path: 'learn/:lesson_id',
+                        component: () => import( './../views/home/learn/Learn'),
+                    },
+
+                ],
+
+            },
+
+            // 后台路由
+            {
+                path: '/admin',
+                redirect: '/admin/dashboard',
+                component: () => import('../views/admin/common/Home.vue'),
+                meta: { title: '自述文件' },
+                children: [
+                    {
+                        path: 'dashboard',
+                        component: () => import( '../views/admin/page/Dashboard.vue'),
+                        meta: { title: '系统首页' }
+                    },
+                    {
+                        path: 'course',
+                        component: () => import('../views/admin/page/course/CourseList.vue'),
+                        meta: { title: '课程列表' }
+                    },
+
+                    {
+                        path: 'createcourse',
+
+                        component: () => import( '../views/admin/page/course/CreateCourse.vue'),
+                        meta: { title: '新增课程' }
+                    },
+
+
+
+                    {
+                        path: 'createchapter/:course_id',
+
+                        component: () => import('../views/admin/page/course/createChapter/CreateChapter.vue'),
+                        meta: { title: '新增章节' }
+                    },
+
+                    {
+                        path: 'createsection/:lesson_id',
+
+                        component: () => import( '../views/admin/page/course/createSection/CreateSection.vue'),
+                        meta: { title: '新增section' }
+                    },
+
+                    {
+                        path: ':id',
+
+                        component: () => import( '../views/admin/page/course/UpdateCourse.vue'),
+                        meta: { title: '修改课程' }
+                    },
+
+                ]
+            },
+
+
+        ]
+
+    },
+
+]
+
+
+
+//
+//
+//
+// export default  [
+//     {path: '/', redirect: '/dashboard'},
+//     {
+//         path: '/dashboard',
+//         name: 'dashboard',
+//         component: () => import(/* webpackChunkName: "home" */ './../views/home/dashboard/DashBoard'),
+//         children: [
+//             {path: '/dashboard', redirect: '/dashboard/home'},
+//             {path: 'home',
+//                 name:'home',
+//                 component: () => import(/* webpackChunkName: "home" */ './../views/home/home/Home'),
+//             },
+//             {path: 'progress',
+//                 name:'progress',
+//                 component: () => import(/* webpackChunkName: "home" */ './../views/home/progress/Progress'),
+//             },
+//             {path: 'learn/:lesson_id',
+//                 name:'learn',
+//                 component: () => import(/* webpackChunkName: "home" */ './../views/home/learn/Learn'),
+//             },
+//
+//         ],
+//
+//     },
+//
+//
+//     //后台路由
+//     {
+//         path: '/admin',
+//         redirect: '/admin/dashboard'
+//     },
+//     {
+//         path: '/admin',
+//         component: () => import(/* webpackChunkName: "home" */ '../views/admin/common/Home.vue'),
+//         meta: { title: '自述文件' },
+//         children: [
+//             {
+//                 path: '/admin/dashboard',
+//                 component: () => import(/* webpackChunkName: "dashboard" */ '../views/admin/page/Dashboard.vue'),
+//                 meta: { title: '系统首页' }
+//             },
+//             {
+//                 path: '/admin/course',
+//                 component: () => import(/* webpackChunkName: "table" */ '../views/admin/page/course/CourseList.vue'),
+//                 meta: { title: '课程列表' }
+//             },
+//
+//             {
+//                 path: '/admin/createcourse',
+//
+//                 component: () => import(/* webpackChunkName: "table" */ '../views/admin/page/course/CreateCourse.vue'),
+//                 meta: { title: '新增课程' }
+//             },
+//
+//
+//
+//             {
+//                 path: '/admin/createchapter/:course_id',
+//
+//                 component: () => import(/* webpackChunkName: "table" */ '../views/admin/page/course/createChapter/CreateChapter.vue'),
+//                 meta: { title: '新增章节' }
+//             },
+//
+//             {
+//                 path: '/admin/createsection/:lesson_id',
+//
+//                 component: () => import(/* webpackChunkName: "table" */ '../views/admin/page/course/createSection/CreateSection.vue'),
+//                 meta: { title: '新增section' }
+//             },
+//
+//             {
+//                 path: '/admin/:id',
+//
+//                 component: () => import(/* webpackChunkName: "table" */ '../views/admin/page/course/UpdateCourse.vue'),
+//                 meta: { title: '修改课程' }
+//             },
+//
+//         ]
+//     },
+//
+// ]
+
+
+

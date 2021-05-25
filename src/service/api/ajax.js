@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from '@/store/index'
+import * as util from '@/utils/permisson';
 
 // todo。。。自行设计代码
 const host = 'http://larabbs.test/api/v1';
@@ -45,9 +46,24 @@ const authRequest = async (url, configs = {}) => {
     return await request(url, configs)
 };
 
+
+const instance = axios.create({
+    baseURL: host,
+    timeout: 10000
+});
+
+instance.defaults.headers.post['Content-Type'] = 'application/json';
+//错误处理
+instance.interceptors.response.use(function(response) {
+    return response;
+}, util.catchError);
+
+
+
 export {
     request,
     authRequest,
+    instance,
 }
 
 

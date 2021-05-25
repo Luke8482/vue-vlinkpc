@@ -217,3 +217,10 @@ export function testAlipay(order_id) {
     })
 }
 
+// 测试Alipay 功能
+export function getPermissons() {
+    return authRequest('/user/permissions', {
+        method: 'get',
+    })
+}
+

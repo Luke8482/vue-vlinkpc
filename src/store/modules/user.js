@@ -1,6 +1,7 @@
 import { logins, logout, refresh, getCurrentUser } from '@/service/api/index'    //TODO......
 import ls from '@/utils/localStorage'   //已修改修改为localStorage
 import isEmpty from 'lodash/isEmpty'   //已安装
+import bus from '@/views/admin/common/bus'
 
 const getDefaultState = () => {
     return {
@@ -33,6 +34,9 @@ const actions = {
         // auth.setToken(authResponse.data);    //原来代码
         ls.setToken(authResponse);
 
+        // 设置权限，监听登录事件，登录，则调用APP文件内的 loginDirect 方法   TODO。。。报错currentRoute不存在
+        bus.$emit('loginDirect', this.$route.query.from);
+
         dispatch('getUser')
     },
 
@@ -52,6 +56,7 @@ const actions = {
         ls.setToken(refreshResponse);
 
 
+
         dispatch('getUser')
     },
 
@@ -62,6 +67,9 @@ const actions = {
         // 清空 storage  TODO...建议增加调用后台退出登录的API
         ls.logout();
         commit('resetState');
+
+        // 设置权限，监听退出事件，退出登录，则调用APP文件内的 logoutDirect 方法
+        bus.$emit("logoutDirect");
     }
 };
 
