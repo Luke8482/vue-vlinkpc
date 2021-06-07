@@ -55,7 +55,8 @@ export default {
     data() {
         return {
             collapse: false,
-            items: [
+            items: [],
+            itemsData: [
                 {
                     icon: 'el-icon-more',
                     index: 'dashboard',
@@ -182,6 +183,57 @@ export default {
             this.collapse = msg;
             bus.$emit('collapse-content', msg);
         });
+
+        // 1、获取后端路由的数据
+        var adminMenuData = this.$root.menuData[1].children;
+        // 2、编写计算Items 的逻辑
+        let computedItems = [];
+        let findItems = function(array1, array2) {
+            array1.forEach(route => {
+                let path = route.path;
+                array2.forEach(item => {
+                    // 没有subs  的情况下进行运算
+                    if (!item.hasOwnProperty('subs') && item.index === path) {
+                        computedItems.push(item);
+                    }
+                    else if(item.hasOwnProperty('subs')) {
+                        let subForItem = {};
+                        subForItem.icon = item.icon;
+                        subForItem.index = item.index;
+                        subForItem.title = item.title;
+                        subForItem.subs = [];
+                        let subArray = item.subs;
+                        subArray.forEach(sub => {
+                            // 没有3级菜单的情况下进行数据注入
+
+                            if (!sub.hasOwnProperty('subs') && sub.index === path) {
+                                subForItem.subs.push(sub);
+                            }
+                        });
+                        // 如果 二级目录 存在，则需要往computedItems 注入数据
+                        if (subForItem.subs.length !== 0) {
+                            let hasItem = false;
+                            computedItems.forEach(item=>{
+                               if (item.index === subForItem.index) {
+                                   item.subs.push(subForItem.subs[0]);
+                                   hasItem = true;
+                               }
+                            });
+                            if (!hasItem){
+                                computedItems.push(subForItem);
+                            }
+
+                        }
+                    }
+                });
+            })
+        };
+
+        // 3、调用函数 计算出Items
+        findItems(adminMenuData, this.itemsData);
+        // 4、将计算出的数据赋值给 Data 里的 items， 供页面渲染
+        this.items = computedItems;
+
     }
 };
 </script>

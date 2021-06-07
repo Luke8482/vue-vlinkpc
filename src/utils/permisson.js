@@ -153,7 +153,7 @@ export const catchError = function (error) {
         break;
       case 403:
         Vue.prototype.$message({
-          message: error.response.data.message || '无访问权限，请联系企业管理员',
+          message: error.response.data.message || '无访问权限，请联系企业管理员00',
           type: 'warning'
         });
         break;

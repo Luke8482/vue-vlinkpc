@@ -67,6 +67,7 @@
     import * as util from './utils/permisson.js';
     import ls from '@/utils/localStorage'
     import bus from './views/admin/common/bus.js'
+    import {permission} from './config/permission.js'
 
 
     export default {
@@ -81,149 +82,6 @@
                 menuData: null,
                 userData: null,
                 isRouterAlive: true,
-                testApiData:{
-                    "name": "管理端",
-                    "resources": [
-                        {
-                            "id": "2c9180895e172348015e1740805d000d",
-                            "name": "账号-获取",
-                            "summary": null,
-                            "url": "/accounts",
-                            "method": "GET"
-                        },
-                        {
-                            "id": "2c9180895e172348015e1740c30f000e",
-                            "name": "账号-删除",
-                            "summary": null,
-                            "url": "/account/**",
-                            "method": "DELETE"
-                        },
-                        {
-                            "id": "2c9180895e172348015e1741148a000f",
-                            "name": "账号-修改",
-                            "summary": null,
-                            "url": "/account/**",
-                            "method": "PUT"
-                        },
-                        {
-                            "id": "2c9180895e172348015e1840b98f0013",
-                            "name": "账号-分配角色",
-                            "summary": null,
-                            "url": "/account/*/roles",
-                            "method": "POST"
-                        },
-                        {
-                            "id": "2c9180895e172348015e173cd55f0009",
-                            "name": "角色-获取",
-                            "summary": null,
-                            "url": "/roles",
-                            "method": "GET"
-                        },
-                        {
-                            "id": "2c9180895e172348015e173e83ac000a",
-                            "name": "角色-删除",
-                            "summary": null,
-                            "url": "/role/**",
-                            "method": "DELETE"
-                        },
-                        {
-                            "id": "2c9180895e172348015e173eb9a4000b",
-                            "name": "角色-修改",
-                            "summary": null,
-                            "url": "/role/**",
-                            "method": "PUT"
-                        },
-                        {
-                            "id": "2c9180895e172348015e173f2fcc000c",
-                            "name": "角色-添加",
-                            "summary": null,
-                            "url": "/role",
-                            "method": "POST"
-                        },
-                        {
-                            "id": "4028811a5e1820d9015e1824acf20000",
-                            "name": "登录",
-                            "summary": null,
-                            "url": "/signin",
-                            "method": "GET"
-                        }
-                    ],
-                    "id": "2c9180895e172348015e1740805d000d",
-                    "menus": [
-                        {
-                            "id": 1,
-                            "name": "dashboard",
-                            "parent_id": null,
-                            "route": "dashboard",
-                            "summary": null
-                        },
-                        {
-                            "id": 11,
-                            "name": "home",
-                            "parent_id": 1,
-                            "route": "home",
-                            "summary": null
-                        },
-                        {
-                            "id": 12,
-                            "name": "progress",
-                            "parent_id": 1,
-                            "route": "progress",
-                            "summary": null
-                        },
-                        {
-                            "id": 13,
-                            "name": "learn",
-                            "parent_id": 1,
-                            "route": "learn/:lesson_id",
-                            "summary": null
-                        },
-
-                        {
-                            "id": 2,
-                            "name": "admin",
-                            "parent_id": null,
-                            "route": "admin",
-                            "summary": null
-                        },
-                        {
-                            "id": 21,
-                            "name": "",
-                            "parent_id": 2,
-                            "route": "dashboard",
-                            "summary": null
-                        },{
-                            "id": 22,
-                            "name": "",
-                            "parent_id": 2,
-                            "route": "course",
-                            "summary": null
-                        },{
-                            "id": 23,
-                            "name": "",
-                            "parent_id": 2,
-                            "route": "createcourse",
-                            "summary": null
-                        },
-                    ]
-
-                    // "menus": [
-                    //     {
-                    //         "id": "2c9180895e13261e015e13469b7e0000",
-                    //         "name": "平台-角色管理",
-                    //         "parent_id": null,
-                    //         "route": "roles",
-                    //         "summary": null
-                    //     },
-                    //     {
-                    //         "id": "2c9180895e13261e015e1346d40a0001",
-                    //         "name": "平台-账户管理",
-                    //         "parent_id": null,
-                    //         "route": "accounts",
-                    //         "summary": null
-                    //     }
-                    // ]
-                }
             }
         },
         methods: {
@@ -249,6 +107,7 @@
                     if (reg2) {
                         perName = perName.replace(reg2[1], '*');
                     }
+
 
                     // Check permissions
 
@@ -316,7 +175,6 @@
             extendRoutes: function(routePermission) {
 
                 // Filtering local routes, get actual routing
-
                 let actualRouter = [];
                 let findLocalRoute = function(array, base) {
                     let replyResult = [];
@@ -338,7 +196,6 @@
                 findLocalRoute(AllRoutesData[0].children);
 
                 // If the user does not have any routing authority
-                console.log(actualRouter);
 
                 if (!actualRouter || !actualRouter.length) {
                     // clear token, refresh page will jump to login screen.
@@ -360,12 +217,11 @@
                     return e
                 });
 
+
                 // Add actual routing to application
 
                 let originPath = util.deepcopy(AllRoutesData);
-                console.log(util.deepcopy(AllRoutesData));
                 originPath[0].children = actualRouter;
-                console.log(originPath);
                 this.$router.addRoutes(originPath.concat([{
                     path: '*',
                     redirect: '/404'
@@ -373,12 +229,10 @@
 
 
 
-
-                console.log(this.$router.options.routes);
-
                 // Save information for rendering menu.(This step is optional.)
 
                 this.$root.menuData = actualRouter;
+
 
             },
             signin: function(callback) {
@@ -390,9 +244,9 @@
 
                 // let localUser = util.session('token');   todo。。。 修改为使用 ls 的  getSession 方法
                 let localUser = ls.getToken();
-                // if (!localUser || !localUser.token) {   todo ....   修改对应参数
+                // if (!localUser || !localUser.token) {   todo ....   修改对应参数   判断是否登录，未登录，则停止执行
                 if (!localUser ) {
-                    return vm.$router.push({ path: '/login', query: { from: vm.$router.currentRoute.path } });
+                    return ;
                 }
 
                 /*
@@ -415,8 +269,53 @@
                 //     //  todo 直接封装Api 调用
                 // })
                 getPermissons().then(res => {
-                    // let userPermissions = res.data;
-                    let userPermissions = this.testApiData;   //测试数据
+                    // let userPermissions = {};
+                    // userPermissions.resources = permission.resources;
+                    // userPermissions.menus = permission.menus;
+                    //
+                    // res.data.forEach(perm=> {
+                    //     if(perm.name === 'manage_contents'){
+                    //         userPermissions.resources=
+                    //             userPermissions.resources.concat(permission.resources_manage_contents);
+                    //         userPermissions.menus=
+                    //             userPermissions.menus.concat(permission.menus_manage_contents);
+                    //     }
+                    //     if (perm.name === 'manage_users'){
+                    //         userPermissions.resources=
+                    //             userPermissions.resources.concat(permission.resources_users);
+                    //         userPermissions.menus=
+                    //             userPermissions.menus.concat(permission.menus_users);
+                    //     }
+                    //     if (perm.name === 'edit_settings'){
+                    //         userPermissions.resources=
+                    //             userPermissions.resources.concat(permission.resources_settings);
+                    //         userPermissions.menus=
+                    //             userPermissions.menus.concat(permission.menus_settings);
+                    //     }
+                    // });
+
+                    let userPermissions = {},
+                    resources = permission.resources,  //todo...放到create里面  因为未登录时，均需赋值
+                    menus = permission.menus;
+
+                    res.data.forEach(perm=> {
+                        if(perm.name === 'manage_contents'){
+                            resources= resources.concat(permission.resources_manage_contents);
+                            menus= menus.concat(permission.menus_manage_contents);
+                        }
+                        if (perm.name === 'manage_users'){
+                            resources= resources.concat(permission.resources_users);
+                            menus= menus.concat(permission.menus_users);
+                        }
+                        if (perm.name === 'edit_settings'){
+                            resources= resources.concat(permission.resources_settings);
+                            menus= menus.concat(permission.menus_settings);
+                        }
+                    });
+                    userPermissions.resources = resources;
+                    userPermissions.menus = menus;
+
+
 
                     // Save information, if it is used elsewhere.
                     vm.$root.userData = userPermissions;
@@ -497,6 +396,7 @@
                 * Will trigger the events in views/login.vue
                 */
 
+                //  TODO/.... 路由守卫完成调整机制，不需要回调 跳转页面
                 this.signin(() => {
                     this.$router.replace({path: newPath || '/'});
                 });
@@ -509,8 +409,7 @@
 
                 //Clear local user information
 
-                // util.session('token','');  todo 修改为 使用ls  的  logout 方法
-                ls.logout();
+                // util.session('token','');  todo vueX 里已经清除了本地token，这里就不需要重复操作
                 // reload app
                 window.location.href = process.env.BASE_URL || '/'
             }
@@ -520,6 +419,7 @@
             * Start from here!
             */
             this.signin();
+
         },
         mounted () {
             bus.$on('loginDirect', this.loginDirect);

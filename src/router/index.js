@@ -131,40 +131,24 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-//1、引入一级组件
- import DashBoard from './../views/home/dashboard/DashBoard'
- import Home from './../views/home/home/Home'
 
 Vue.use(Router);
 
 let baseRoute = [
     {path: '/', redirect: '/dashboard'},
-    // {
-    //         path: '/dashboard',
-    //         redirect: 'home',
-    //         // component: () => import(/* webpackChunkName: "home" */ './../views/home/dashboard/DashBoard'),
-    //         component: DashBoard,
-    //         children: [
-    //             {
-    //                 path: 'home',
-    //                 // component: () => import(/* webpackChunkName: "home" */ './../views/home/home/Home'),
-    //                 component: Home,
-    //             },
-    //         ]
-    // },
 
     {
     path: '/login',
     name: '登录',
-    component: () => require('../views/home/login/Login.vue' )
+    component: () => import('../views/home/login/Login.vue' )
 }, {
     path: '/401',
     name: '无权访问',
-    component: () => require('../views/admin/page/403.vue' )
+    component: () => import('../views/admin/page/403.vue' )
 }, {
     path: '/404',
     name: '找不到页面',
-    component: () => require('../views/admin/page/404.vue' )
+    component: () => import('../views/admin/page/404.vue' )
 },
 
 ];
@@ -187,13 +171,12 @@ let router = new Router({
         console.log(auth);
 
         let routeName = to.meta.name || to.name;
-        window.document.title = (routeName ? routeName + ' - ' : '') + 'Vue-Access-Control';
+        window.document.title = (routeName ? routeName + ' - ' : '') + 'VlinkPc';
 
         if (to.path !== '/login') {  //验证是否登录
             if (auth) {  //已经登录
                 next();
             } else if (code) {  // 如果未登录，且跳转路径不是登录界面，但是包含code，则调用仓库的login方法，并放行。
-                console.log(code);
                 // console.log(router.app.$options.store.dispatch('login',code));
                 router.app.$options.store.dispatch('login', code);//todo 是否要考虑容错机制
 

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import store from '@/store/index'
-import * as util from '@/utils/permisson';
+import * as util from './../../utils/permisson';
 
 // todo。。。自行设计代码
 const host = 'http://larabbs.test/api/v1';
@@ -8,17 +8,17 @@ const host = 'http://larabbs.test/api/v1';
 // 普通请求
 const request = async (url, configs = {}) => {
     // 拼接请求地址
-    configs.url = host + url;
+    configs.url = url;
 
-    let response = await axios(configs);
+    let response = await instance(configs);
 
     if (response.status >= 200 && response.status < 300) {
         return response.data
     }
 
-    const error = new Error(response.data.message);
-    error.response = response;
-    return Promise.reject(error)
+    // const error = new Error(response.data.message);  // TODO 是否与instance里的错误处理机制冲突
+    // error.response = response;
+    // return Promise.reject(error)
 };
 
 
@@ -49,7 +49,7 @@ const authRequest = async (url, configs = {}) => {
 
 const instance = axios.create({
     baseURL: host,
-    timeout: 10000
+    // timeout: 10000
 });
 
 instance.defaults.headers.post['Content-Type'] = 'application/json';

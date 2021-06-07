@@ -34,8 +34,8 @@ const actions = {
         // auth.setToken(authResponse.data);    //原来代码
         ls.setToken(authResponse);
 
-        // 设置权限，监听登录事件，登录，则调用APP文件内的 loginDirect 方法   TODO。。。报错currentRoute不存在
-        bus.$emit('loginDirect', this.$route.query.from);
+        // 设置权限，监听登录事件，登录，则调用APP文件内的 loginDirect 方法
+        bus.$emit('loginDirect');
 
         dispatch('getUser')
     },

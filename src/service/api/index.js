@@ -3,7 +3,7 @@ import {request, authRequest} from './ajax'
 
 //自行设计代码
 export function  logins(code) {
-    return request('/socials/wechat/authorizations', {
+    return request('/socials/wechat/authorizations/', {
         method: 'post',
         data: {
             code:code,
@@ -13,7 +13,7 @@ export function  logins(code) {
 
 //调用刷新token接口
 export function refresh(token) {
-    return request('/authorizations/current', {
+    return request('/authorizations/current/', {
         method: 'put',
         headers: {
             'Authorization': 'Bearer ' + token,
@@ -29,7 +29,7 @@ export function getCurrentUser() {
 
 // 退出登录
 export function logout(token) {
-    return request('/authorizations/current', {
+    return request('/authorizations/current/', {
         method: 'delete',
         headers: {
             'Authorization': 'Bearer ' + token
@@ -139,7 +139,7 @@ export function createLesson(value) {
 
 // 修改节
 export function updateLesson(id,value) {
-    return authRequest('/chapters/'+id,{
+    return authRequest('/lessons/'+id,{
         method: 'patch',
         data:value,
     })
@@ -188,7 +188,7 @@ export function updateSection(id,value) {
 
 // 调整section 顺序
 export function updateSort(value) {
-    return authRequest('/sections/sort', {
+    return authRequest('/sections/sort/', {
         method: 'post',
         data: value,
     })
@@ -204,7 +204,7 @@ export function sectionLearn(lesson_id,value) {
 
 // 学习页下载节对应的学习资料
 export function downloadFile(value) {
-    return authRequest('/lessons/files', {
+    return authRequest('/lessons/files/', {
         method: 'post',
         data: value,
     })
@@ -217,9 +217,9 @@ export function testAlipay(order_id) {
     })
 }
 
-// 测试Alipay 功能
+// 获取权限
 export function getPermissons() {
-    return authRequest('/user/permissions', {
+    return authRequest('/user/permissions/', {
         method: 'get',
     })
 }
