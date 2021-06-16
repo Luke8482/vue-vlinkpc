@@ -31,7 +31,9 @@
 
 
         <div class="main_wrap">
-            <practiceProgress/>
+            <practiceProgress
+                    :progressData = progressData
+            />
             <div  id="mainBox" class="content">
                 <!--<div class="header"></div>-->
                 <div >
@@ -101,7 +103,14 @@
 <script>
     import learnHeader from './components/learnHeader'
     import practiceProgress from './components/practiceProgress'
-    import {sectionLearn,downloadFile, testAlipay} from "../../../service/api";
+    import {
+        sectionLearn,
+        downloadFile,
+        testAlipay,
+        setRecord,
+        getLearnedSections,
+        getSectionsCount
+    } from "../../../service/api";
 
     export default {
         name: "Learn",
@@ -118,11 +127,26 @@
                 sectionIndex: 0,
                 sort: {},
                 alipayHtml: '',
-
+                recordData: {},
+                sectionsCount: '',
+                progressData: '',
             }
         },
         created(){
             this.lesson_id = this.$route.params.lesson_id;
+            getLearnedSections(this.lesson_id).then(res=>{
+                this.sectionData = res;
+                getSectionsCount(this.lesson_id).then(res=>{
+                    this.sectionsCount = res;
+                    //  计算百分比
+                    this.progressData = Math.round(this.sectionData.length/res * 100) / 1.00 + "%";
+                }).catch(err=>{
+                    console.log(err);
+                });
+            }).catch(err=>{
+                console.log(err);
+            });
+
             sectionLearn(this.lesson_id).then(res=>{
                 this.resData = res;
                 this.middleResData = res;
@@ -145,13 +169,23 @@
                 var showSection = this.resData[this.sectionIndex];
 
                 if (!showSection) {
-                    //  TODO/....完成学习的逻辑
+                    //  TODO....完成学习的逻辑
                 } else {
-                    // 判断当前section和 Data里 section 是否相同。如果一样则停止。否则可以插入
+                    // 判断当前准备学习的section和 sectionData 的最后一项是否相同。如果不一样，则可以插入；如果一样，说明网络未请求到学习数据。
                     var lastShowSection = this.sectionData[this.sectionData.length - 1];
                     if (showSection !== lastShowSection) {
-                        this.sectionData.push(this.resData[this.sectionIndex]);
+                        //  往sectionData 内添加数据  即显示内容；
+                        this.sectionData.push(showSection);
 
+                        // 显示后，调用学习记录API
+                        this.recordData.section_id = showSection.id;
+                        this.recordData.lesson_id = this.lesson_id;
+                        setRecord(this.recordData).then(res => {
+                            console.log(res);
+                            // 对响应无需处理。
+                        }).catch();
+
+                        //  如果学习到当前resData 的第一项，那么就立即请求后端获取学习数据
                         if (this.sectionIndex === 0) {
                             this.sort.sort = this.resData[this.resData.length - 1].sort;
                             sectionLearn(this.lesson_id, this.sort).then(res => {
@@ -159,6 +193,7 @@
                             }).catch();
                         }
 
+                        //  如果学习到当前 resData 的最后一项，需要判断resData 和middleResData 是否相等，相等则说明是第一次学习，不需要处理；  不等则判断是否为空，为空则说明已经学习完毕。
                         if (this.sectionIndex === 5) {
                             if (this.resData !== this.middleResData) {
                                 if (this.middleResData === null) {
@@ -173,7 +208,9 @@
                         } else {
                             this.sectionIndex++;
                         }
-                    } else {
+                    } else {   // 未及时请求到数据，则需要判断是否请求到了数据，请求得到数据后对数据进行操作
+
+                        //  解决网络延迟，造成学习无法继续bug
                         if (this.resData !== this.middleResData) {
                             this.resData = this.middleResData;
                             this.sectionIndex = 0;

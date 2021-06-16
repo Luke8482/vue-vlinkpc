@@ -2,10 +2,10 @@
     <div>
         <div class="practice_progress">
             <div  class="progress_bar">
-                <div  class="move_progress" style="height: 20%;"></div>
+                <div  class="move_progress" v-bind:style="{height: progressData}"></div>
             </div>
             <div >
-                <div class="middle" style="top: 99%;">20%</div>
+                <div class="middle" style="top: 99%;">{{progressData}}</div>
             </div>
         </div>
         <div  class="side-background"></div>
@@ -15,12 +15,15 @@
 
 <script>
     export default {
-        name: "practiceProgress"
+        name: "practiceProgress",
+        props:{
+            progressData: String,
+        }
     }
 </script>
 
 <style scoped>
-    /*精度条相关样式*/
+    /*进度条相关样式*/
     .practice_progress {
         position: absolute;
         top: 15vh;

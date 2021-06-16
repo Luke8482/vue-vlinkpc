@@ -65,6 +65,21 @@ const permission = {
             "name": "获取权限",
             "url": "/user/permissions/",
             "method": "GET"
+        },{
+            "id": "29",
+            "name": "创建学习记录",
+            "url": "/records",
+            "method": "POST"
+        },{
+            "id": "30",
+            "name": "获取本节已学习的内容",
+            "url": "/lessons/*/record",
+            "method": "GET"
+        },{
+            "id": "31",
+            "name": "获取本节section 的总数（供学习进度使用）",
+            "url": "/lessons/*/progress",
+            "method": "GET"
         }
     ],
     resources_manage_contents: [

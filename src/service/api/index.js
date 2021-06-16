@@ -224,3 +224,25 @@ export function getPermissons() {
     })
 }
 
+// 创建学习记录API
+export function setRecord(value) {
+    return authRequest('/records', {
+        method: 'post',
+        data: value,
+    })
+}
+
+// 获取本节已学习的内容
+export function getLearnedSections(lesson_id) {
+    return authRequest('/lessons/'+lesson_id+'/record', {
+        method: 'get',
+    })
+}
+
+// 获取本节section 的总数（供学习进度使用）
+export function getSectionsCount(lesson_id) {
+    return authRequest('/lessons/'+lesson_id+'/progress', {
+        method: 'get',
+    })
+}
+
