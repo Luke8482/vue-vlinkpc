@@ -10,14 +10,7 @@
                     </div>
                 </div>
                 <div >
-                    <div >
-                        <div  class="btn">
-                            意见反馈
-                        </div>
-                        <div  class="btn" style="margin-left: 1.0417vw;">
-                            安全退出
-                        </div>
-                    </div>
+                    <logoutButton/>
                 </div>
             </div>
         </div>
@@ -25,8 +18,10 @@
 </template>
 
 <script>
+    import logoutButton from './../../components/logoutButton'
     export default {
-        name: "has_catalog_header"
+        name: "has_catalog_header",
+        components:{logoutButton},
     }
 </script>
 
@@ -90,24 +85,5 @@
         font-stretch: normal;
         color: #385061;
     }
-    .btn {
-        color: #1fae9d;
-        padding: .3125vw 1.3542vw;
-        font-size: .625vw;
-        border-radius: .8333vw;
-        border: 1px solid #1fae9d;
-        display: inline-block;
-        cursor: pointer;
-        font-weight: 700;
-    }
-    .btn {
-        color: #1fae9d;
-        padding: .3125vw 1.3542vw;
-        font-size: .625vw;
-        border-radius: .8333vw;
-        border: 1px solid #1fae9d;
-        display: inline-block;
-        cursor: pointer;
-        font-weight: 700;
-    }
+
 </style>

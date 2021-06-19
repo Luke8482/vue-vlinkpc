@@ -246,3 +246,19 @@ export function getSectionsCount(lesson_id) {
     })
 }
 
+
+//  首页API
+//  首页获取最近学习记录API
+export function getLastLearnedRecord() {
+    return authRequest('/records/current/?include=lessons', {
+        method: 'get',
+    })
+}
+
+//  首页获取已购买课程&热门课程列表
+export function getHomeCourses() {
+    return authRequest('/home/courses/', {
+        method: 'get',
+    })
+}
+

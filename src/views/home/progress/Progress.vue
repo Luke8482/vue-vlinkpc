@@ -13,7 +13,7 @@
 <script>
     import has_catalog_header  from './components/has_catalog_header'
     import detail_wrap  from './components/detail_wrap'
-    import footerContainer from './../login/footerContainer'
+    import footerContainer from './../components/footerContainer'
 
 
     export default {

@@ -38,7 +38,7 @@ const permission = {
         },{
             "id": "19",
             "name": "获取目录",
-            "url": "/courses/*/chapters?include=lessons",
+            "url": "/courses/*/chapters",
             "method": "GET"
         },{
             "id": "21",
@@ -79,6 +79,16 @@ const permission = {
             "id": "31",
             "name": "获取本节section 的总数（供学习进度使用）",
             "url": "/lessons/*/progress",
+            "method": "GET"
+        },{
+            "id": "32",
+            "name": "首页获取最近学习记录",
+            "url": "/records/current/",
+            "method": "GET"
+        },{
+            "id": "33",
+            "name": "首页获取已购买课程&热门课程列表",
+            "url": "/home/courses/",
             "method": "GET"
         }
     ],

@@ -1,10 +1,10 @@
 <template>
     <div class="headerContainer">
         <div>
-            <img src="//cdn.pyhot.cn/app/program/resource/cdn/logo.088bf7642ddb5e447060d2129b4a5b25.png" alt="">
+            <img src="//cdn.pyhot.cn/app/program/resource/cdn/logo_black.338832addf5132718d7245ac1a4700c4.png" alt="">
         </div>
         <div class="headerRightSide">
-            <div>服务热线：400-990-9669</div>
+            <!--<div>服务热线：400-990-9669</div>-->
             <div class="concern">关注公众号</div>
         </div>
     </div>
