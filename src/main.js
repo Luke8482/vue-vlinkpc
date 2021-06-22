@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import LatestNews from './LatestNews.vue'
 import router from './router'
 import store from './store'
 
@@ -58,5 +59,15 @@ new Vue({
   store,
   i18n,
 
-  render: h => h(App)
-}).$mount('#app')
+  render: h => h(App),
+}).$mount('#app');
+
+
+new Vue({
+    router,
+    store,
+    i18n,
+
+    render: h => h(LatestNews),
+}).$mount('#latestNews');
+

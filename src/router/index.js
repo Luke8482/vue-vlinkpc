@@ -141,15 +141,19 @@ let baseRoute = [
     path: '/login',
     name: '登录',
     component: () => import('../views/home/login/Login.vue' )
-}, {
+    },{
+        path: '/program/lesson-detail',
+        name: '课程介绍',
+        component: () => import('../views/home/wechatPage/LessonDetail.vue' )
+    }, {
     path: '/401',
     name: '无权访问',
     component: () => import('../views/admin/page/403.vue' )
-}, {
+    }, {
     path: '/404',
     name: '找不到页面',
     component: () => import('../views/admin/page/404.vue' )
-},
+    },
 
 ];
 
@@ -173,7 +177,7 @@ let router = new Router({
         let routeName = to.meta.name || to.name;
         window.document.title = (routeName ? routeName + ' - ' : '') + 'VlinkPc';
 
-        if (to.path !== '/login') {  //验证是否登录
+        if (to.path !== '/login' && to.path !== '/dashboard/home') {  //验证是否登录
             if (auth) {  //已经登录
                 next();
             } else if (code) {  // 如果未登录，且跳转路径不是登录界面，但是包含code，则调用仓库的login方法，并放行。

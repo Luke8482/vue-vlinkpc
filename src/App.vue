@@ -60,9 +60,8 @@
 
 <script>
     import Vue from 'vue';
-    import {request, instance} from './service/api/ajax'
+    import {instance} from './service/api/ajax'
     import {getPermissons} from './service/api/index'
-    // import instance from './api';
     import AllRoutesData from './router/fullpath';
     import * as util from './utils/permisson.js';
     import ls from '@/utils/localStorage'
