@@ -8,16 +8,22 @@
 
         <div class="top">
             <div class="summary_btn">
-                {{course.price}}
+                {{course.label}}
             </div>
             <div class="title">
                 {{course.title}}
             </div>
         </div>
 
-        <div class="CourseContent">
+        <div class="CourseContent" style=";">
             <div class="content_text">
-                基于职场办公需求研发，提升可视化表达能力
+                {{course.subtitle}}
+            </div>
+        </div>
+
+        <div class="CourseContent">
+            <div class="summary_btn" style="background-color: #b0b0b0;">
+                {{course.price }}
             </div>
         </div>
 

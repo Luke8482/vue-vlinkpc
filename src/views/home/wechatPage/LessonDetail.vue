@@ -63,6 +63,10 @@
             // if (userAgent.match(/MicroMessenger/i) !== 'MicroMessenger') {
             //     window.location.href = "/wxError.html";
             // }
+
+            if (this.$route.query.course_id) {
+                console.log(this.$route.query.course_id);
+            }
         }
     }
 </script>

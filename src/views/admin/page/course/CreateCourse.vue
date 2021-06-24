@@ -20,8 +20,16 @@
             <div class="form-box">
                 <el-form ref="form" :model="form" label-width="80px">
 
-                    <el-form-item label="课程名称">
+                    <el-form-item label="课程标题">
                         <el-input v-model="form.title"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="副标题">
+                        <el-input v-model="form.subtitle"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="课程标签">
+                        <el-input v-model="form.label"></el-input>
                     </el-form-item>
 
                     <el-form-item label="课程价格">
@@ -87,8 +95,10 @@
         return {
             form: {
                 title: '',
+                subtitle: '',
                 price: '',
                 cover: '',
+                label: '',
             },
             upload_url: '',//上传URL
             upload_name: '',//图片或视频名称
