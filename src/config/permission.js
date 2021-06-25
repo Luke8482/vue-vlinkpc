@@ -173,6 +173,31 @@ const permission = {
             "name": "调整section 顺序",
             "url": "/sections/sort/",
             "method": "POST"
+        },{
+            "id": "34",
+            "name": "新增carousel",
+            "url": "/carousels",
+            "method": "POST"
+        },{
+            "id": "35",
+            "name": "获取carousel 列表",
+            "url": "/courses/*/carousels",
+            "method": "GET"
+        },{
+            "id": "36",
+            "name": "修改 carousel ",
+            "url": "/carousels/**",
+            "method": "PATCH"
+        },{
+            "id": "37",
+            "name": "删除 carousel ",
+            "url": "/carousels/**",
+            "method": "DELETE"
+        },{
+            "id": "38",
+            "name": "调整 carousel 顺序",
+            "url": "/carousels/sort/",
+            "method": "POST"
         }
     ],
     resources_users: [],
@@ -252,6 +277,12 @@ const permission = {
             "name": "",
             "parent_id": 2,
             "route": ":id",
+            "summary": null
+        },{
+            "id": 27,
+            "name": "",
+            "parent_id": 2,
+            "route": "createcarousel/:course_id",
             "summary": null
         },
     ],

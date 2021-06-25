@@ -80,19 +80,24 @@
                 <el-radio-group
                         v-model="updateSectionForm.type"
                 >
-                    <el-radio label="对话"></el-radio>
-                    <el-radio label="视频"></el-radio>
-                    <el-radio label="音频"></el-radio>
-                    <el-radio label="图文"></el-radio>
+                    <el-radio label="dialogue">对话</el-radio>
+                    <el-radio label="video">视频</el-radio>
+                    <el-radio label="audio">音频</el-radio>
+                    <el-radio label="graphic">图文</el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="section内容" prop="markdown">
                 <markdownEditor
                         :onchange="contentOnChange"
                         :init-data = "contentInitData"
-                        v-if="updateSectionForm.type==='对话'"
+                        v-if="updateSectionForm.type==='dialogue'"
                 />
-                <elUploads/>
+                <elUploads
+                        v-if="updateSectionForm.type!=='dialogue'"
+                        :lesson_id = updateSectionForm.lesson_id
+                        :file_type = updateSectionForm.type
+                        @uploadedFile = "getUploadedFileUrl"
+                />
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('修改')">立即修改</el-button>
@@ -151,7 +156,7 @@
         },
         inject:['reload'],
         created(){
-            if (this.section.type==='对话') {
+            if (this.section.type==='dialogue') {
                 this.updateSectionForm.type = this.section.type;
                 this.contentInitData = this.section.markdown;
             }

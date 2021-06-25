@@ -30,16 +30,22 @@
                                      class="demo-ruleForm text_content pre-break-line" style="width: 90%;">
                                 <el-form-item label="内容形式" prop="type" >
                                     <el-radio-group v-model="sectionForm.type">
-                                        <el-radio label="对话"></el-radio>
-                                        <el-radio label="视频"></el-radio>
-                                        <el-radio label="音频"></el-radio>
-                                        <el-radio label="图文"></el-radio>
+                                        <el-radio label="dialogue">对话</el-radio>
+                                        <el-radio label="video">视频</el-radio>
+                                        <el-radio label="audio">音频</el-radio>
+                                        <el-radio label="graphic">图文</el-radio>
                                     </el-radio-group>
                                 </el-form-item>
                                 <el-form-item label="section内容" prop="markdown">
                                     <markdownEditor
                                             :onchange="contentOnChange"
-                                            v-if="sectionForm.type==='对话'"
+                                            v-if="sectionForm.type==='dialogue'"
+                                    />
+                                    <elUploads
+                                            v-if="sectionForm.type!=='dialogue'"
+                                            :lesson_id = sectionForm.lesson_id
+                                            :file_type = sectionForm.type
+                                            @uploadedFile = "getUploadedFileUrl"
                                     />
                                 </el-form-item>
                                 <el-form-item>
@@ -199,6 +205,11 @@
             shiftShowUploadForm(){
                 this.showUploadForm = !this.showUploadForm;
             },
+
+            getUploadedFileUrl(data){
+                this.uploadFileForm.content = data;
+                this.uploadFileForm.markdown = data;
+            }
         }
     }
 </script>

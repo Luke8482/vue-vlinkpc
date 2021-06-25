@@ -262,3 +262,42 @@ export function getHomeCourses() {
     })
 }
 
+//新课程轮播图
+export function createCarousel(value) {
+    return authRequest('/carousels',{
+        method: 'post',
+        data: value,
+    })
+}
+
+//  获取课程所属的轮播图
+export function getCarousels(id) {
+    return authRequest('/courses/'+id+'/carousels',{
+        method: 'get',
+    })
+}
+
+
+// 修轮播图
+export function updateCarousel(id,value) {
+    return authRequest('/carousels/'+id,{
+        method: 'patch',
+        data:value,
+    })
+}
+
+// 删除Carousel
+export function delCarousel(id) {
+    return authRequest('/carousels/'+id,{
+        method: 'delete'
+    })
+}
+
+//  调整轮播图顺序
+export function updateCarouselSort(value) {
+    return authRequest('/carousels/sort/',{
+        method: 'post',
+        data: value,
+    })
+}
+

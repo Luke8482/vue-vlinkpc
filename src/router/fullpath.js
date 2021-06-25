@@ -124,6 +124,13 @@ export default  [
                     },
 
                     {
+                        path: 'createcarousel/:course_id',
+
+                        component: () => import( '../views/admin/page/course/createCarousel/CreateCarousel.vue'),
+                        meta: { title: '新增轮播图' }
+                    },
+
+                    {
                         path: ':id',
 
                         component: () => import( '../views/admin/page/course/UpdateCourse.vue'),

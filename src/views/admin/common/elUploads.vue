@@ -38,6 +38,7 @@
         },
         props: {
             lesson_id: Number,
+            course_id: Number,
             file_type: String,
         },
         methods: {
@@ -129,6 +130,7 @@
                 formData.append('file', file);
                 formData.append('file_type', self.file_type);
                 formData.append('lesson_id', self.lesson_id);
+                formData.append('course_id', self.course_id);
 
                 // axios.post(self.upload_url, formData, { headers:{
                 //         Authorization: 'Bearer ' + store.getters.accessToken,
@@ -163,10 +165,11 @@
                             }
 
 
-                        _.$alert('上传失败，请重新上传', '提示', { type: 'error' });
+
                         // self.$refs.upload.uploadFiles = [];
                     })
                     .catch(function (err) {
+                        self.$alert('上传失败，请重新上传', '提示', { type: 'error' });
                         console.error(err);
                     });
             }
