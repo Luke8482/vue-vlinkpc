@@ -1,19 +1,39 @@
 <template>
     <div class="latest-news" v-if="show">
-        <div class="mask"></div>
-        <div class="red-box">
+        <div class="mask" v-if="showCarousels"></div>
+
+        <div  v-if="!showCarousels">
+            <div class="aside-container" @click="showRcmCourse">
+                <div class="top-messge">新课来了！！</div>
+                <div class="aside">
+                    <i class="aside-icon"></i>
+                </div>
+                <div class="wraper-text-container">
+                <div class="coupon-text">{{course.title}}</div>
+                    <div class="course-name">{{course.subtitle}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="red-box" v-if="showCarousels">
             <div style="position: absolute; top: 11.5%; left: 50%; transform: translate(-50%, -11.5%); font-size: 2.2vw; letter-spacing: 2px; text-shadow: rgb(231, 110, 23) 2px 2px 2px; font-weight: bold;">
         新课上线了！
     </div>
-            <div class="close-btn">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAABACAMAAAByderSAAAAk1BMVEUAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ROyVeAAAAMHRSTlMA+1UL6lskEAXEkmZYLu63jIJzaGMys15KOePd0si/rqqad3DfQRoYB/LTpp6bfCCwxYiMAAACfUlEQVRYw6SS6XaCQAxGMyI7hYpiQbtYl2rr9r3/03VGpAMyQTy9fzhk4CaThHicfBUcFtPFIVjlDj3KdrwYos5wMd5Sbzw7EWgjEtujPlirGS7E/nEZRnkULo9+XIZmK+u+wC6r99OsEc5Sv7yNTd0475fPRo7pbHSRvzudBXyr/1OLu2CqHN8238FP1a/AJR43UD3+9JgMiTycF9RNMQeQWEb9mzz6cOke7geAN8N3O9XDZ+rDs+rnrhVW5iX1Y6mqvQ2eZHBEfRkBODVDGyE7TP2RUxObxhhmsjke9ceTbZ9Zzd7EZ3qEc9zo+5MAJrUE/CR12gkgnqhiCvh6/dfxgBGMRax/8oHpXwkAsnqfxcAsaMwrk2+Vb69tkg0YRagOCqpXvr9eTgBFPZVZEYqbcCHf3cr9enNdg2LSDr4CYdWSlE/HCyi9DsCSZ1/3Er6YyvqSMTXeHPgh4hS8QPID5OU+Bjpo/Mc2Cygo9zIBIuIUnQKKgEQ+5noxzIqoLdCrOCfaCdWOFjr1gBWoIQiPtsCQDFTJA1YgGQJbcoA1dSjQIaA14FCmNpJjIBiB3srs/wZ9C04gFb+lmM0KgCAQhKMoAs2LQXQv3/8Ro4O28LVeplOFjai781PsraK3k2PbydjbydU9zdGc5tw5TVtRBIj15vAqyq3qNjUgUNXoLABYCHYWuhvffI+7092GYQgACDKMYTmM56tAlrNMSwC+zGRay/acjgWayfZUnPMdGbwav6k4VD0zFSGoelTeLdXlEiJdC5WX6j/5fm4doP6qA9FdkO7EdDeoO1LdFevOXE8HekLRU5Ke1PS0qCdWPTX7V/lJ7sUZK/89eADuoX1FprBoOAAAAABJRU5ErkJggg==">
+            <div class="close-btn" @click="showCarousels = !showCarousels">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAABACAMAAAByderSAAAAk1BMVEUAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////ROyVeAAAAMHRSTlMA+1UL6lskEAXEkmZYLu63jIJzaGMys15KOePd0si/rqqad3DfQRoYB/LTpp6bfCCwxYiMAAACfUlEQVRYw6SS6XaCQAxGMyI7hYpiQbtYl2rr9r3/03VGpAMyQTy9fzhk4CaThHicfBUcFtPFIVjlDj3KdrwYos5wMd5Sbzw7EWgjEtujPlirGS7E/nEZRnkULo9+XIZmK+u +wC6r99OsEc5Sv7yNTd0475fPRo7pbHSRvzudBXyr/1OLu2CqHN8238FP1a/AJR43UD3+9JgMiTycF9RNMQeQWEb9mzz6cOke7geAN8N3O9XDZ+rDs+rnrhVW5iX1Y6mqvQ2eZHBEfRkBODVDGyE7TP2RUxObxhhmsjke9ceTbZ9Zzd7EZ3qEc9zo+5MAJrUE/CR12gkgnqhiCvh6/dfxgBGMRax/8oHpXwkAsnqfxcAsaMwrk2+Vb69tkg0YRagOCqpXvr9eTgBFPZVZEYqbcCHf3cr9enNdg2LSDr4CYdWSlE/HCyi9DsCSZ1/3Er6YyvqSMTXeHPgh4hS8QPID5OU+Bjpo/Mc2Cygo9zIBIuIUnQKKgEQ+5noxzIqoLdCrOCfaCdWOFjr1gBWoIQiPtsCQDFTJA1YgGQJbcoA1dSjQIaA14FCmNpJjIBiB3srs/wZ9C04gFb+lmM0KgCAQhKMoAs2LQXQv3/8Ro4O28LVeplOFjai781PsraK3k2PbydjbydU9zdGc5tw5TVtRBIj15vAqyq3qNjUgUNXoLABYCHYWuhvffI+7092GYQgACDKMYTmM56tAlrNMSwC+zGRay/acjgWayfZUnPMdGbwav6k4VD0zFSGoelTeLdXlEiJdC5WX6j/5fm4doP6qA9FdkO7EdDeoO1LdFevOXE8HekLRU5Ke1PS0qCdWPTX7V/lJ7sUZK/89eADuoX1FprBoOAAAAABJRU5ErkJggg==">
             </div>
             <div class="news-content" style="">
                 <div class="content-left" style="">
                     <div class="qr-bg-wrap">
                         <div class="qr-code">
-                            <img src="https://cdn-oss-public.pyhot.cn/program_public/user_upload/ad07d17b1dbd1738f82325e53bbeb5e5/WechatIMG32.png">
+                            <vue-qr
+                                    :margin="10"
+                                    :auto-color="true"
+                                    :dot-scale="1"
+                                    :text="courseDetailUrl"
+                            />
                         </div>
+
                         <p class="qr-text">扫码查看详情</p>
                     </div>
                 </div>
@@ -21,8 +41,8 @@
                     <div class="swiper-content">
                         <div class="mint-swipe">
                             <el-carousel indicator-position="outside" height="500px">
-                                <el-carousel-item v-for="item in img" :key="item">
-                                    <img :src="item"
+                                <el-carousel-item v-for="carousel of carousels" >
+                                    <img :src="carousel.image"
                                          style="width: 80%; height: 80%;"
                                     >
                                 </el-carousel-item>
@@ -41,18 +61,23 @@
 </template>
 
 <script>
+    import bus from './views/admin/common/bus';
+    import {getCarousels, getRcmCourses} from "./service/api";
+    import vueQr  from 'vue-qr'
+
+
     export default {
         name: "LatestNews",
         data(){
             return{
-                show: false,
-                img:[
-                    "https://cdn-oss-public.pyhot.cn/program_public/user_upload/f6120be6754d72d4c1ab0e39851cc04b/7-1.gif",
-                    "https://cdn-oss-public.pyhot.cn/program_public/user_upload/fb9652e03c1c336c4e38923fecdfe539/7-3.gif",
-                    "https://cdn-oss-public.pyhot.cn/program_public/user_upload/c222866531feaa421f5cfd4fc7b9eb94/7-2.gif"
-                ]
+                show: false,    //  控制整个界面  是否显示
+                showCarousels: false,   //   控制轮播图界面是否显示
+                carousels:{},   //  Api获取轮播图对象
+                courseDetailUrl: '',
+                course:{},
             }
         },
+        components: { vueQr },
         watch:{
             "$route":function (val, oldVal) {
                 if (
@@ -68,7 +93,35 @@
             }
 
         },
+        created(){
+            getRcmCourses().then(res=>{
+                this.course = res;
+            }).catch(err=>{
+                console.log(err);
+            })
+        },
+        mounted(){
+            bus.$on('showCarousels', msg=>{
+                console.log(msg);
+                this.showCarousels = true;  //  显示轮播图界面
+                this.course = msg;   // 使最近点击过的课程，显示在推荐浮窗上
+                //   todo... 配置基础路由Url
+                this.courseDetailUrl = 'http://vlinkpc.tests:8080/program/course_detail/'+msg.id;
 
+                //  请求获取课程对应轮播图API
+                getCarousels(msg.id).then(res=>{
+                    this.carousels = res;
+                    console.log(res);
+                }).catch(err=>{
+                    console.log(err);
+                })
+            })
+        },
+        methods:{
+            showRcmCourse(){
+                bus.$emit('showCarousels',this.course);
+            }
+        }
     }
 </script>
 
@@ -125,6 +178,99 @@
         z-index: 99;
         left: 0;
         top: 0;
+    }
+
+    .latest-news .aside-container {
+        width: 302px;
+        position: fixed;
+        bottom: 20%;
+        right: 0;
+        -webkit-transition: 4.5s;
+        transition: 4.5s;
+    }
+
+    .latest-news .top-messge {
+        position: absolute;
+        left: 0;
+        top: 2px;
+        -webkit-transform: translateY(-100%);
+        transform: translateY(-100%);
+        width: 176px;
+        height: 59px;
+        font-size: 20px;
+        padding-left: 98px;
+        font-family: PingFangSC-Medium,PingFang SC;
+        font-weight: 500;
+        color: #f5324b;
+        line-height: 59px;
+        background: url(//cdn.pyhot.cn/app/program/resource/cdn/speaker.67f8cea27c715e99fa2be7397b8d13b1.png) no-repeat 0 0;
+    }
+
+    .latest-news .aside {
+        width: 100%;
+        height: 89px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        background: url(//cdn.pyhot.cn/app/program/resource/cdn/bg@2x.0c9c2e48dc8b6cc7d9d2ce5aa203a64f.png) no-repeat,transparent;
+        background-size: 100% 100%;
+        border-left: none;
+        cursor: pointer;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-flow: column nowrap;
+        flex-flow: column nowrap;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+    }
+
+    .latest-news .aside .aside-icon {
+        width: 74px;
+        height: 100%;
+        background: url(//cdn.pyhot.cn/app/program/resource/cdn/button.b44e3a0298a98b24f0c64f64c7f4d37a.png) no-repeat 0 0;
+        overflow: hidden;
+        position: relative;
+        left: 5%;
+    }
+
+    .wraper-text-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        cursor: pointer;
+        top: 0;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        padding-left: 30%;
+    }
+
+    .wraper-text-container .coupon-text {
+        width: 100%;
+        font-size: 1rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .wraper-text-container .course-name {
+        margin-top: 4px;
+        font-size: .75rem;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     .latest-news .close-btn {
@@ -219,6 +365,10 @@
         box-shadow: 0 0 0 1px #fff;
         width: 80%;
         height: 80%;
+    }
+
+    .qr-code img {
+        margin: 10px;
     }
 
     .latest-news .content-left .qr-bg-wrap .qr-text {

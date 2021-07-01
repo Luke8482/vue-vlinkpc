@@ -142,7 +142,7 @@ let baseRoute = [
     name: '登录',
     component: () => import('../views/home/login/Login.vue' )
     },{
-        path: '/program/lesson-detail',
+        path: '/program/lesson-detail/:course_id',
         name: '课程介绍',
         component: () => import('../views/home/wechatPage/LessonDetail.vue' )
     }, {

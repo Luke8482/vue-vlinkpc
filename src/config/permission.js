@@ -90,6 +90,11 @@ const permission = {
             "name": "首页获取已购买课程&热门课程列表",
             "url": "/home/courses/",
             "method": "GET"
+        },{
+            "id": "39",
+            "name": "获取推荐课程",
+            "url": "/recommended/courses/",
+            "method": "GET"
         }
     ],
     resources_manage_contents: [

@@ -2,6 +2,7 @@
     <div class="course_card"
          @mouseenter="showLock=!showLock"
          @mouseleave="showLock=!showLock"
+         @click="showCarousels(Course)"
     >
         <img  :src="Course.cover" alt="Excel实战训练营" class="course_card_bg">
         <div  class="unlock-card_mask" v-if="showLock && notInMyCourse">
@@ -33,6 +34,8 @@
 </template>
 
 <script>
+    import bus from '@/views/admin/common/bus';
+
     export default {
         name: "courseCard",
 
@@ -45,6 +48,11 @@
         props: {
             Course: Object,
             notInMyCourse: Boolean,
+        },
+        methods:{
+            showCarousels(Course){
+                bus.$emit('showCarousels', Course )
+            }
         }
     }
 </script>

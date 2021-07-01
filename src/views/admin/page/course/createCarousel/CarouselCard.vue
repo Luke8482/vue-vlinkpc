@@ -3,39 +3,28 @@
          @mouseenter="showDealButton=!showDealButton"
          @mouseleave="showDealButton=!showDealButton"
     >
+        <div class="carousel_index">{{index+1}}</div>
         <img :src="carousel.image" style="width: 300px; height: 200px;">
 
         <div class="text_contents"  v-show="showDealButton" style="width: 500px">
             <el-button icon="el-icon-arrow-up" @click="delUpdateSort('上移')"></el-button>
             <el-button icon="el-icon-arrow-down" @click="delUpdateSort('下移')"></el-button>
-            <el-button @click="showUpdateCarousel=!showUpdateCarousel">修改</el-button>
+            <el-button @click="showTable=!showTable">修改</el-button>
             <el-button @click="handleDelSection">删除</el-button>
         </div>
 
-        <el-form
-                v-if="showUpdateCarousel"
-                :model="updateCarouselForm"
-                ref="carouselForm"
-        >
-            <el-uploads
-                    :course_id = carousel.course_id
-                    :file_type = file_type
-                    @uploadedFile = "getUploadedFileUrl"
-
-            />
-
-            <el-form-item>
-                <el-button type="primary" @click="onSubmit">添加轮播图</el-button>
-                <el-button @click="showUpdateCarousel=!showUpdateCarousel"> 取消</el-button>
-            </el-form-item>
-        </el-form>
+        <CarouselTable
+                v-if="showTable"
+                :carousel = carousel
+                v-on:cancelShowData = "cancelShowData"
+        />
     </div>
 </template>
 
 <script>
-    import elUploads from '@/views/admin/common/elUploads'
+    import CarouselTable from './CarouselTable'
 
-    import {updateCarousel, delCarousel, updateCarouselSort} from "../../../../../service/api";
+    import {delCarousel, updateCarouselSort} from "../../../../../service/api";
 
 
 
@@ -44,47 +33,27 @@
         data(){
             return{
                 showDealButton: false,  //  控制处理按钮的显示
-                showUpdateCarousel: false,  // 控制是否现在修改轮播图表单
+                showTable: false,  // 控制是否现在修改轮播图表单
                 // 调整排序的API 的参数
                 updateSort: {
                     type: '',
                     carousel_id: '',
                 },
-
-                updateCarouselForm: {
-                    image: '',
-                    course_id: null,
-                },
-                file_type: 'image',
             }
         },
         components:{
-            elUploads,
+            CarouselTable,
         },
         props:{
             carousel: Object,
+            index: Number,
         },
 
-        inject:['reload'],
-
         created(){
-            this.updateCarouselForm.course_id = this.carousel.course_id;
             this.updateSort.carousel_id = this.carousel.id;
         },
 
         methods:{
-            onSubmit(){
-                alert('是否更新轮播图!');
-                //  调用修改轮播图api
-                updateCarousel(this.carousel.id,this.updateCarouselForm).then(res=>{
-                    this.cancelShowInput();
-                    console.log(res);
-                    this.reload();
-                }).catch(err=>{
-                    console.log(err);
-                })
-            },
-
             handleDelSection() {
                 delCarousel(this.carousel.id).then(res => {
                     console.log(res);
@@ -93,12 +62,10 @@
                     console.log(err);
                 })
             },
-            cancelShowInput(){
-                this.showUpdateCarousel = false;
-                this.resetForm('carouselForm');
-            },
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
+
+            //  不显示表单
+            cancelShowData(){
+                this.showTable = !this.showTable;
             },
             delUpdateSort(type){
                 this.updateSort.type = type;
@@ -107,9 +74,6 @@
                 }).catch(err=>{
                     console.log(err);
                 })
-            },
-            getUploadedFileUrl(data){
-                this.updateCarouselForm.image = data;
             },
         }
 
@@ -128,5 +92,12 @@
         letter-spacing: 0;
         color: silver;
         font-weight: lighter;
+    }
+    .carousel_index{
+        display:inline;
+        margin: auto 30px;
+        position: relative;
+        top: 50%; /*偏移*/
+        margin-top: -20px;
     }
 </style>

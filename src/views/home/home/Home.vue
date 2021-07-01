@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="top-container">
+                    <div class="top-container" v-if="showLearnedRecord">
                         <div class="study-progress-container">
                             <div class="new-bottom-panel-btn punch-btn" @click="goToLearning">继续闯关</div>
                             <div class="hint-container">
@@ -40,16 +40,20 @@
                 <div class="course_cards_section">
                     <div class="purchased_cards">
                         <div class="course-sort-title card_title">我的课程 ({{myCourseCount}})</div>
-                        <div class="purchase_cards">
+                        <div class="purchase_cards"  v-if="!showAlertContent">
                             <course-card
                                     v-for="myCourse in coursesData.myCourses"
                                     :Course = "myCourse"
                                     :notInMyCourse = "false"
                             />
                         </div>
+                        <div v-if="showAlertContent" style="margin-left: 25vw">
+                            <img src="/首页提醒.png" style="height: 150px;">
+                            <p style="color: #385061; ">您还未解锁任何课程，赶紧去 解锁 吧！</p>
+                        </div>
                         <div>
                             <div class="course-sort-title card_title">热门课程  ({{hotCourseCount}})</div>
-                            <div class="purchase_cards">
+                            <div class="purchase_cards" >
                                 <course-card
                                         v-for="hotCourse in coursesData.hotCourses"
                                         :Course = "hotCourse"
@@ -74,6 +78,7 @@
     import FooterContainer from "../components/footerContainer";
     import ls from '@/utils/localStorage'
 
+
     import {getLastLearnedRecord, getHomeCourses} from "../../../service/api";
 
     export default {
@@ -81,6 +86,8 @@
         data(){
             return{
                 isShow:false, //配置页面底部是否显示地址
+                showLearnedRecord: false,  //  配置是否显示历史记录
+                showAlertContent: false,  //  提示去购买课程
                 lastLearnedLesson: {},  // 登录用户最近学习记录
                 coursesData: {},  // 课程数据
             }
@@ -92,10 +99,17 @@
         },
         created(){
             getLastLearnedRecord().then(res=>{
-                this.lastLearnedLesson = res;
+                    //  判断是否有学习记录，，没有则不显示学习记录
+                if(res.length !== 0){
+                    this.lastLearnedLesson = res;
+                    this.showLearnedRecord = true;
+                }
             });
             getHomeCourses().then(res=>{
                 this.coursesData = res;
+                if(this.coursesData.myCourses.length === 0){
+                    this.showAlertContent = true;
+                }
                 console.log(res);
             })
         },
@@ -130,7 +144,8 @@
         methods:{
             goToLearning(){
                 this.$router.replace('/dashboard/learn/'+this.lastLearnedLesson.id)
-            }
+            },
+
         }
 
     }

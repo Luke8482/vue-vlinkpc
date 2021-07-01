@@ -262,6 +262,14 @@ export function getHomeCourses() {
     })
 }
 
+//  首页获取已购买课程&热门课程列表
+export function getRcmCourses() {
+    return authRequest('/recommended/courses/', {
+        method: 'get',
+    })
+}
+
+
 //新课程轮播图
 export function createCarousel(value) {
     return authRequest('/carousels',{
