@@ -95,6 +95,16 @@ const permission = {
             "name": "获取推荐课程",
             "url": "/recommended/courses/",
             "method": "GET"
+        },{
+            "id": "35",
+            "name": "获取carousel 列表",
+            "url": "/courses/*/carousels",
+            "method": "GET"
+        },{
+            "id": "41",
+            "name": "获取课程对应的Sku 列表",
+            "url": "/courses/*/skus",
+            "method": "GET"
         }
     ],
     resources_manage_contents: [
@@ -184,11 +194,6 @@ const permission = {
             "url": "/carousels",
             "method": "POST"
         },{
-            "id": "35",
-            "name": "获取carousel 列表",
-            "url": "/courses/*/carousels",
-            "method": "GET"
-        },{
             "id": "36",
             "name": "修改 carousel ",
             "url": "/carousels/**",
@@ -203,6 +208,21 @@ const permission = {
             "name": "调整 carousel 顺序",
             "url": "/carousels/sort/",
             "method": "POST"
+        },{
+            "id": "39",
+            "name": "新增课程SKU",
+            "url": "/courseskus",
+            "method": "POST"
+        },{
+            "id": "40",
+            "name": "修改课程SKU",
+            "url": "/courseskus/**",
+            "method": "PATCH"
+        },{
+            "id": "42",
+            "name": "删除课程SKU",
+            "url": "/courseskus/**",
+            "method": "DELETE"
         }
     ],
     resources_users: [],
@@ -288,6 +308,12 @@ const permission = {
             "name": "",
             "parent_id": 2,
             "route": "createcarousel/:course_id",
+            "summary": null
+        },{
+            "id": 28,
+            "name": "",
+            "parent_id": 2,
+            "route": "createcoursesku/:course_id",
             "summary": null
         },
     ],

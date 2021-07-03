@@ -131,6 +131,13 @@ export default  [
                     },
 
                     {
+                        path: 'createcoursesku/:course_id',
+
+                        component: () => import( '../views/admin/page/course/createCourseSku/CreateCourseSku.vue'),
+                        meta: { title: '新增轮播图' }
+                    },
+
+                    {
                         path: ':id',
 
                         component: () => import( '../views/admin/page/course/UpdateCourse.vue'),

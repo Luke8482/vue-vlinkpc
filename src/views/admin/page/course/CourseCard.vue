@@ -29,6 +29,8 @@
 
         <div class="courses_button">
             <el-button type="primary" icon="el-icon-search" @click="pushToCreateChapterPage">预览章节</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="pushToCreateCarouselPage">轮播图</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="pushToCreateSkuPage">课程SKU</el-button>
             <el-button type="warning" icon="el-icon-edit" @click="updateCourse">修改</el-button>
             <el-button type="danger" icon="el-icon-delete" @click="open">删除</el-button>
         </div>
@@ -109,7 +111,15 @@
             },
 
             pushToCreateChapterPage(){
-              this.$router.push('/admin/createChapter/'+this.course.id);
+              this.$router.push('/admin/createchapter/'+this.course.id);
+            },
+
+            pushToCreateCarouselPage(){
+              this.$router.push('/admin/createcarousel/'+this.course.id);
+            },
+
+            pushToCreateSkuPage(){
+                this.$router.push('/admin/createcoursesku/'+this.course.id);
             },
 
             updateCourse(){

@@ -309,3 +309,33 @@ export function updateCarouselSort(value) {
     })
 }
 
+//新增课程SKU
+export function createCourseSku(value) {
+    return authRequest('/courseskus',{
+        method: 'post',
+        data: value,
+    })
+}
+
+// 修改章
+export function updateCourseSku(id,value) {
+    return authRequest('/courseskus/'+id,{
+        method: 'patch',
+        data:value,
+    })
+}
+
+//  获取课程所属的Sku
+export function getCourseSkus(id) {
+    return authRequest('/courses/'+id+'/skus',{
+        method: 'get',
+    })
+}
+
+
+// 删除section
+export function delCourseSku(id) {
+    return authRequest('/courseskus/'+id,{
+        method: 'delete'
+    })
+}

@@ -10,7 +10,7 @@
             <el-button icon="el-icon-arrow-up" @click="delUpdateSort('上移')"></el-button>
             <el-button icon="el-icon-arrow-down" @click="delUpdateSort('下移')"></el-button>
             <el-button @click="showTable=!showTable">修改</el-button>
-            <el-button @click="handleDelSection">删除</el-button>
+            <el-button @click="handleDelCarousel">删除</el-button>
         </div>
 
         <CarouselTable
@@ -48,13 +48,14 @@
             carousel: Object,
             index: Number,
         },
+        inject:['reload'],
 
         created(){
             this.updateSort.carousel_id = this.carousel.id;
         },
 
         methods:{
-            handleDelSection() {
+            handleDelCarousel() {
                 delCarousel(this.carousel.id).then(res => {
                     console.log(res);
                     this.reload();
