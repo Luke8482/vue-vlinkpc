@@ -317,7 +317,7 @@ export function createCourseSku(value) {
     })
 }
 
-// 修改章
+// 修改课程sku
 export function updateCourseSku(id,value) {
     return authRequest('/courseskus/'+id,{
         method: 'patch',
@@ -337,5 +337,44 @@ export function getCourseSkus(id) {
 export function delCourseSku(id) {
     return authRequest('/courseskus/'+id,{
         method: 'delete'
+    })
+}
+
+//新增课程详情图
+export function createDetail(value) {
+    return authRequest('/details',{
+        method: 'post',
+        data: value,
+    })
+}
+
+// 修改课程详情图
+export function updateDetail(id,value) {
+    return authRequest('/details/'+id,{
+        method: 'patch',
+        data:value,
+    })
+}
+
+//  获取课程所属的详情图
+export function getDetails(id) {
+    return authRequest('/courses/'+id+'/details',{
+        method: 'get',
+    })
+}
+
+
+// 删除详情图
+export function delDetail(id) {
+    return authRequest('/details/'+id,{
+        method: 'delete'
+    })
+}
+
+//  调整详情图顺序
+export function updateDetailSort(value) {
+    return authRequest('/details/sort/',{
+        method: 'post',
+        data: value,
     })
 }

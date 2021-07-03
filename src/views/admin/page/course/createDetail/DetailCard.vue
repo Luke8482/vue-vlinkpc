@@ -1,0 +1,102 @@
+<template>
+    <div
+            @mouseenter="showDealButton=!showDealButton"
+            @mouseleave="showDealButton=!showDealButton"
+            style="text-align: center"
+    >
+        <img :src="courseDetail.image" style="width: 600px;">
+
+        <div class="text_contents"  v-show="showDealButton" style="width: 500px">
+            <el-button icon="el-icon-arrow-up" @click="delUpdateSort('上移')"></el-button>
+            <el-button icon="el-icon-arrow-down" @click="delUpdateSort('下移')"></el-button>
+            <el-button @click="showTable=!showTable">修改</el-button>
+            <el-button @click="handleDelCarousel">删除</el-button>
+        </div>
+
+        <DetailTable
+                v-if="showTable"
+                :courseDetail = courseDetail
+                v-on:cancelShowData = "cancelShowData"
+        />
+    </div>
+</template>
+
+<script>
+    import DetailTable from './DetailTable'
+
+    import {delDetail, updateDetailSort} from "../../../../../service/api";
+
+    export default {
+        name: "DetailCard",
+        data(){
+            return{
+                showDealButton: false,  //  控制处理按钮的显示
+                showTable: false,  // 控制是否现在修改轮播图表单
+                // 调整排序的API 的参数
+                updateSort: {
+                    type: '',
+                    detail_id: '',
+                },
+            }
+        },
+        components:{
+            DetailTable,
+        },
+        props:{
+            courseDetail: Object,
+            index: Number,
+        },
+        inject:['reload'],
+
+        created(){
+            this.updateSort.detail_id = this.courseDetail.id;
+        },
+
+        methods:{
+            handleDelCarousel() {
+                delDetail(this.courseDetail.id).then(res => {
+                    console.log(res);
+                    this.reload();
+                }).catch(err => {
+                    console.log(err);
+                })
+            },
+
+            //  不显示表单
+            cancelShowData(){
+                this.showTable = !this.showTable;
+            },
+            delUpdateSort(type){
+                this.updateSort.type = type;
+                updateDetailSort(this.updateSort).then(res=>{
+                    this.reload();
+                }).catch(err=>{
+                    console.log(err);
+                })
+            },
+        }
+
+    }
+</script>
+
+<style scoped>
+    .text_contents {
+        max-width: 90%;
+        margin-left: .8vw;
+        line-height: 2;
+        margin-top: .2vw;
+        margin-bottom: .2vw;
+        font-family: inherit;
+        font-size: 20px;
+        letter-spacing: 0;
+        color: silver;
+        font-weight: lighter;
+    }
+    .carousel_index{
+        display:inline;
+        margin: auto 30px;
+        position: relative;
+        top: 50%; /*偏移*/
+        margin-top: -20px;
+    }
+</style>

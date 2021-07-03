@@ -223,6 +223,31 @@ const permission = {
             "name": "删除课程SKU",
             "url": "/courseskus/**",
             "method": "DELETE"
+        },{
+            "id": "43",
+            "name": "新增课程详情图",
+            "url": "/details",
+            "method": "POST"
+        },{
+            "id": "44",
+            "name": "修改课程详情图",
+            "url": "/details/**",
+            "method": "PATCH"
+        },{
+            "id": "45",
+            "name": "获取课程详情图",
+            "url": "/courses/*/details",
+            "method": "GET"
+        },{
+            "id": "46",
+            "name": "删除课程详情图",
+            "url": "/details/**",
+            "method": "DELETE"
+        },{
+            "id": "47",
+            "name": "调整课程详情图顺序",
+            "url": "/details/sort/",
+            "method": "POST"
         }
     ],
     resources_users: [],
@@ -314,6 +339,12 @@ const permission = {
             "name": "",
             "parent_id": 2,
             "route": "createcoursesku/:course_id",
+            "summary": null
+        },{
+            "id": 29,
+            "name": "",
+            "parent_id": 2,
+            "route": "createdetails/:course_id",
             "summary": null
         },
     ],

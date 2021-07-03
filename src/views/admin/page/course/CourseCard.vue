@@ -28,9 +28,10 @@
         </div>
 
         <div class="courses_button">
-            <el-button type="primary" icon="el-icon-search" @click="pushToCreateChapterPage">预览章节</el-button>
-            <el-button type="primary" icon="el-icon-search" @click="pushToCreateCarouselPage">轮播图</el-button>
-            <el-button type="primary" icon="el-icon-search" @click="pushToCreateSkuPage">课程SKU</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="pushToCreateChapterPage">章节</el-button>
+            <el-button type="primary"  @click="pushToCreateCarouselPage">轮播图</el-button>
+            <el-button type="primary"  @click="pushToCreateSkuPage">SKU</el-button>
+            <el-button type="primary"  @click="pushToCreateDetailPage">详情图</el-button>
             <el-button type="warning" icon="el-icon-edit" @click="updateCourse">修改</el-button>
             <el-button type="danger" icon="el-icon-delete" @click="open">删除</el-button>
         </div>
@@ -120,6 +121,10 @@
 
             pushToCreateSkuPage(){
                 this.$router.push('/admin/createcoursesku/'+this.course.id);
+            },
+
+            pushToCreateDetailPage(){
+                this.$router.push('/admin/createdetails/'+this.course.id);
             },
 
             updateCourse(){

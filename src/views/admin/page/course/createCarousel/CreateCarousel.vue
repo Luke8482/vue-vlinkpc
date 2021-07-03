@@ -19,7 +19,6 @@
 </template>
 
 <script>
-    import elUploads from '@/views/admin/common/elUploads'
     import CarouselCard from './CarouselCard'
     import CarouselTable from './CarouselTable'
 
@@ -30,13 +29,11 @@
         data(){
             return{
                 showCreateTable: false,  //  控制新增表单显示
-                file_type: 'image',   //  上传组件传参，以便创建对应文件夹
                 carousels: [],
                 course_id: '',
             }
         },
         components:{
-            elUploads,
             CarouselCard,
             CarouselTable
         },
