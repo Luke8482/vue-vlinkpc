@@ -45,7 +45,7 @@
 
             getCarousels(this.course_id).then(res=>{
                 console.log(res);
-                this.carousels = res;
+                this.carousels = res.carousels;
             }).catch(err=>{
 
             })

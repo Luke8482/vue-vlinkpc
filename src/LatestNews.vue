@@ -51,8 +51,8 @@
                         </div>
                     </div>
                     <div class="title-container">
-                        <h2 class="first-level-title">《PPT视觉高阶营》</h2>
-                        <h3 class="secondary-title">模仿优质作品，从细节中培养设计思维和审美</h3>
+                        <h2 class="first-level-title">《{{course.title}}》</h2>
+                        <h3 class="secondary-title">{{course.subtitle}}</h3>
                     </div>
                 </div>
             </div>
@@ -105,13 +105,13 @@
                 console.log(msg);
                 this.showCarousels = true;  //  显示轮播图界面
                 this.course = msg;   // 使最近点击过的课程，显示在推荐浮窗上
-                //   todo... 配置基础路由Url
-                this.courseDetailUrl = 'http://vlinkpc.tests:8080/program/course_detail/'+msg.id;
 
                 //  请求获取课程对应轮播图API
                 getCarousels(msg.id).then(res=>{
-                    this.carousels = res;
-                    console.log(res);
+                    this.carousels = res.carousels;
+                    //   todo... 配置基础路由Url
+                    this.courseDetailUrl = 'http://vlinkpc.tests:8080/program/course_detail?skuId='+res.courseSku[0].id;
+                    console.log(this.courseDetailUrl);
                 }).catch(err=>{
                     console.log(err);
                 })
