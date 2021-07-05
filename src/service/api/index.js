@@ -378,3 +378,18 @@ export function updateDetailSort(value) {
         data: value,
     })
 }
+
+//   前台  h5课程详情页  获取详情图及sku信息
+export function getDetailsAndSku(id) {
+    return request('/coursesku/'+id+'/details', {
+        method: 'get',
+    })
+}
+
+//  创建订单
+export function createOrder(value) {
+    return authRequest('/orders',{
+        method: 'post',
+        data: value,
+    })
+}

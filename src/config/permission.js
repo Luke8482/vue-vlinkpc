@@ -105,6 +105,16 @@ const permission = {
             "name": "获取课程对应的Sku 列表",
             "url": "/courses/*/skus",
             "method": "GET"
+        },{
+            "id": "48",
+            "name": "获取课程Sku对应的详情图及sku信息",
+            "url": "/coursesku/*/details",
+            "method": "GET"
+        },{
+            "id": "49",
+            "name": "创建订单",
+            "url": "/orders",
+            "method": "POST"
         }
     ],
     resources_manage_contents: [
