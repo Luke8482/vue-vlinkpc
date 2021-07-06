@@ -145,6 +145,10 @@ let baseRoute = [
         path: '/program/lesson-detail',
         name: '课程介绍',
         component: () => import('../views/home/wechatPage/LessonDetail.vue' )
+    },{
+        path: '/program/course-cart',
+        name: '课程购物车',
+        component: () => import('../views/home/wechatPage/CourseCart.vue' )
     }, {
     path: '/401',
     name: '无权访问',

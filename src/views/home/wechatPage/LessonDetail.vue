@@ -18,19 +18,13 @@
                 </div>
             </div>
             <!---->
-            <div id="pay" class="ban-select">
-                <!---->
-                <div class="tab">
-                    <div class="price">
-                        <div class="current">￥<span>{{sku.price}}</span></div>
-                        <!---->
-                    </div>
-                    <img src="//cdn.pyhot.cn/wx/program/resource/cdn/today.0a9fa1a2d208cf8d7cb731f3b32decad.png" class="tab-intro not-allow-save">
-                    <div class="wait-for-pay" @click="createOrder">
-                        马上报名
-                    </div>
-                </div>
-            </div>
+
+            <Footer
+                    :form = form
+                    :totalPrice = sku.price
+                    :type = sku.type
+                    :originPrice = originPrice
+            />
         </div>
         <div class="latestNews"></div>
     </div>
@@ -39,10 +33,14 @@
 </template>
 
 <script>
-    import {getDetailsAndSku, createOrder} from "../../../service/api";
+    import Footer from './Footer'
+    import {getDetailsAndSku} from "../../../service/api";
 
     export default {
         name: "LessonDetail",
+        components:{
+          Footer,
+        },
         data(){
             return{
                 details: [],
@@ -50,7 +48,8 @@
                 form:{            // 创建表单的表头
                     sku_ids:[],
                 },
-                payType: 'wechat',    // 支付方式
+
+                originPrice: 299,  //  需要获取的课程原价  todo.....修改后端API
 
             }
         },
@@ -69,24 +68,8 @@
             }).catch(err=>{
                 console.log(err);
             });
-            if (this.$route.query.sku_id) {
-                console.log(this.$route.query.sku_id);
-            }
         },
-        methods:{
-            createOrder(){
-                createOrder(this.form).then(res=>{
-                    if (this.payType === 'wechat'){
-                        //  调用微信支付接口
-                    }else {
-                        //  调用支付宝支付接口
-                    }
-                    console.log(res);
-                }).catch(err=>{
-                    console.log(err);
-                })
-            }
-        }
+
 
     }
 </script>
@@ -178,45 +161,6 @@
         color: hsla(0,0%,100%,.85);
     }
 
-    #main #pay .tip, #main #pay {
-        width: 100%;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        -ms-flex-align: center;
-        align-items: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-    }
-
-    #main #pay {
-        position: fixed;
-        bottom: 0;
-        height: 15vh;
-        background: #fff;
-        z-index: 100;
-    }
-
-    #pay .tip, #pay {
-        width: 100%;
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        -ms-flex-align: center;
-        align-items: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-    }
-
-    #pay {
-        position: fixed;
-        bottom: 0;
-        height: 15vh;
-        background: #fff;
-        z-index: 250;
-    }
 
     .ban-select {
         moz-user-select: -moz-none;
@@ -226,56 +170,4 @@
         user-select: none;
     }
 
-    #pay .tab .price, #pay .tab {
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-align: center;
-        align-items: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-    }
-
-    #pay .tab {
-        width: 100vw;
-    }
-
-    #pay .tab .price {
-        margin-right: 3vw;
-        width: 15vw;
-        -ms-flex-direction: column;
-        flex-direction: column;
-    }
-
-    #pay .tab .price, #pay .tab {
-        display: -ms-flexbox;
-        display: flex;
-        -ms-flex-align: center;
-        align-items: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-    }
-
-    #pay .tab .price .current {
-        font-size: 5vw;
-        font-weight: 700;
-    }
-
-    #pay .tab .tab-intro {
-        width: 25vw;
-        margin-left: 3vw;
-        margin-right: 3vw;
-    }
-
-    #pay .tab .wait-for-pay {
-        width: 40vw;
-        border-radius: 2vw;
-        height: 10vh;
-        background: linear-gradient(to bottom right,#ff8183,#ff52ba);
-        color: #fff;
-        line-height: 10vh;
-        text-align: center;
-        font-size: 5vw;
-        -ms-touch-action: none;
-        touch-action: none;
-    }
 </style>
