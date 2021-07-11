@@ -15,42 +15,20 @@
                 </div>
                 <div class="van-tabs__content">
                     <div role="tabpanel" class="van-tab__pane" style="">
-                        <div>
-                            <section class="course_message">
-                                <div class="course_center_container">
-                                    <div class="recomend_series">
-                                        <div class="series_content open_series">
-                                            <div data-v-b6f450b4="">
-                                                <button class="item_course">
-                                                    <div class="isCheck active_course" style="display: block;"></div>
-                                                    <div class="course_mess active_course_bg">
-                                                        <div class="course_left_cont">
-                                                            <div class="course_img">
-                                                                <img src="https://excel.toofun.top/image/8c67585422b11a38074aa3c0b7fd88c0" alt="">
-                                                            </div>
-                                                            <a href="http://xwzc.onejob.cn/callback/excel1" class="view_details">
-                                                                查看详情
-                                                            </a>
-                                                        </div>
-                                                        <div class="course_cont">
-                                                            <p class="item_course_name">Excel职场特训营</p>
-                                                            <p class="course_describe">职场必备Excel使用技巧</p>
-                                        <div class="course_bottom_cont">
-                                            <span class="permanent">永久有效</span>
-                                            <span class="course_price" style="color: rgb(253, 88, 31);">¥799</span>
-                                        </div>
-                                    </div>
-                                        <div class="purchased_content" style="display: none;">
-                                            已购
-                                        </div>
-                                    </div>
-                                    </button>
-                                    </div>
-                                    </div>
+                        <section class="course_message">
+                            <div class="course_center_container">
+                                <div class="recomend_series">
+                                    <div class="series_content open_series">
+                                        <CourseCard
+                                                v-for="hotCourse in hotCourses"
+                                                :course = hotCourse
+                                                v-on:dealCheckStatus = dealCheckStatus(hotCourse)
+                                        />
                                     </div>
                                 </div>
-                            </section>
-                        </div>
+                            </div>
+                        </section>
+
                     </div>
                     <div role="tabpanel" class="van-tab__pane" style="display: none;"><!---->
                 </div>
@@ -67,7 +45,9 @@
 </template>
 
 <script>
+    import CourseCard from './components/CourseCard'
     import Footer from './Footer'
+    import {wxGetCourse} from "../../../service/api";
 
     export default {
         name: "CourseCart",
@@ -77,13 +57,46 @@
                     sku_ids:[],
                 },
                 type: 'main',   // 让footer根据不同的type展示不同的内容
-                totalPrice: 99,  //  需要支付的总价
-                originPrice: 199,  //  原价（原总价）
+                totalPrice: 0,  //  需要支付的总价
+                originPrice: 0,  //  原价（原总价）
+                myCourses:{},  //  显示已经购买的课程分组
+                hotCourses: {},  //  显示可以购买的课程
             }
         },
         components:{
             Footer,
+            CourseCard
         },
+        created(){
+            wxGetCourse().then(res=>{
+                this.myCourses = res.myCourses;
+                this.hotCourses = res.hotCourses;
+                console.log(res);
+            }).catch(err=>{
+                console.log(err);
+            })
+        },
+        methods:{
+            dealCheckStatus(course){
+                //  1.1、判断skuId 数组内是否存在该课程的skuId ， 如果存在则执行删除操作， 如果不存在则执行添加操作
+                let sku_id = course.mainSku[0].id;
+                let index = this.form.sku_ids.indexOf(sku_id);
+
+                if (index>-1) {
+                    this.form.sku_ids.splice(index,1);
+                    // 2.1、计算原总价
+                    this.originPrice -= parseInt(course.price);
+                    // 3.1、计算折后总价
+                    this.totalPrice -= parseInt(course.mainSku[0].price);
+                }else {
+                    this.form.sku_ids.push(sku_id);
+                    this.originPrice += parseInt(course.price);
+                    this.totalPrice += parseInt(course.mainSku[0].price);
+                }
+                console.log(this.originPrice);
+
+            }
+        }
     }
 </script>
 
@@ -107,7 +120,7 @@
         position: relative;
     }
     .van-tabs {
-        padding-bottom: 50px;
+        padding-bottom: 25vh;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
     }
@@ -219,7 +232,7 @@
      .van-tab__pane {
         padding-top: 44px;
     }
-    .van-tab__pane, {
+    .van-tab__pane {
         -webkit-flex-shrink: 0;
         flex-shrink: 0;
         box-sizing: border-box;
@@ -248,14 +261,14 @@
     .series_content:first-child {
         margin-top: 0;
     }
-     .open_series {
+    .open_series {
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
     }
     .open_series {
         padding: 1.3333vw 4.2667vw 4vw;
     }
-     .series_content {
+    .series_content {
         background: #fff;
         margin-bottom: 4vw;
         padding: 4vw 4.2667vw;
@@ -263,178 +276,4 @@
         box-sizing: border-box;
     }
 
-
-
-    .isCheck {
-        width: 4.8vw;
-        height: 4.8vw;
-        border: 1px solid #ccc;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        border-radius: .5333vw;
-        margin-right: 4vw;
-    }
-    button {
-        background: none;
-    }
-    button, input, textarea {
-        color: inherit;
-        font: inherit;
-    }
-    button {
-        border: none;
-        background: #fff;
-    }
-
-
-    /*课程卡片的样式*/
-    .item_course:first-child {
-        margin-top: 0;
-    }
-    .item_course {
-        width: 100%;
-        text-align: left;
-        margin-top: 4vw;
-    }
-    .course_message, .item_course {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-    }
-    .active_course, .check_all {
-        width: 4.8vw;
-        height: 4.8vw;
-        background: url(https://office.toofun.top/ttposter_check_icon.png) no-repeat;
-        background-size: 100% 100%;
-        border: none;
-    }
-    .isCheck {
-        width: 4.8vw;
-        height: 4.8vw;
-        border: 1px solid #ccc;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        border-radius: .5333vw;
-        margin-right: 4vw;
-    }
-    .active_course_bg {
-        background: #fff3ef;
-    }
-    .course_mess {
-        width: 100%;
-        height: 26.1333vw;
-        -webkit-box-shadow: 0 0.8vw 1.6vw rgba(0,0,0,.16);
-        box-shadow: 0 0.8vw 1.6vw rgba(0,0,0,.16);
-        border-radius: 2.1333vw;
-        background: #fff;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        position: relative;
-        overflow: hidden;
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-    }
-
-    .course_left_cont {
-        position: relative;
-    }
-
-    .course_img {
-        width: 29.8667vw;
-        height: 21.8667vw;
-    }
-    .course_img img {
-        width: 100%;
-        height: 100%;
-    }
-    .view_details {
-        width: 100%;
-        height: 6.4vw;
-        background: #fc8c2a;
-        font-size: 3.4667vw;
-        color: #fff;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        position: absolute;
-        bottom: 0;
-    }
-    .course_cont {
-        width: 100%;
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
-        padding: 2.6667vw;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-    }
-    .item_course_name {
-        font-size: 4vw;
-        font-weight: 700;
-        color: #242424;
-    }
-
-    * {
-        padding: 0;
-        margin: 0;
-    }
-    .course_describe {
-        font-size: 3.2vw;
-        color: #999;
-        margin-top: 1.3333vw;
-    }
-    .course_bottom_cont {
-        width: 100%;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-        justify-content: space-between;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        margin-top: 3.2vw;
-    }
-    .permanent {
-        font-size: 2.6667vw;
-        color: #fc8c2a;
-    }
-    .course_price {
-        font-size: 5.3333vw;
-        font-weight: 700;
-        color: #fd581f;
-    }
-    .purchased_content {
-        width: 10vw;
-        height: 10vw;
-        font-size: 3.2vw;
-        color: #fc8c2a;
-        font-family: Normal;
-        background: url(https://office.toofun.top/ttposter_buy.png) no-repeat;
-        background-size: 100% 100%;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        position: absolute;
-        top: 0;
-        right: 0;
-    }
 </style>

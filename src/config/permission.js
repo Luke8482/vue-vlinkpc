@@ -115,6 +115,11 @@ const permission = {
             "name": "创建订单",
             "url": "/orders",
             "method": "POST"
+        },{
+            "id": "50",
+            "name": "微信cart 页获取课程&sku 信息",
+            "url": "/wx/course/sku",
+            "method": "GET"
         }
     ],
     resources_manage_contents: [

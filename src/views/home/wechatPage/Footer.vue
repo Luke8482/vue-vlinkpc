@@ -72,7 +72,7 @@
         },
         props:{
             form: Object,
-            totalPrice: Number,  // todo ....详情页需要兼容处理，传递过来的是String类型
+            totalPrice: Number,
             type: String,
             originPrice: Number,
         },

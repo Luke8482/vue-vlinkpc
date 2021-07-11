@@ -393,3 +393,10 @@ export function createOrder(value) {
         data: value,
     })
 }
+
+//  微信cart 页获取课程及sku 信息
+export function wxGetCourse(value) {
+    return authRequest('/wx/courses/sku',{
+        method: 'get',
+    })
+}

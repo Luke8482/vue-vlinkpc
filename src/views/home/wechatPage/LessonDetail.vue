@@ -21,7 +21,7 @@
 
             <Footer
                     :form = form
-                    :totalPrice = sku.price
+                    :totalPrice = parseInt(sku.price)
                     :type = sku.type
                     :originPrice = originPrice
             />
