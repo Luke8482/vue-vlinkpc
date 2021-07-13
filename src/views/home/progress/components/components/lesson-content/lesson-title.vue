@@ -5,7 +5,7 @@
             <div class="title-content">
                 <!---->
                 <span >
-                        Excel实战训练营
+                        {{lastLearnedLesson.title}}
                     </span>
             </div>
         </div>
@@ -14,7 +14,7 @@
                 <div  class="progress-bar">
                     <div  class="move-progress" style="width: 13.3313%;"></div>
                     <div class="progress-num" style="left: calc(13.3313% - 2.6042vw);">
-                        <span>13%</span>
+                        <span>{{lastLearnedLesson.course_progress}}</span>
                     </div>
                 </div>
                 <div class="divider"></div>
@@ -23,8 +23,8 @@
                         <div  class="button">继续闯关</div>
                     </div> <div  class="level-hint-container">
                     <div >最近解锁关卡:&nbsp;</div>
-                    <div  title="第3关    最后的员工档案">
-                        第3关    最后的员工档案
+                    <div  title="">
+                        第{{lastLearnedLesson.sort_int}}关  {{lastLearnedLesson.title}}
                     </div>
                 </div>
                 </div>
@@ -78,7 +78,13 @@
 
 <script>
     export default {
-        name: "lesson-title"
+        name: "lesson-title",
+        props:{
+            lastLearnedLesson: Object,
+        },
+        created(){
+            console.log(this.lastLearnedLesson);
+        }
     }
 </script>
 

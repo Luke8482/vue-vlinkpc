@@ -154,7 +154,7 @@ export function delLesson(id) {
 
 //获取目录
 export function getchapters(course_id) {
-    return request('/courses/'+course_id+'/chapters?include=lessons')
+    return authRequest('/courses/'+course_id+'/chapters?include=lessons')
 }
 
 

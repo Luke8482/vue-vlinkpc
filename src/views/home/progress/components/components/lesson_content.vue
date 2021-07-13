@@ -1,6 +1,8 @@
 <template>
     <div class="lesson_content">
-        <lesson_title/>
+        <lesson_title
+                :lastLearnedLesson = lastLearnedLesson
+        />
         <lesson_target/>
         <advertising/>
         <button @click="scrollToTarget">调转</button>
@@ -23,6 +25,12 @@
             lesson_title,
             lesson_target,
             advertising
+        },
+        props:{
+            lastLearnedLesson: Object,
+        },
+        created(){
+            console.log(this.lastLearnedLesson);
         },
         mounted(){
             Pubsub.subscribe('scrollto',(msg,token)=>{

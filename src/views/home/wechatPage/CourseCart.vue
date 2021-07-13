@@ -4,13 +4,17 @@
             <div class="van-tabs van-tabs--line">
                 <div class="van-tabs__wrap">
                     <div role="tablist" class="van-tabs__nav van-tabs__nav--line" style="border-color: rgb(253, 88, 31);">
-                        <div role="tab" aria-selected="true" class="van-tab van-tab--active" style="color: rgb(253, 88, 31);">
-                            <span class="van-tab__text van-tab__text--ellipsis">推荐课程</span>
-                        </div>
-                        <div role="tab" class="van-tab">
-                            <span class="van-tab__text van-tab__text--ellipsis">已购课程</span>
-                        </div>
-                        <div class="van-tabs__line" style="background-color: rgb(253, 88, 31); transform: translateX(38px) translateX(-50%);"></div>
+                        <el-menu
+                                :default-active= 'activeIndex'
+                                class="el-menu-demo"
+                                mode="horizontal"
+                                @select="handleSelect"
+                                active-text-color="#fc8c2a"
+                        >
+                            <el-menu-item index="1">推荐课程</el-menu-item>
+                            <el-menu-item index="2">已购课程</el-menu-item>
+                        </el-menu>
+
                     </div>
                 </div>
                 <div class="van-tabs__content">
@@ -18,11 +22,18 @@
                         <section class="course_message">
                             <div class="course_center_container">
                                 <div class="recomend_series">
-                                    <div class="series_content open_series">
+                                    <div class="series_content open_series" v-show="showHotCourses">
                                         <CourseCard
                                                 v-for="hotCourse in hotCourses"
                                                 :course = hotCourse
                                                 v-on:dealCheckStatus = dealCheckStatus(hotCourse)
+                                        />
+                                    </div>
+                                    <div class="series_content open_series" v-show="!showHotCourses">
+                                        <CourseCard
+                                                v-for="myCourse in myCourses"
+                                                :course = myCourse
+                                                :hasPained = true
                                         />
                                     </div>
                                 </div>
@@ -61,6 +72,8 @@
                 originPrice: 0,  //  原价（原总价）
                 myCourses:{},  //  显示已经购买的课程分组
                 hotCourses: {},  //  显示可以购买的课程
+                activeIndex: '1',   //  控制顶端菜单显示
+                showHotCourses: true,   //  控制是否显示推荐课程
             }
         },
         components:{
@@ -95,6 +108,14 @@
                 }
                 console.log(this.originPrice);
 
+            },
+            //  菜单栏控制显示推荐课程，或者已购课程
+            handleSelect(key, keyPath) {
+                if(key === '2') {
+                    this.showHotCourses = false;
+                }else{
+                    this.showHotCourses = true;
+                }
             }
         }
     }
@@ -128,7 +149,7 @@
         position: relative;
     }
     .van-tabs--line .van-tabs__wrap {
-        height: 44px;
+        height: 60px;
     }
     .van-tabs__wrap {
         width: 100%;

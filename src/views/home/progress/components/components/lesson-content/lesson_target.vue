@@ -13,7 +13,7 @@
                 <div  data-v-0aad4c54="">
                     <div  id="testid" class="item-container">
                         <div  class="box-card">
-                            <img  src="http://cdn-oss-program.pyhot.cn/program_private%2Fuser_upload%2Ff95621ea40ddc52060557cbbe7d6e832.png?OSSAccessKeyId=LTAIbOwCmkClZ3XF&amp;Expires=1600910904&amp;Signature=2KBMpFpsHZ9%2F3mPiFt18SpwIMo0%3D">
+                            <img  src="https://cdn-oss-public.pyhot.cn/program_public/user_upload/8056916967a071df704538d4a7569718.png">
                             <div  class="item-right">
                                 <div  class="item-right-title">
                                     第0关 动态看板：让表格动起来
@@ -31,10 +31,10 @@
                         </div>
                     </div>
                 </div>
-                <div >
+                <div>
                     <div id="" class="item-container">
                         <div class="box-card">
-                            <img src="http://cdn-oss-program.pyhot.cn/program_private%2Fuser_upload%2Fc19b935f2682a65c4c4d60c65672d4f6.png?OSSAccessKeyId=LTAIbOwCmkClZ3XF&amp;Expires=1600910904&amp;Signature=B6v0WSHcFTQfQcVNLd2y2T%2BVeuY%3D">
+                            <img src="https://cdn-oss-public.pyhot.cn/program_public/user_upload/8056916967a071df704538d4a7569718.png">
                             <div  class="item-right">
                                 <div  class="item-right-title">
                                     第1关 IF函数：效率之王
@@ -55,7 +55,7 @@
                 <div >
                     <div  id="level_detailnVGYqWe7XrNwQqP49o8gZAjd" class="item-container">
                         <div  class="box-card">
-                            <img  src="http://cdn-oss-program.pyhot.cn/program_private%2Fuser_upload%2F2f2bfb31cc3a12221aebe7a1d6e26a6f.png?OSSAccessKeyId=LTAIbOwCmkClZ3XF&amp;Expires=1600910904&amp;Signature=kRhAkepEvRBNghgoZMTw5F1ifLM%3D">
+                            <img  src="https://cdn-oss-public.pyhot.cn/program_public/user_upload/8056916967a071df704538d4a7569718.png">
                             <div  class="item-right">
                                 <div  class="item-right-title">
                                     第2关 查询函数：让数据自己说话

@@ -1,7 +1,11 @@
 <template>
     <div class="detail_wrap">
-        <lesson_content/>
-        <catalog_wrap/>
+        <lesson_content
+                :lastLearnedLesson = lastLearnedLesson
+        />
+        <catalog_wrap
+                :chapters = chapters
+        />
     </div>
 </template>
 
@@ -9,13 +13,30 @@
     import lesson_content from './components/lesson_content'
     import catalog_wrap from './components/catalog_wrap'
 
+    import {getchapters} from "../../../../service/api";
+
 
     export default {
         name: "detail_wrap",
-
+        data(){
+            return{
+                chapters: [],
+                lastLearnedLesson: {},
+            }
+        },
         components:{
             lesson_content,
             catalog_wrap
+        },
+
+        created(){
+            getchapters(this.$route.query.course_id).then(res=>{
+                this.chapters = res.chapters;
+                this.lastLearnedLesson = res.lastLearnedLesson;
+
+            }).catch(err=>{
+                console.log(err);
+            })
         }
     }
 </script>

@@ -20,14 +20,16 @@
         name: "Progress",
         data(){
             return{
-                isShow: false,
+                isShow: false,  //  控制页面底部，是否显示公司联系地址
+
             }
         },
         components:{
             has_catalog_header,
             detail_wrap,
             footerContainer,
-        }
+        },
+
     }
 </script>
 

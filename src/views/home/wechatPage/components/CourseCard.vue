@@ -21,7 +21,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="purchased_content" style="display: none;">
+                <div class="purchased_content" v-if="hasPained">
                     已购
                 </div>
             </div>
@@ -43,16 +43,16 @@
             hasPained: Boolean,
         },
         created(){
+            this.isChecked = false;  // 条件渲染，初始数据
             //  创建课程详情链接数据
             if (this.course.mainSku[0]) {
                 this.courseHref = 'http://vlinkpc.tests:8080/#/program/lesson-detail?sku_id='+this.course.mainSku[0].id;
-                console.log(this.courseHref);
             }
         },
         methods:{
             dealCheckStatus(){
                 //  判断是否买过课程，没买过才执行以下操作
-                if (!hasPained) {
+                if (!this.hasPained) {
                     //  1、 切换显示选中状态
                     this.isChecked = !this.isChecked;
                     //  2、 触发cart 页面的事件，使skuId 对应数组更新；价格更新
