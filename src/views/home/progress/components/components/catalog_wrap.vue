@@ -3,7 +3,7 @@
 
         <!--隐藏目录部分-->
         <transition name="spread_button">
-            <div  id="spreadButton" class="spread_button" style=" top: 3.333vw;" v-show="!show" @click="show=!show">
+            <div  id="spreadButton" class="spread_button"  v-show="!show" @click="show=!show">
             <span >目录</span>
             <img  :src="rightArr" class="spread_icon">
         </div>
@@ -11,7 +11,7 @@
 
         <!--显示目录部分-->
         <transition name="catalog_wrap">
-            <div id="catalogWrap" class="catalog_wrap" style="top: 3.33vm;" v-show="show">
+            <div id="catalogWrap" class="catalog_wrap" :style="showMiniHeader?isNotMini:isMini" v-show="show">
             <div class="catalog_content">
 
 
@@ -19,70 +19,12 @@
                     <img  :src="leftArr">
                 </div>
 
-
-                <!--<div  v-for="(chapter, index) in chapters">-->
-                    <!--<div  class="target_title" @click="showlessons=!showlessons">-->
-                        <!--<span>-->
-                            <!--阶段{{index+1}}： {{chapter.title}}-->
-                        <!--</span>-->
-                        <!--<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" :class="showlessons?isrotate:rotate_circle">-->
-                            <!--<g fill="none" fill-rule="evenodd">-->
-                                <!--<path fill="none" d="M0 0h22v22H0z"/>-->
-                                <!--<path stroke="#FFF" stroke-linecap="round" stroke-width="2.1" d="M6.187 13.597l4.853-4.852a.7.7 0 0 1 .99 0l4.852 4.852"/>-->
-                            <!--</g>-->
-                        <!--</svg>-->
-                    <!--</div>-->
-                    <!--<div  class="level_list" v-show="showlessons">-->
-                        <!--<div  data-index="0" class="level_detail" @click="scrollToTarget" @mouseenter="dealShowItem(true)" @mouseleave="dealShowItem(false)" :style="{backgroundColor:bgColor}">-->
-                            <!--<img  :src="finished">-->
-                            <!--<a  class="go_to" ></a>-->
-                            <!--<span  class="level_name" >动态看板：让表格动起来</span>-->
-                        <!--</div>-->
-                        <!--<div  data-index="1" class="level_detail">-->
-                            <!--<img  :src="finished">-->
-
-                            <!--<a  class="go_to"></a>-->
-                            <!--<span  class="level_name">IF函数：效率之王</span>-->
-                        <!--</div>-->
-                        <!--<div  data-index="2" class="level_detail">-->
-                            <!--<img  :src="finished">-->
-                            <!--<a  class="go_to"></a>-->
-                            <!--<span  class="level_name">查询函数：让数据自己说话</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-
                 <chapterCard
                     v-for="(chapter, index) in chapters"
                     :chapter = chapter
                     :index = index
                 />
 
-                <!--<el-menu-->
-                        <!--class="el-menu-vertical-demo"-->
-                        <!--@select="handleSelect"-->
-                        <!--background-color="#385061"-->
-                        <!--active-text-color="#ffd04b"-->
-                <!--&gt;-->
-                    <!--<el-submenu-->
-                            <!--v-for="(chapter, index) in chapters"-->
-                            <!--:index= "String(index+1)"-->
-                    <!--&gt;-->
-                        <!--<template slot="title"-->
-                        <!--&gt;-->
-                            <!--<i class="el-icon-document"></i>-->
-                            <!--<span >{{chapter.title}}</span>-->
-                        <!--</template>-->
-                        <!--<el-menu-item-->
-                                <!--v-for="(lesson, subIndex) in chapter.lessons"-->
-                                <!--:index="String(index+1)+'-'+String(subIndex+1)"-->
-                                <!--:disabled= true-->
-                        <!--&gt;-->
-                            <!--<i class="el-icon-circle-check"></i>-->
-                            <!--<span slot="title">{{lesson.title}}</span>-->
-                        <!--</el-menu-item>-->
-                    <!--</el-submenu>-->
-                <!--</el-menu>-->
 
             </div>
         </div>
@@ -92,12 +34,16 @@
 
 <script>
     import chapterCard from './catolog_wrap/chapterCard'
+    import bus from '@/views/admin/common/bus';
 
     export default {
         name: "catalog_wrap",
         data(){
             return{
                 show:true,
+                showMiniHeader: false, // 显示头部不缩略头部的时候，控制目录的样式
+                isMini:' top: 3.333vw;',
+                isNotMini: ' top: 8.09vw;',
                 rightArr: require('@/images/content/rightArr.png'),
                 leftArr: require('@/images/content/leftArr.png'),
             }
@@ -108,6 +54,11 @@
         props:{
           chapters: Array,
         },
+        mounted(){
+            bus.$on('showMiniHeader', msg=>{
+                this.showMiniHeader = !this.showMiniHeader;
+            })
+        }
 
 
     }

@@ -1,11 +1,15 @@
 <template>
     <div class="lesson_content">
         <lesson_title
+                v-if="JSON.stringify(lastLearnedLesson) !=='{}'"
                 :lastLearnedLesson = lastLearnedLesson
         />
-        <lesson_target/>
-        <advertising/>
-        <button @click="scrollToTarget">调转</button>
+
+        <chapterCard
+                v-for="(chapter, index) in chapters"
+                :chapter = chapter
+                :index = index
+        />
 
 
     </div>
@@ -13,8 +17,8 @@
 
 <script>
     import lesson_title from './lesson-content/lesson-title'
-    import lesson_target from './lesson-content/lesson_target'
-    import advertising from './lesson-content/advertising'
+    import chapterCard from './lesson-content/chapterCard'
+
 
     import Pubsub from 'pubsub-js'
 
@@ -23,24 +27,22 @@
         name: "lesson_content",
         components:{
             lesson_title,
-            lesson_target,
-            advertising
+            chapterCard
         },
         props:{
             lastLearnedLesson: Object,
+            chapters: Array,
         },
         created(){
-            console.log(this.lastLearnedLesson);
         },
         mounted(){
             Pubsub.subscribe('scrollto',(msg,token)=>{
-                console.log(msg, token);
-                this.scrollToTarget()
+                this.scrollToTarget(token)
             });
         },
         methods:{
-            scrollToTarget(){
-                document.querySelector("#testid").scrollIntoView(true)
+            scrollToTarget(token){
+                document.querySelector(token).scrollIntoView(true)
             }
         }
 
@@ -51,6 +53,8 @@
     .lesson_content {
         width: 75.49vw;
     }
+
+
 
 
 </style>

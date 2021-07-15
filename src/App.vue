@@ -243,6 +243,7 @@
 
                 // let localUser = util.session('token');   todo。。。 修改为使用 ls 的  getSession 方法
                 let localUser = ls.getToken();
+
                 // if (!localUser || !localUser.token) {   todo ....   修改对应参数   判断是否登录，未登录，则停止执行
                 if (!localUser ) {
                     return ;

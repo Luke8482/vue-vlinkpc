@@ -2,6 +2,7 @@
     <div class="detail_wrap">
         <lesson_content
                 :lastLearnedLesson = lastLearnedLesson
+                :chapters = chapters
         />
         <catalog_wrap
                 :chapters = chapters
@@ -21,7 +22,9 @@
         data(){
             return{
                 chapters: [],
-                lastLearnedLesson: {},
+                lastLearnedLesson: {
+
+                },
             }
         },
         components:{
@@ -33,6 +36,7 @@
             getchapters(this.$route.query.course_id).then(res=>{
                 this.chapters = res.chapters;
                 this.lastLearnedLesson = res.lastLearnedLesson;
+                console.log(res);
 
             }).catch(err=>{
                 console.log(err);

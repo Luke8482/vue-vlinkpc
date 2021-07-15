@@ -1,6 +1,6 @@
 <template>
     <!--广告图片-->
-    <div  class="bg_img">
+    <div  class="bg_img" @click="showRcmCourse">
         <img  src="//cdn.pyhot.cn/app/program/resource/cdn/buy_group_bg.8b9b034b0ec6daa8451ffef8a8927b56.png">
         <div  class="content">
             <div >
@@ -14,8 +14,15 @@
 </template>
 
 <script>
+    import bus from '@/views/admin/common/bus';
+
     export default {
-        name: "advertising"
+        name: "advertising",
+        methods:{
+            showRcmCourse(){
+                bus.$emit('dealAdvertise');
+            }
+        }
     }
 </script>
 

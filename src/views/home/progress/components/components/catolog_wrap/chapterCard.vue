@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div  class="target_title" @click="showlessons=!showlessons">
+        <div  class="target_title" @click="showlessons=!showlessons" :class="chapter.isUnlock?'':'unfinished'">
                         <span>
                             阶段{{index+1}}：{{chapter.title}}
                         </span>
@@ -41,6 +41,9 @@
 
             }
         },
+        created(){
+            this.showlessons = this.chapter.isUnlock;
+        }
 
     }
 </script>
@@ -68,6 +71,10 @@
         color: #fff;
         padding-left: 1.82vw;
         padding-bottom: 1.09vw;
+    }
+
+    .unfinished {
+        opacity: .5!important;
     }
 
 

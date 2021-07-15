@@ -101,6 +101,12 @@
             })
         },
         mounted(){
+            //  发布事件，供进度页的广告触发
+            bus.$on('dealAdvertise', msg=>{
+                this.showRcmCourse();
+            });
+
+            // 展示录播图事件
             bus.$on('showCarousels', msg=>{
                 console.log(msg);
                 this.showCarousels = true;  //  显示轮播图界面

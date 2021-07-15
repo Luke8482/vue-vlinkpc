@@ -1,58 +1,42 @@
 <template>
     <!--顶部订单栏-->
-    <div  class="lesson-title">
+    <div  class="lesson-title" >
         <div  class="title">
             <div class="title-content">
                 <!---->
                 <span >
-                        {{lastLearnedLesson.title}}
+                        {{lastLearnedLesson.course_title}}
                     </span>
             </div>
         </div>
-        <div id="progressRef">
-            <div  class="progress-wrap">
+        <div  >
+            <div class="progress-wrap">
                 <div  class="progress-bar">
-                    <div  class="move-progress" style="width: 13.3313%;"></div>
-                    <div class="progress-num" style="left: calc(13.3313% - 2.6042vw);">
+                    <div  class="move-progress" :style="{width: lastLearnedLesson.course_progress}"></div>
+                    <div class="progress-num" :style="{left: progressLeft}">
                         <span>{{lastLearnedLesson.course_progress}}</span>
                     </div>
                 </div>
                 <div class="divider"></div>
-                <div  class="recent-level">
-                    <div >
+                <div  class="recent-level"  >
+                    <div @click="goToLearning">
                         <div  class="button">继续闯关</div>
-                    </div> <div  class="level-hint-container">
-                    <div >最近解锁关卡:&nbsp;</div>
-                    <div  title="">
-                        第{{lastLearnedLesson.sort_int}}关  {{lastLearnedLesson.title}}
+                    </div>
+                    <div  class="level-hint-container">
+                        <div >最近解锁关卡:&nbsp;</div>
+                        <div  >
+                            第{{lastLearnedLesson.lesson.sort_int}}关  {{lastLearnedLesson.lesson.title}}
+                        </div>
                     </div>
                 </div>
-                </div>
+                <div  id="progressRef"></div>
             </div>
-        </div>
-        <div  class="fixed_progress" style="display: none;">
-            <div  class="goback">
-                <div  class="goback_content">
-                    <div  class="icon">
-                        <div  class="goback_icon">
-                            <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABK0lEQVRYR83Yuw3CMBAG4LuswSJACSyQiBIQrxlYghmSINFQEVpKmmQTpiA5BCgUEYUfd4fd2/78N/51CIEvDNwHqsBhvB0R1HVV5DfTYNSAw2Qzb4gOCEQI0aws0pMJUgXY4oAoeqEQ8F5dsl4QwC4OEJsIcVme0+Pfgb64T9pCiwMnBuTCiQA5cexAbhwrUALHBpTCsQAlcd5AaZwXUAPnDNTCOQE1cdZAbZwVsJ+sJkB4bSvTezPiriqyvdB3/j7WuCwED3y9ZhCvFwSQf1O07HYuSRsn2B6ujbQGaifpBNREOgO1kF5ADaQ3UBrJApREsgGlkKxACSQ7kBspAuREigG5kKJADqQ48BcyqPFbtwUFOcD8IqebMdTNI8gRsEtZtar8rhf47nsCXiVaOLZ9kOcAAAAASUVORK5CYII="></div>
-                        <div  class="goback_text">
-                            返回课程中心
-                        </div>
-                    </div>
-                    <div >
-                        <div >
-                            <div  class="btn">
-                                意见反馈
-                            </div>
-                            <div  class="btn" style="margin-left: 1.0417vw;">
-                                安全退出
-                            </div>
-                        </div>
 
-                    </div>
-                </div>
-            </div>
+        </div>
+        <div  class="fixed_progress"  v-show="showMiniHeader">
+
+            <has_catalog_header/>
+
             <div  class="fade-container">
                 <div  class="fade-content">
                     <div  class="fade-recent-level">
@@ -65,8 +49,8 @@
                             <div >
                                 最近解锁关卡:&nbsp;
                             </div>
-                            <div  title="第3关    最后的员工档案">
-                                第3关    最后的员工档案
+                            <div >
+                                第{{lastLearnedLesson.lesson.sort_int}}关  {{lastLearnedLesson.lesson.title}}
                             </div>
                         </div>
                     </div>
@@ -77,14 +61,55 @@
 </template>
 
 <script>
+    import has_catalog_header  from './../../has_catalog_header'
+    import bus from '@/views/admin/common/bus';
+
+
     export default {
         name: "lesson-title",
+        data(){
+            return{
+                progressLeft: '', // 控制进度条滑块的位置
+                showMiniHeader: false,
+            }
+        },
+        components:{
+            has_catalog_header
+        },
         props:{
             lastLearnedLesson: Object,
         },
         created(){
-            console.log(this.lastLearnedLesson);
-        }
+          this.progressLeft = 'calc('+this.lastLearnedLesson.course_progress+' - 2.6042vw)'
+        },
+        mounted () {
+            window.addEventListener('scroll', this.handleScroll)
+        },
+        watch: {
+            // 如果 `showMiniHeader` 发生改变，触发目录事件
+            showMiniHeader: function () {
+                bus.$emit('showMiniHeader');
+            }
+        },
+        methods:{
+            goToLearning(){
+                this.$router.replace('/dashboard/learn/'+this.lastLearnedLesson.id)
+            },
+
+            //  处理头部栏，吸顶显示
+            handleScroll () {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                let offsetTop = document.querySelector('#progressRef').offsetTop;
+                if (scrollTop > offsetTop ){
+                    this.showMiniHeader = true;
+                } else  {
+                    this.showMiniHeader = false;
+                }
+            },
+        },
+        destroyed () {
+            window.removeEventListener('scroll', this.handleScroll)
+        },
     }
 </script>
 

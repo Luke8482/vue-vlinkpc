@@ -1,6 +1,6 @@
 <template>
-    <div  data-index="0" class="level_detail" @click="scrollToTarget" @mouseenter="dealShowItem(true)" @mouseleave="dealShowItem(false)" :style="{backgroundColor:bgColor}">
-        <img  :src="finished">
+    <div  data-index="0" class="level_detail" @click="scrollToTarget" @mouseenter="dealShowItem(true)" @mouseleave="dealShowItem(false)" :style="{backgroundColor:bgColor}" :class="lesson.isUnlock?'':'unfinished'">
+        <img  :src="finished" v-if="lesson.progress === '100%'">
         <a  class="go_to" ></a>
         <span  class="level_name" >{{lesson.title}}</span>
     </div>
@@ -26,7 +26,7 @@
             },
 
             scrollToTarget(){
-                Pubsub.publish('scrollto','')
+                Pubsub.publish('scrollto', '#vlinkpc'+this.lesson.sort_int)
             },
         }
     }
@@ -53,6 +53,10 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
+    }
+
+    .unfinished {
+        opacity: .5!important;
     }
 
     .level_detail>img {
