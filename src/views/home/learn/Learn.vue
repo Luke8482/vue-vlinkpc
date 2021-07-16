@@ -2,7 +2,9 @@
 
     <div class="body" @keyup.13="sectionLearn" >
         <!--头部内容-->
-        <learnHeader/>
+        <learnHeader
+                :course_id = course_id
+        />
 
         <div v-html="alipayHtml"></div>
 
@@ -51,7 +53,12 @@
                         </div>
                         <div  class="vertical_line"></div>
                         <div class="text_content pre-break-line markdown-body">
-                            <div v-html="section.content" ></div>
+                            <div v-html="section.content" v-if="section.type ==='对话'"></div>
+                            <videoBox v-if="section.type ==='video'" :content="section.content"/>
+                            <audio  autoplay="" controls=""  v-if="section.type ==='audio'" style="width: 35vw;">
+                                <source :src="section.content" />
+                            </audio>
+                            <pdfBox v-if="section.type ==='graphic'" :content="section.content"/>
                         </div>
 
                     </div>
@@ -101,6 +108,8 @@
 </template>
 
 <script>
+    import videoBox from '@/views/admin/common/VideoBox'
+    import pdfBox from '@/views/admin/common/PdfBox'
     import learnHeader from './components/learnHeader'
     import practiceProgress from './components/practiceProgress'
     import {
@@ -115,12 +124,15 @@
     export default {
         name: "Learn",
         components:{
+            videoBox,
+            pdfBox,
             learnHeader,
             practiceProgress,
         },
         data(){
             return{
                 lesson_id: '',
+                course_id: '',
                 resData: [],
                 middleResData: [],
                 sectionData: [],
@@ -133,7 +145,8 @@
             }
         },
         created(){
-            this.lesson_id = this.$route.params.lesson_id;
+            this.lesson_id = this.$route.query.lesson_id;
+            this.course_id = this.$route.query.course_id;
             getLearnedSections(this.lesson_id).then(res=>{
                 this.sectionData = res;
                 getSectionsCount(this.lesson_id).then(res=>{

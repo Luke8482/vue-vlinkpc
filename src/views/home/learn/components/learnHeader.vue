@@ -1,6 +1,6 @@
 <template>
     <div id="main_practice_header" class="top_tab">
-        <div class="goback">
+        <div class="goback" @click="goToProgress">
             <div class="goback_origin">返回</div>
         </div>
         <div class="level_detail current_practice">
@@ -16,7 +16,16 @@
 
 <script>
     export default {
-        name: "learnHeader"
+        name: "learnHeader",
+        props:{
+            course_id: String,
+        },
+        methods:{
+            goToProgress(){
+                console.log(this.course_id);
+                this.$router.replace('/dashboard/progress?course_id='+this.course_id)
+            }
+        }
     }
 </script>
 

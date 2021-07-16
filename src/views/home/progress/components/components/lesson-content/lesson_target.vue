@@ -7,15 +7,15 @@
              @mouseleave="dealShowItem(false)"
         >
             <div class="box-card" :style="{backgroundColor:bgColor}">
-                <img src="https://cdn-oss-public.pyhot.cn/program_public/user_upload/8056916967a071df704538d4a7569718.png">
+                <img :src="lesson.cover">
                 <div  class="item-right">
                     <div  class="item-right-title">
                         第{{lesson.sort_int}}关 {{lesson.title}}
                     </div>
                     <!---->
                     <div  class="item-right-time"></div>
-                    <div  title="谁动了我的奖金？" class="item-right-comment">
-                        谁动了我的奖金？
+                    <div  class="item-right-comment">
+                        {{lesson.sub_title}}
                     </div>
                     <div  style="flex: 1 1 0%;"></div>
                     <div  class="is_practice_in_time" :class="isUnlockClass">
@@ -56,9 +56,12 @@
         },
         methods:{
             goToLearning(){
-                if (this.lesson.isUnlock) 
-                this.$router.replace('/dashboard/learn/'+this.lesson.id)
+                if (this.lesson.isUnlock) {
+                    this.$router.replace('/dashboard/learn/'+this.lesson.id)
+                }
             },
+
+            //  鼠标滑过控制，背景颜色
             dealShowItem(showItem){
                 this.bgColor=showItem?'#e4e7ed':''
             },

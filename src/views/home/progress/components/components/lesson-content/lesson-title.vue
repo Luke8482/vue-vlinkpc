@@ -9,7 +9,7 @@
                     </span>
             </div>
         </div>
-        <div  >
+        <div  id="progressRef">
             <div class="progress-wrap">
                 <div  class="progress-bar">
                     <div  class="move-progress" :style="{width: lastLearnedLesson.course_progress}"></div>
@@ -24,22 +24,21 @@
                     </div>
                     <div  class="level-hint-container">
                         <div >最近解锁关卡:&nbsp;</div>
-                        <div  >
+                        <div  id="anchor_base">
                             第{{lastLearnedLesson.lesson.sort_int}}关  {{lastLearnedLesson.lesson.title}}
                         </div>
                     </div>
                 </div>
-                <div  id="progressRef"></div>
             </div>
 
         </div>
         <div  class="fixed_progress"  v-show="showMiniHeader">
 
-            <has_catalog_header/>
+            <has_catalog_header />
 
-            <div  class="fade-container">
+            <div  class="fade-container" >
                 <div  class="fade-content">
-                    <div  class="fade-recent-level">
+                    <div  class="fade-recent-level" >
                         <div >
                             <div  class="button">
                                 继续闯关

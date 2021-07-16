@@ -26,7 +26,7 @@
             },
 
             scrollToTarget(){
-                Pubsub.publish('scrollto', '#vlinkpc'+this.lesson.sort_int)
+                Pubsub.publish('scrollto', 'vlinkpc'+this.lesson.sort_int)
             },
         }
     }

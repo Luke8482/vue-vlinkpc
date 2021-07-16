@@ -42,7 +42,11 @@
         },
         methods:{
             scrollToTarget(token){
-                document.querySelector(token).scrollIntoView(true)
+                let height = document.getElementById(token).offsetTop-document.getElementById("anchor_base").offsetTop;
+                window.scroll({
+                    top: height, //向上移动的距离，如果有fixede布局， 直接减去对应距离即可
+                    behavior: 'smooth', // 平滑移动
+                });
             }
         }
 

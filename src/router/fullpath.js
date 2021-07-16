@@ -74,7 +74,7 @@ export default  [
                     {path: 'progress',
                         component: () => import('./../views/home/progress/Progress'),
                     },
-                    {path: 'learn/:lesson_id',
+                    {path: 'learn',
                         component: () => import( './../views/home/learn/Learn'),
                     },
 

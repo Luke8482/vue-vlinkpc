@@ -143,7 +143,8 @@
         },
         methods:{
             goToLearning(){
-                this.$router.replace('/dashboard/learn/'+this.lastLearnedLesson.id)
+                this.$router.replace('/dashboard/learn?lesson_id='+this.lastLearnedLesson.id+'&course_id='
+                    +this.lastLearnedLesson.course_id)
             },
 
         }

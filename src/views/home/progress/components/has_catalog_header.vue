@@ -2,7 +2,7 @@
     <div class="has_catalog_header">
         <div  class="goback">
             <div  class="goback_content">
-                <div  class="icon">
+                <div  class="icon" @click="goToHome">
                     <div  class="goback_icon">
                         <img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAABK0lEQVRYR83Yuw3CMBAG4LuswSJACSyQiBIQrxlYghmSINFQEVpKmmQTpiA5BCgUEYUfd4fd2/78N/51CIEvDNwHqsBhvB0R1HVV5DfTYNSAw2Qzb4gOCEQI0aws0pMJUgXY4oAoeqEQ8F5dsl4QwC4OEJsIcVme0+Pfgb64T9pCiwMnBuTCiQA5cexAbhwrUALHBpTCsQAlcd5AaZwXUAPnDNTCOQE1cdZAbZwVsJ+sJkB4bSvTezPiriqyvdB3/j7WuCwED3y9ZhCvFwSQf1O07HYuSRsn2B6ujbQGaifpBNREOgO1kF5ADaQ3UBrJApREsgGlkKxACSQ7kBspAuREigG5kKJADqQ48BcyqPFbtwUFOcD8IqebMdTNI8gRsEtZtar8rhf47nsCXiVaOLZ9kOcAAAAASUVORK5CYII="></div>
                     <div  class="goback_text">
@@ -22,6 +22,11 @@
     export default {
         name: "has_catalog_header",
         components:{logoutButton},
+        methods: {
+            goToHome() {
+                    this.$router.replace('/dashboard/home')
+            },
+        }
     }
 </script>
 

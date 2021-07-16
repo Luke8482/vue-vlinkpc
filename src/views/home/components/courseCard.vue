@@ -2,7 +2,7 @@
     <div class="course_card"
          @mouseenter="showLock=!showLock"
          @mouseleave="showLock=!showLock"
-         @click="showCarousels(Course)"
+         @click="showCarousels"
     >
         <img  :src="Course.cover" alt="Excel实战训练营" class="course_card_bg">
         <div  class="unlock-card_mask" v-if="showLock && notInMyCourse">
@@ -50,8 +50,13 @@
             notInMyCourse: Boolean,
         },
         methods:{
-            showCarousels(Course){
-                bus.$emit('showCarousels', Course )
+            showCarousels(){
+                if (this.notInMyCourse){
+                    bus.$emit('showCarousels', this.Course )
+                } else {
+                    this.$router.replace('/dashboard/progress?course_id='+this.Course.id)
+                }
+
             }
         }
     }

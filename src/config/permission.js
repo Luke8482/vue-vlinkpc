@@ -293,7 +293,7 @@ const permission = {
             "id": 13,
             "name": "learn",
             "parent_id": 1,
-            "route": "learn/:lesson_id",
+            "route": "learn",
             "summary": null
         },
 
