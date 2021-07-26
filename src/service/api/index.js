@@ -400,3 +400,41 @@ export function wxGetCourse(value) {
         method: 'get',
     })
 }
+
+//  创建协议
+export function createAgreement(value) {
+    return authRequest('/agreements',{
+        method: 'post',
+        data: value,
+    })
+}
+
+//  获取协议列表
+export function getAgreements() {
+    return authRequest('/agreements',{
+        method: 'get',
+    })
+}
+
+//  获取某个协议的详情
+export function getAgreement(id) {
+    return request('/agreements/'+id,{
+        method: 'get',
+    })
+}
+
+
+// 删除协议
+export function delAgreement(id) {
+    return authRequest('/agreements/'+id,{
+        method: 'delete'
+    })
+}
+
+// 修改协议
+export function updateAgreement(id,value) {
+    return authRequest('/agreements/'+id,{
+        method: 'patch',
+        data:value,
+    })
+}

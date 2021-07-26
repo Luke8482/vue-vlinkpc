@@ -168,6 +168,23 @@ export default {
 
                     ]
                 },
+                {
+                    icon: 'el-icon-setting',
+                    index: '9',
+                    title: '网站设置',
+                    subs: [
+                        {
+                            index: 'createagreement',
+                            title: '新增协议'
+                        },
+
+                        {
+                            index: 'agreements',
+                            title: '协议列表'
+                        },
+
+                    ]
+                },
 
             ]
         };

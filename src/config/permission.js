@@ -120,6 +120,11 @@ const permission = {
             "name": "微信cart 页获取课程&sku 信息",
             "url": "/wx/course/sku",
             "method": "GET"
+        },{
+            "id": "55",
+            "name": "获取某个网站协议",
+            "url": "/agreements/**",
+            "method": "GET"
         }
     ],
     resources_manage_contents: [
@@ -266,7 +271,29 @@ const permission = {
         }
     ],
     resources_users: [],
-    resources_settings: [],
+    resources_settings: [
+        {
+            "id": "51",
+            "name": "创建网站协议",
+            "url": "/agreements",
+            "method": "POST"
+        },{
+            "id": "52",
+            "name": "获取网站协议列表",
+            "url": "/agreements",
+            "method": "GET"
+        },{
+            "id": "53",
+            "name": "删除网站协议",
+            "url": "/agreements/**",
+            "method": "DELETE"
+        },{
+            "id": "54",
+            "name": "修改网站协议",
+            "url": "/agreements/**",
+            "method": "PATCh"
+        }
+    ],
     "menus": [
         {
             "id": 1,
@@ -341,7 +368,7 @@ const permission = {
             "id": 26,
             "name": "",
             "parent_id": 2,
-            "route": ":id",
+            "route": "course/:course_id",
             "summary": null
         },{
             "id": 27,
@@ -364,7 +391,22 @@ const permission = {
         },
     ],
     menus_users: [],
-    menus_settings: [],
+    menus_settings: [
+
+        {
+            "id": 210,
+            "name": "",
+            "parent_id": 2,
+            "route": "agreements",
+            "summary": null
+        },{
+            "id": 211,
+            "name": "",
+            "parent_id": 2,
+            "route": "createagreement",
+            "summary": null
+        }
+    ],
 
 };
 

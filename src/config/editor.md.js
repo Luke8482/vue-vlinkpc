@@ -13,7 +13,7 @@ const defaultConfig = {
   saveHTMLToTextarea: true,       // 保存 HTML 到 Textarea
   searchReplace: true,
   watch: true,                                // 实时预览
-  // htmlDecode: "style,script,iframe|on*",      // 开启 HTML 标签解析，为了安全性，默认不开启
+  htmlDecode: "style,script,iframe|on*",      // 开启 HTML 标签解析，为了安全性，默认不开启
   toolbar: true,                  //工具栏
   previewCodeHighlight: true,     // 预览 HTML 的代码块高亮，默认开启
   emoji: true,

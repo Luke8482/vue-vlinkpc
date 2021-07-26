@@ -145,10 +145,23 @@ export default  [
                     },
 
                     {
-                        path: ':id',
+                        path: 'course/:course_id',
 
                         component: () => import( '../views/admin/page/course/UpdateCourse.vue'),
                         meta: { title: '修改课程' }
+                    },
+
+                    {
+                        path: 'agreements',
+                        component: () => import('../views/admin/page/website/AgreementList.vue'),
+                        meta: { title: '协议列表' }
+                    },
+
+                    {
+                        path: 'createagreement',
+
+                        component: () => import( '../views/admin/page/website/CreateAgreement.vue'),
+                        meta: { title: '新增协议' }
                     },
 
                 ]

@@ -15,7 +15,7 @@
                     <!---->
                     <div  class="item-right-time"></div>
                     <div  class="item-right-comment">
-                        {{lesson.sub_title}}
+                        {{lesson.subtitle}}
                     </div>
                     <div  style="flex: 1 1 0%;"></div>
                     <div  class="is_practice_in_time" :class="isUnlockClass">

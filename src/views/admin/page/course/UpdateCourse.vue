@@ -109,7 +109,7 @@ export default {
     },
 
     created(){
-        getCourse(this.$route.params.id).then((response)=>{
+        getCourse(this.$route.params.course_id).then((response)=>{
             this.form.title = response.title;
             this.form.subtitle = response.subtitle;
             this.form.price = response.price;

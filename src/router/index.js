@@ -149,6 +149,10 @@ let baseRoute = [
         path: '/program/course-cart',
         name: '课程购物车',
         component: () => import('../views/home/wechatPage/CourseCart.vue' )
+    },{
+        path: '/program/agreements',
+        name: '网站协议',
+        component: () => import('../views/home/agreements/Agreement.vue' )
     }, {
     path: '/401',
     name: '无权访问',
@@ -181,7 +185,7 @@ let router = new Router({
         let routeName = to.meta.name || to.name;
         window.document.title = (routeName ? routeName + ' - ' : '') + 'VlinkPc';
 
-        if (to.path !== '/login' && to.path !== '/dashboard/home') {  //验证是否登录
+        if (to.path !== '/login' && to.path !== '/dashboard/home' && to.path !== '/program/agreements') {  //验证是否登录
             if (auth) {  //已经登录
                 next();
             } else if (code) {  // 如果未登录，且跳转路径不是登录界面，但是包含code，则调用仓库的login方法，并放行。

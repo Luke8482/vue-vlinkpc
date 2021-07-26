@@ -128,7 +128,7 @@
             },
 
             updateCourse(){
-                this.$router.replace('/admin/'+this.course.id);
+                this.$router.replace('/admin/course/'+this.course.id);
             }
         }
     }
