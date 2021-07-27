@@ -152,6 +152,19 @@ export default  [
                     },
 
                     {
+                        path: 'teachers',
+                        component: () => import('../views/admin/page/users/TeacherList.vue'),
+                        meta: { title: '教师列表' }
+                    },
+
+                    {
+                        path: 'createteachers',
+
+                        component: () => import( '../views/admin/page/users/CreateTeacher.vue'),
+                        meta: { title: '新增教师' }
+                    },
+
+                    {
                         path: 'agreements',
                         component: () => import('../views/admin/page/website/AgreementList.vue'),
                         meta: { title: '协议列表' }
@@ -163,7 +176,6 @@ export default  [
                         component: () => import( '../views/admin/page/website/CreateAgreement.vue'),
                         meta: { title: '新增协议' }
                     },
-
                 ]
             },
 

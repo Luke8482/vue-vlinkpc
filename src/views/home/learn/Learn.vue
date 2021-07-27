@@ -43,11 +43,11 @@
                     <div   class="text_node" v-for="section in sectionData">
                         <div class="icon_wrap">
                             <div  class="icon_avatar ban-select">
-                                <img  src="https://public-milk.oss-cn-hangzhou.aliyuncs.com/program_public/user_upload/a281c1795df306619a8c740317b7298e/形象照1.png">
+                                <img  :src="teacher.avatar">
                             </div>
                             <div  class="nickname">
 
-                                表姐
+                                {{teacher.nickname}}
 
                             </div>
                         </div>
@@ -136,6 +136,7 @@
                 resData: [],
                 middleResData: [],
                 sectionData: [],
+                teacher: {},   //  课程相关教师信息
                 sectionIndex: 0,
                 sort: {},
                 alipayHtml: '',
@@ -148,7 +149,9 @@
             this.lesson_id = this.$route.query.lesson_id;
             this.course_id = this.$route.query.course_id;
             getLearnedSections(this.lesson_id).then(res=>{
-                this.sectionData = res;
+                this.sectionData = res.sections;
+                this.teacher = res.teacher;
+                console.log(this.teacher);
                 getSectionsCount(this.lesson_id).then(res=>{
                     this.sectionsCount = res;
                     //  计算百分比

@@ -31,6 +31,16 @@
                     <el-form-item label="课程标签">
                         <el-input v-model="form.label"></el-input>
                     </el-form-item>
+                    <el-form-item label="选择教师">
+                        <el-select v-model="form.teacher_id" placeholder="请选择">
+                            <el-option
+                                    v-for="item in teachersOption"
+                                    :key="item.id"
+                                    :label="item.nickname"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
 
                     <el-form-item label="课程价格">
                         <el-input v-model="form.price"></el-input>
@@ -81,7 +91,7 @@
 </template>
 
 <script>
-    import {getCourse,updateCourse,upLoaderImagesTest} from '@/service/api/index'
+    import {getCourse,updateCourse,upLoaderImagesTest, getTeachers} from '@/service/api/index'
     import bus from '@/views/admin/common/bus'
 
 export default {
@@ -99,7 +109,9 @@ export default {
                 price: '',
                 cover: '',
                 label: '',
+                teacher_id: '',
             },
+            teachersOption: [],
             upload_url: '',//上传URL
             upload_name: '',//图片或视频名称
             ad_url: '',//上传后的图片或视频URL
@@ -115,12 +127,18 @@ export default {
             this.form.price = response.price;
             this.form.cover = response.cover;
             this.form.label = response.label;
+            this.form.teacher_id = response.teacher_id;
             this.ad_url_list = [{ url:response.cover }];
             }
         ).catch(error=>{
                 console.log(error);
             }
-        )
+        );
+        getTeachers().then(res=>{
+            this.teachersOption = res;
+        }).catch(err=>{
+            console.log(err);
+        })
     },
 
     methods: {
@@ -134,7 +152,7 @@ export default {
                         instance.confirmButtonLoading = true;
                         instance.confirmButtonText = '执行中...';
 
-                        let res = updateCourse(this.$route.params.id,this.form);
+                        let res = updateCourse(this.$route.params.course_id,this.form);
                         res.then(()=>{
 
                             done();

@@ -129,8 +129,14 @@
                 formData = new FormData();
                 formData.append('file', file);
                 formData.append('file_type', self.file_type);
-                formData.append('lesson_id', self.lesson_id);
-                formData.append('course_id', self.course_id);
+                if (self.lesson_id){
+                    formData.append('lesson_id', self.lesson_id);
+                }
+                if (self.course_id){
+                    formData.append('course_id', self.course_id);
+                }
+
+
 
                 // axios.post(self.upload_url, formData, { headers:{
                 //         Authorization: 'Bearer ' + store.getters.accessToken,

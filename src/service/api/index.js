@@ -438,3 +438,33 @@ export function updateAgreement(id,value) {
         data:value,
     })
 }
+
+//  创建教师
+export function createTeacher(value) {
+    return authRequest('/teachers',{
+        method: 'post',
+        data: value,
+    })
+}
+
+// 修改教师信息
+export function updateTeacher(id,value) {
+    return authRequest('/teachers/'+id,{
+        method: 'patch',
+        data:value,
+    })
+}
+
+//  获取教师列表
+export function getTeachers() {
+    return authRequest('/teachers',{
+        method: 'get',
+    })
+}
+
+// 删除教师
+export function delTeacher(id) {
+    return authRequest('/teachers/'+id,{
+        method: 'delete'
+    })
+}

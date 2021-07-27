@@ -268,9 +268,31 @@ const permission = {
             "name": "调整课程详情图顺序",
             "url": "/details/sort/",
             "method": "POST"
+        },{
+            "id": "57",
+            "name": "获取教师列表",
+            "url": "/teachers",
+            "method": "GET"
         }
     ],
-    resources_users: [],
+    resources_users: [
+        {
+            "id": "55",
+            "name": "创建教师信息",
+            "url": "/teachers",
+            "method": "POST"
+        },{
+            "id": "56",
+            "name": "修改教师信息",
+            "url": "/teachers/**",
+            "method": "PATCH"
+        },{
+            "id": "58",
+            "name": "删除教师信息",
+            "url": "/teachers/**",
+            "method": "DELETE"
+        }
+    ],
     resources_settings: [
         {
             "id": "51",
@@ -390,7 +412,21 @@ const permission = {
             "summary": null
         },
     ],
-    menus_users: [],
+    menus_users: [
+        {
+            "id": 212,
+            "name": "",
+            "parent_id": 2,
+            "route": "teachers",
+            "summary": null
+        },{
+            "id": 213,
+            "name": "",
+            "parent_id": 2,
+            "route": "createteachers",
+            "summary": null
+        }
+    ],
     menus_settings: [
 
         {

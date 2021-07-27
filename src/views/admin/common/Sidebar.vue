@@ -167,10 +167,25 @@ export default {
                         },
 
                     ]
-                },
-                {
-                    icon: 'el-icon-setting',
+                },{
+                    icon: 'el-icon-user',
                     index: '9',
+                    title: '用户管理',
+                    subs: [
+                        {
+                            index: 'createteachers',
+                            title: '新增教师'
+                        },
+
+                        {
+                            index: 'teachers',
+                            title: '教师列表'
+                        },
+
+                    ]
+                }, {
+                    icon: 'el-icon-setting',
+                    index: '10',
                     title: '网站设置',
                     subs: [
                         {

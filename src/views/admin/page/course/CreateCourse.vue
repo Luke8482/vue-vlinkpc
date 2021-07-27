@@ -31,6 +31,16 @@
                     <el-form-item label="课程标签">
                         <el-input v-model="form.label"></el-input>
                     </el-form-item>
+                    <el-form-item label="选择教师">
+                        <el-select v-model="form.teacher_id" placeholder="请选择">
+                            <el-option
+                                    v-for="item in teachersOption"
+                                    :key="item.id"
+                                    :label="item.nickname"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
 
                     <el-form-item label="课程价格">
                         <el-input v-model="form.price"></el-input>
@@ -81,7 +91,7 @@
 </template>
 
 <script>
-    import {createCourses,upLoaderImagesTest} from '@/service/api/index'
+    import {createCourses,upLoaderImagesTest, getTeachers} from '@/service/api/index'
     import bus from '@/views/admin/common/bus'
 
     export default {
@@ -99,7 +109,9 @@
                 price: '',
                 cover: '',
                 label: '',
+                teacher_id: '',
             },
+            teachersOption: [],
             upload_url: '',//上传URL
             upload_name: '',//图片或视频名称
             ad_url: '',//上传后的图片或视频URL
@@ -107,6 +119,14 @@
             image_path: ''// 图片上传后的存储地址,
         };
     },
+    created(){
+        getTeachers().then(res=>{
+            this.teachersOption = res;
+        }).catch(err=>{
+            console.log(err);
+        })
+    },
+
 
 
     methods: {
@@ -246,7 +266,7 @@
             //         Authorization: 'Bearer ' + store.getters.accessToken,
             //     } })
 
-            upLoaderImagesTest(formData)
+            upLoaderImagesTest(formData)            //  todo。。。。调用已经封装好的组件
                 .then(function (res) {
                     self.form.cover = res.path ;
                     self.ad_url_list = [{ url:res.path }];

@@ -1,7 +1,7 @@
 <template>
     <div >
         <el-table
-                :data="agreements"
+                :data="teachers"
                 border
                 style="width: 100%; margin-bottom: 50px">
             <el-table-column
@@ -10,14 +10,22 @@
                     width="50">
             </el-table-column>
             <el-table-column
-                    prop="title"
-                    label="协议名称"
+                    prop="nickname"
+                    label="教师昵称"
                     width="120">
             </el-table-column>
             <el-table-column
-                    prop="content"
-                    label="协议内容"
-                    width="1400">
+                    prop="introduction"
+                    label="教师简介"
+                    width="1000">
+            </el-table-column>
+            <el-table-column
+                    prop="avatar"
+                    label="头像"
+                    width="300">
+                <template slot-scope="scope" >
+                    <img :src="scope.row.avatar" style="height:150px">
+                </template>
             </el-table-column>
             <el-table-column
                     fixed="right"
@@ -29,34 +37,34 @@
                 </template>
             </el-table-column>
         </el-table>
-        <CreateAgreement
+        <CreateTeacher
                 v-if="showUpdateTable"
-                :agreement = agreement
+                :teacher = teacher
                 v-on:unShowUpdateTable="showUpdateTable = false"
         />
     </div>
-
 </template>
 
 <script>
-    import CreateAgreement from './CreateAgreement'
-    import {getAgreements, delAgreement} from "../../../../service/api";
+    import CreateTeacher from './CreateTeacher'
+    import {getTeachers, delTeacher} from "../../../../service/api";
+
     export default {
-        name: "AgreementList",
+        name: "TeacherList",
         data(){
             return{
                 showUpdateTable: false,  // 控制显示修改表单
-                agreement: {},   //  修改表单内的原始数据
-                agreements:[],
+                teacher: {},   //  修改表单内的原始数据
+                teachers:[],
             }
         },
-        inject:['reload'],
         components:{
-            CreateAgreement,
+            CreateTeacher,
         },
+        inject:['reload'],
         created(){
-            getAgreements().then(res=>{
-                this.agreements = res;
+            getTeachers().then(res=>{
+                this.teachers = res;
                 console.log(res);
             }).catch(err=>{
                 console.log(err);
@@ -66,12 +74,12 @@
             handleUpdate(row){
                 if (!this.showUpdateTable) {
                     this.showUpdateTable = true;
-                    this.agreement = row;
+                    this.teacher = row;
                 }
 
             },
             handleDel(row){
-                delAgreement(row.id).then(res=>{
+                delTeacher(row.id).then(res=>{
                     this.reload();
                     console.log(res);
                 }).catch(err=>{
@@ -80,6 +88,7 @@
             },
 
         }
+
     }
 </script>
 
