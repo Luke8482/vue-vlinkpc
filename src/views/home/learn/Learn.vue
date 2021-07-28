@@ -8,16 +8,9 @@
 
         <div v-html="alipayHtml"></div>
 
-
-
-
-        <!--<div>重新学习按钮</div>-->
-        <!--<div class="redo_btn_wrap">-->
-            <!--<div class="redo_btn">再学一遍</div>-->
-            <!--<div class="redo_modal">-->
-                <!--&lt;!&ndash;&ndash;&gt;-->
-            <!--</div>-->
-        <!--</div>-->
+        <reLearnBtn
+            v-on:relearn = relearn
+        />
 
 
         <!--<div>内容学习区-->
@@ -112,6 +105,7 @@
     import pdfBox from '@/views/admin/common/PdfBox'
     import learnHeader from './components/learnHeader'
     import practiceProgress from './components/practiceProgress'
+    import reLearnBtn from './components/reLearnBtn'
     import {
         sectionLearn,
         downloadFile,
@@ -128,6 +122,7 @@
             pdfBox,
             learnHeader,
             practiceProgress,
+            reLearnBtn
         },
         data(){
             return{
@@ -141,7 +136,7 @@
                 sort: {},
                 alipayHtml: '',
                 recordData: {},
-                sectionsCount: '',
+                sectionsCount: '',    //  记录本节的总共section 数量，供计算进度使用
                 progressData: '',
             }
         },
@@ -192,6 +187,9 @@
                     if (showSection !== lastShowSection) {
                         //  往sectionData 内添加数据  即显示内容；
                         this.sectionData.push(showSection);
+
+                        //  计算百分比
+                        this.progressData = Math.round(this.sectionData.length/this.sectionsCount * 100) / 1.00 + "%";
 
                         // 显示后，调用学习记录API
                         this.recordData.section_id = showSection.id;
@@ -296,6 +294,26 @@
                 return blob;
             },
 
+            //  重新学习的逻辑
+            relearn(){
+                //  只有学过内容，才能调用重学机制
+                if (this.sectionData !== []){
+                    //  1.1、获取本节第一个section 对应的sort 值
+                    this.sort.sort = this.sectionData[0].sort-1;
+                    //  1.2、 调用分布获取学习内容Api 获取学习内容
+                    sectionLearn(this.lesson_id, this.sort).then(res => {
+                        this.resData = res;
+                        this.middleResData = res;
+                    }).catch();
+
+                    //  1.3、 将sectionData 置空（即不显示任何内容）
+                    this.sectionData = [];
+                    //  1.4、 将sectionIndex 置0,
+                    this.sectionIndex = 0;
+                }
+
+            },
+
             testAlipay(){
                 testAlipay(33).then(res=>{
                     this.alipayHtml = res;
@@ -347,48 +365,7 @@
 
     }
 
-    /*从新学习按钮样式*/
-    .redo_btn_wrap {
-        position: fixed;
-        top: 1vh;
-        right: 1.47vw;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-         -webkit-box-align: center;
-         -ms-flex-align: center;
-        align-items: center;
-         -webkit-box-pack: center;
-         -ms-flex-pack: center;
-        justify-content: center;
-        height: 2vw;
-        z-index: 1000;
-         -webkit-box-orient: vertical;
-         -webkit-box-direction: normal;
-         -ms-flex-direction: column;
-        flex-direction: column;
-    }
 
-    .redo_btn {
-        line-height: 1.5;
-        font-size: .88vw;
-        text-align: center;
-        letter-spacing: 0;
-         -webkit-user-select: none;
-         -moz-user-select: none;
-         -ms-user-select: none;
-        user-select: none;
-        color: #fff;
-        cursor: pointer;
-        border-bottom: 1px solid #fff;
-        opacity: .6;
-    }
-
-    .redo_modal {
-        position: absolute;
-        top: 3.5vw;
-        right: 9.6vw;
-    }
 
     /*内容区样式*/
     .main_wrap {
