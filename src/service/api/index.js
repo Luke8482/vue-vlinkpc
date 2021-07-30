@@ -468,3 +468,17 @@ export function delTeacher(id) {
         method: 'delete'
     })
 }
+
+//  获取课程版本列表
+export function getVersions(id) {
+    return authRequest('/courses/'+id+'/versions',{
+        method: 'get',
+    })
+}
+
+//  切换课程版本
+export function changeVersion(id) {
+    return authRequest('/versions/'+id+'/chooseVersion',{
+        method: 'get',
+    })
+}

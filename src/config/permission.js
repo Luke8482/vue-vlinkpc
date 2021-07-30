@@ -125,6 +125,16 @@ const permission = {
             "name": "获取某个网站协议",
             "url": "/agreements/**",
             "method": "GET"
+        },{
+            "id": "59",
+            "name": "获取某个课程的版本列表",
+            "url": "/courses/*/versions",
+            "method": "GET"
+        },{
+            "id": "60",
+            "name": "更新课程版本",
+            "url": "/versions/*/chooseVersion",
+            "method": "GET"
         }
     ],
     resources_manage_contents: [

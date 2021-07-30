@@ -5,10 +5,10 @@
         </div>
         <div class="level_detail current_practice">
             <div class="level_num">
-                <span class="level_index">3</span>
+                <span class="level_index">{{lesson.sort_int}}</span>
             </div>
             <div title="让数据会说话" class="level_name">
-                第3关 让数据会说话
+                第{{lesson.sort_int}}关 {{lesson.title}}
             </div>
         </div>
     </div>
@@ -19,6 +19,7 @@
         name: "learnHeader",
         props:{
             course_id: String,
+            lesson: Object,
         },
         methods:{
             goToProgress(){

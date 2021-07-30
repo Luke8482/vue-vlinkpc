@@ -428,6 +428,26 @@
     }
 </script>
 
-<style scoped>
+<style >
+  #app {
+    font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Source Han Sans SC,WenQuanYi Micro Hei,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  ::-webkit-scrollbar {
+    background-color: transparent;
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #9aa5ad;
+    border-radius: .15vw;
+    width: 10px;
+  }
 
 </style>

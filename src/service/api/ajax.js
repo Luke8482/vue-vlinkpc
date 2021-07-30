@@ -21,18 +21,22 @@ const request = async (url, configs = {}) => {
     // return Promise.reject(error)
 };
 
-
+var isRefreshing = false;   //  设立是否真正刷新token的标志
 const checkToken = async () => {
     // 从缓存中取出 Token
     const accessToken = store.getters.accessToken;
     const expiredAt = store.getters.accessTokenExpiredAt;
     // 如果 token 过期了，则调用刷新方法
-    if (accessToken && new Date().getTime() > expiredAt) {
+    if (accessToken && new Date().getTime() > expiredAt  && !isRefreshing) {  // 增加不在刷新中，的条件
+        isRefreshing = true;
         try {
             return store.dispatch('refresh');
+            isRefreshing = false;   // 刷新完成后，刷新状态改为 false
         } catch (err) {
-            return store.dispatch('login')
+            return store.dispatch('logout');
+            isRefreshing = false;   // 刷新完成后，刷新状态改为 false
         }
+
     }
 };
 
