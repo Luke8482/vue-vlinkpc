@@ -262,7 +262,7 @@ export function getHomeCourses() {
     })
 }
 
-//  首页获取已购买课程&热门课程列表
+//  获取推荐课程
 export function getRcmCourses() {
     return authRequest('/recommended/courses/', {
         method: 'get',

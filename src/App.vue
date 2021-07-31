@@ -388,6 +388,8 @@
                     }
 
                     typeof callback === 'function' && callback();
+                }).catch(err=>{
+                    console.log(err);
                 })
             },
             loginDirect: function(newPath){
