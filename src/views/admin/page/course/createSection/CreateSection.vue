@@ -9,51 +9,25 @@
                         <sectionCard
                                 v-for="section in sections"
                                 :section="section"
+                                :teacher = teacher
                         />
 
                         <div   class="text_node" v-if="showCreateSection">
                             <div class="icon_wrap">
                                 <div  class="icon_avatar ban-select">
-                                    <img  src="https://public-milk.oss-cn-hangzhou.aliyuncs.com/program_public/user_upload/a281c1795df306619a8c740317b7298e/形象照1.png">
+                                    <img  :src="teacher.avatar">
                                 </div>
                                 <div  class="nickname">
-
-                                    表姐
-
+                                    {{teacher.nickname}}
                                 </div>
                             </div>
                             <div  class="vertical_line"></div>
 
                             <!--新增section的表单-->
-                            <el-form :model="sectionForm" :rules="rules"
-                                     ref="sectionForm" label-width="100px"
-                                     class="demo-ruleForm text_content pre-break-line" style="width: 90%;">
-                                <el-form-item label="内容形式" prop="type" >
-                                    <el-radio-group v-model="sectionForm.type">
-                                        <el-radio label="dialogue">对话</el-radio>
-                                        <el-radio label="video">视频</el-radio>
-                                        <el-radio label="audio">音频</el-radio>
-                                        <el-radio label="graphic">图文</el-radio>
-                                    </el-radio-group>
-                                </el-form-item>
-                                <el-form-item label="section内容" prop="markdown">
-                                    <markdownEditor
-                                            :onchange="contentOnChange"
-                                            v-if="sectionForm.type==='dialogue'"
-                                    />
-                                    <elUploads
-                                            v-if="sectionForm.type!=='dialogue'"
-                                            :lesson_id = sectionForm.lesson_id
-                                            :file_type = sectionForm.type
-                                            @uploadedFile = "getUploadedFileUrl"
-                                    />
-                                </el-form-item>
-                                <el-form-item>
-                                    <el-button type="primary" @click="submitForm('sectionForm')">立即创建</el-button>
-                                    <el-button @click="resetForm('sectionForm')">重置</el-button>
-                                    <el-button @click="cancelShowInput()">取消</el-button>
-                                </el-form-item>
-                            </el-form>
+                            <SectionTable
+                                    v-if="showCreateSection"
+                                    v-on:shiftShowTable = shiftShowTable
+                            />
 
                         </div>
 
@@ -101,9 +75,17 @@
 
 
                 <div class="switch-course">
-                    <img  src="data:image/png;base64,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">
                     <div  class="need_help">
-                        创建新版本
+
+                        <div style="display: inline; margin: 0 1vw 0 2vw;">版本</div>
+                        <el-select v-model="version_id" :placeholder="version.name" style="width: 50%;">
+                            <el-option
+                                    v-for="item in versions"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
+                            </el-option>
+                        </el-select>
                     </div>
                 </div>
             </div>
@@ -116,39 +98,31 @@
 <script>
     import elUploads from '@/views/admin/common/elUploads'
     import practiceProgress from '@/views/home/learn/components/practiceProgress'
-    import markdownEditor from '@/views/admin/page/course/createSection/MarkdownEditor'
     import sectionCard from '@/views/admin/page/course/createSection/SectionCard'
-    import {createSection,getsections} from "../../../../../service/api";
+    import SectionTable from './SectionTable'
+
+    import {createSection,getsections, getVersions, changeVersion} from "../../../../../service/api";
 
 
     export default {
         name: "CreateSection",
         components:{
             practiceProgress,
-            markdownEditor,
             sectionCard,
             elUploads,
+            SectionTable
         },
         data() {
             return {
                 showCreateSection:false,
                 sections: [],
-                sectionForm: {
-                    type: '对话',
-                    markdown: '',
-                    content: '',
-                    lesson_id: '',
-                },
-                showDealButton: false,
+                teacher: {},
 
-                rules: {
-                    type: [
-                        { required: true, message: '请选择内容形式', trigger: 'change' }
-                    ],
-                    markdown: [
-                        { required: true, message: '请填写section内容', trigger: 'blur' }
-                    ]
-                },
+                version_id: '', // 获取版本id值，供切换版本使用
+                version: {},  //  当前版本
+                versions: [],  //  课程的版本列表
+
+                showDealButton: false,
 
                 uploadFileForm: {
                     type: 'downloadFile',
@@ -157,59 +131,55 @@
                 showUploadForm: false,
             };
         },
+        inject: ['reload'],
 
         created(){
-            this.sectionForm.lesson_id = this.$route.params.lesson_id;
-            this.uploadFileForm.lesson_id = parseInt(this.$route.params.lesson_id);
-            getsections(this.$route.params.lesson_id).then(res=>{
-                this.sections = res;
+            var $lesson_id = parseInt(this.$route.query.lesson_id);
+            this.uploadFileForm.lesson_id = $lesson_id;
+            getsections($lesson_id).then(res=>{
+                this.sections = res.sections;
+                this.teacher = res.teacher;
             }).catch(err=>{
                 console.log(err);
-            })
+            });
 
+            getVersions(this.$route.query.course_id).then(res=>{
+                this.versions = res;
+                this.versions.forEach((version)=>{
+                    if (version.choosed) {
+                        this.version = version;
+                    }
+                });
+            }).catch(err=>{
+                console.log(err);
+            });
+
+        },
+        watch:{
+            version_id:function(val){
+                changeVersion(val).then(res=>{
+                    this.reload();   //  切换完成后，刷新界面；
+                }).catch(err=>{
+                    console.log(err);
+                })
+            }
         },
 
         methods: {
-            submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        alert('此操作将会创建新的section!');
-                        createSection(this.sectionForm).then(res=>{
-                            this.cancelShowInput();
-                            this.sections.push(res);
-                            console.log(res);
-                        }).catch(err=>{
-                            console.log(err);
-                        })
-
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
-            },
-
-            cancelShowInput(){
-                this.showCreateSection = false;
-                this.resetForm('sectionForm');
-            },
-
-            resetForm(formName) {
-                this.$refs[formName].resetFields();
-            },
-            contentOnChange: function({ markdown, html }) {
-                this.sectionForm.markdown = markdown;
-                this.sectionForm.content = html;
+            //  切换显示表格
+            shiftShowTable(type){
+                if (type === 'update') {
+                    this.showUpdateSection = !this.showUpdateSection;
+                }else{
+                    this.showInsertSection = !this.showInsertSection;
+                }
             },
 
             shiftShowUploadForm(){
                 this.showUploadForm = !this.showUploadForm;
-            },
-
-            getUploadedFileUrl(data){
-                this.uploadFileForm.content = data;
-                this.uploadFileForm.markdown = data;
             }
+
+
         }
     }
 </script>

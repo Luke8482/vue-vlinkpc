@@ -96,7 +96,7 @@
             },
 
             pushToCreateSectionPage(){
-                this.$router.push('/admin/createsection/'+this.lesson.id);
+                this.$router.push('/admin/createsection?lesson_id='+this.lesson.id+'&course_id='+this.$route.params.course_id);
             }
         }
     }

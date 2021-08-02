@@ -419,7 +419,7 @@ const permission = {
             "id": 25,
             "name": "",
             "parent_id": 2,
-            "route": "createsection/:lesson_id",
+            "route": "createsection",
             "summary": null
         },{
             "id": 26,

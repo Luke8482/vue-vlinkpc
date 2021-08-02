@@ -117,7 +117,7 @@ export default  [
                     },
 
                     {
-                        path: 'createsection/:lesson_id',
+                        path: 'createsection',
 
                         component: () => import( '../views/admin/page/course/createSection/CreateSection.vue'),
                         meta: { title: '新增section' }

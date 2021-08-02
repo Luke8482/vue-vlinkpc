@@ -49,7 +49,7 @@
                     cover: '',
                     chapter_id: '',
                 },
-                course_id: '',  //  course_id 传个上传组件
+                course_id: '',  //  course_id 传给上传组件
                 url_list: [],   //  传递图片预览地址
                 rules: {
                     title: [

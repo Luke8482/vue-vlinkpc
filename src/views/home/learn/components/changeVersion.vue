@@ -73,7 +73,6 @@
             changeVersion(version_id){
                 changeVersion(version_id).then(res=>{
                     this.reload();   //  切换完成后，刷新界面；
-                    console.log(res);
                 }).catch(err=>{
                     console.log(err);
                 })
