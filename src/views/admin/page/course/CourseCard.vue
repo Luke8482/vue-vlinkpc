@@ -28,10 +28,11 @@
         </div>
 
         <div class="courses_button">
-            <el-button type="primary" icon="el-icon-search" @click="pushToCreateChapterPage">章节</el-button>
-            <el-button type="primary"  @click="pushToCreateCarouselPage">轮播图</el-button>
-            <el-button type="primary"  @click="pushToCreateSkuPage">SKU</el-button>
-            <el-button type="primary"  @click="pushToCreateDetailPage">详情图</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="pushToPage('createchapter')">章节</el-button>
+            <el-button type="primary"  @click="pushToPage('createcarousel')">轮播图</el-button>
+            <el-button type="primary"  @click="pushToPage('createcoursesku')">SKU</el-button>
+            <el-button type="primary"  @click="pushToPage('createdetails')">详情图</el-button>
+            <el-button type="primary"  @click="pushToPage('createversions')">版本</el-button>
             <el-button type="warning" icon="el-icon-edit" @click="updateCourse">修改</el-button>
             <el-button type="danger" icon="el-icon-delete" @click="open">删除</el-button>
         </div>
@@ -111,20 +112,8 @@
 
             },
 
-            pushToCreateChapterPage(){
-              this.$router.push('/admin/createchapter/'+this.course.id);
-            },
-
-            pushToCreateCarouselPage(){
-              this.$router.push('/admin/createcarousel/'+this.course.id);
-            },
-
-            pushToCreateSkuPage(){
-                this.$router.push('/admin/createcoursesku/'+this.course.id);
-            },
-
-            pushToCreateDetailPage(){
-                this.$router.push('/admin/createdetails/'+this.course.id);
+            pushToPage(page){
+                this.$router.push('/admin/'+page+'/'+this.course.id);
             },
 
             updateCourse(){
@@ -275,5 +264,8 @@
     .courses_button {
         text-align: center;
         margin: 15px 0;
+    }
+    .courses_button>button {
+        margin: 2px 1px;
     }
 </style>

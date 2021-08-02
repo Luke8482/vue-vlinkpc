@@ -114,6 +114,14 @@ export function createChapter(value) {
     })
 }
 
+//新增章
+export function updateChapterSort(value) {
+    return authRequest('/chapters/sort/',{
+        method: 'post',
+        data: value,
+    })
+}
+
 // 修改章
 export function updateChapter(id,value) {
     return authRequest('/chapters/'+id,{
@@ -132,6 +140,14 @@ export function delChapters(id) {
 //新增节
 export function createLesson(value) {
     return authRequest('/lessons',{
+        method: 'post',
+        data: value,
+    })
+}
+
+//调整节的顺序
+export function updateLessonSort(value) {
+    return authRequest('/lessons/sort/',{
         method: 'post',
         data: value,
     })
@@ -480,5 +496,29 @@ export function getVersions(id) {
 export function changeVersion(id) {
     return authRequest('/versions/'+id+'/chooseVersion',{
         method: 'get',
+    })
+}
+
+// 删除教师
+export function delVersion(id) {
+    return authRequest('/versions/'+id,{
+        method: 'delete'
+    })
+}
+
+
+//  创建课程版本
+export function createVersion(value) {
+    return authRequest('/versions',{
+        method: 'post',
+        data: value,
+    })
+}
+
+// 修改教师信息
+export function updateVersion(id,value) {
+    return authRequest('/versions/'+id,{
+        method: 'patch',
+        data:value,
     })
 }

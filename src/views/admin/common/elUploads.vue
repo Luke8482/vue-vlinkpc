@@ -39,17 +39,31 @@
         props: {
             lesson_id: Number,
             course_id: Number,
+            url_list: Array, // 修改表单传递预览列表
             file_type: String,
+        },
+        created(){
+            if (this.url_list){
+                this.ad_url_list = this.url_list;
+            }
         },
         methods: {
             handleExceed: function () {
-                _.$alert('请先删除选择的图片或视频，再上传', '提示', {
+                alert('超过上传数量限制，请先删除选择的图片或视频，再上传', '提示', {
                     type: 'warning'
                 });
             },
             handleRemove: function (res, file) {
                 var self = this;
                 self.ad_url = '';
+                console.log(res, file,self.ad_url_list);
+
+                for (var i = 0; i < self.ad_url_list.length; i++) {
+                    if (self.ad_url_list[i].uid === res.uid){
+                        self.ad_url_list.splice(i,1);
+                    }
+                }
+
                 var liItem = document.getElementsByClassName('hide-video-box')[0];
                 liItem.innerHTML = '';
             },
@@ -94,7 +108,7 @@
                 } else if (isVideo) {
                     var isMP4 = file.type === 'video/mp4';
                     if (!isMP4) {
-                        _.$alert('上传视频只支持 mp4 格式!', '提示', { type: 'error' });
+                        alert('上传视频只支持 mp4 格式!', '提示', { type: 'error' });
                         self.$refs.upload.uploadFiles = [];
                         return;
                     }
@@ -146,6 +160,7 @@
                     .then(function (res) {
                         // self.image_path = res.path ;
                         self.$emit('uploadedFile', res.path);
+                        self.ad_url_list.push({url:res.path});
                         // console.log(self.image_path);
                         // if (res.result === '0000') {
                         //     self.ad_url = res.data[0];

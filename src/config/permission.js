@@ -283,6 +283,31 @@ const permission = {
             "name": "获取教师列表",
             "url": "/teachers",
             "method": "GET"
+        },{
+            "id": "61",
+            "name": "删除课程版本",
+            "url": "/versions/**",
+            "method": "DELETE"
+        },{
+            "id": "62",
+            "name": "创建课程版本",
+            "url": "/versions",
+            "method": "POST"
+        },{
+            "id": "63",
+            "name": "修改课程版本",
+            "url": "/versions/**",
+            "method": "PATCH"
+        },{
+            "id": "64",
+            "name": "调整章的顺序",
+            "url": "/chapters/sort/",
+            "method": "POST"
+        },{
+            "id": "65",
+            "name": "调整节的顺序",
+            "url": "/lessons/sort/",
+            "method": "POST"
         }
     ],
     resources_users: [
@@ -419,6 +444,12 @@ const permission = {
             "name": "",
             "parent_id": 2,
             "route": "createdetails/:course_id",
+            "summary": null
+        },{
+            "id": 30,
+            "name": "",
+            "parent_id": 2,
+            "route": "createversions/:course_id",
             "summary": null
         },
     ],

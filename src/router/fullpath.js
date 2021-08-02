@@ -141,7 +141,13 @@ export default  [
                         path: 'createdetails/:course_id',
 
                         component: () => import( '../views/admin/page/course/createDetail/CreateDetail.vue'),
-                        meta: { title: '新增轮详情图' }
+                        meta: { title: '新增详情图' }
+                    },
+                    {
+                        path: 'createversions/:course_id',
+
+                        component: () => import( '../views/admin/page/course/createVersion/CreateVersion.vue'),
+                        meta: { title: '新增课程版本' }
                     },
 
                     {

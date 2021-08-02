@@ -91,7 +91,8 @@
         created(){
           this.chapter.course_id = this.$route.params.course_id;
             getchapters(this.$route.params.course_id).then(res=>{
-                this.data = res;
+                this.data = res.chapters;
+                console.log(res);
             })
         },
 

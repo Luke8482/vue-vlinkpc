@@ -120,6 +120,7 @@
         };
     },
     created(){
+        console.log(this.form);
         getTeachers().then(res=>{
             this.teachersOption = res;
         }).catch(err=>{

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="periodBOXss cl-fss f-cbss">
-            <span class="cclass f-flss">课时{{index+1}}</span>
+            <span class="cclass f-flss">课时{{lesson.sort_int}}</span>
             <span class="ccNumss f-flss"></span>
 
             <div class="f-flss j-addChapterss"
@@ -14,10 +14,10 @@
 
 
                 <div class="dealButtons" v-show="showDealButton" >
-                    <el-button icon="el-icon-arrow-up"></el-button>
-                    <el-button icon="el-icon-arrow-down"></el-button>
+                    <el-button icon="el-icon-arrow-up"  @click="delUpdateSort('上移')"></el-button>
+                    <el-button icon="el-icon-arrow-down"  @click="delUpdateSort('下移')"></el-button>
                     <el-button @click="pushToCreateSectionPage">预览</el-button>
-                    <el-button @click="showUpdateLesson=!showUpdateLesson">修改</el-button>
+                    <el-button @click=shiftShowTable()>修改</el-button>
                     <el-button @click="handleDelLesson">删除</el-button>
                 </div>
 
@@ -31,22 +31,12 @@
                 <span class="cclass f-flss"></span>
                 <span class="ccNumss f-flss"></span>
                 <div  class="f-flss j-addChapterss">
-                    <div >
-                        <el-form :inline="true" :model="updateLesson" class="demo-form-inlines"
-                                 abel-width="80px" style="width: 100%;">
 
-                            <el-form-item label="课时名称" style="width: 70%;">
-                                <el-input v-model="updateLesson.title" style="width: 300px"
-                                          :placeholder=lesson.title
-                                ></el-input>
-                            </el-form-item>
+                    <LessonTable
+                        :lesson = lesson
+                        v-on:shiftShowTable = "shiftShowTable()"
+                    />
 
-                            <el-form-item>
-                                <el-button type="primary" @click="saveData">保存</el-button>
-                                <el-button @click="cancelShowInput">取消</el-button>
-                            </el-form-item>
-                        </el-form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -55,7 +45,8 @@
 </template>
 
 <script>
-    import {delLesson,updateLesson} from "../../../../../service/api";
+    import LessonTable from "./LessonTable";
+    import {delLesson, updateLessonSort} from "../../../../../service/api";
 
     export default {
         name: "LessonCard",
@@ -63,9 +54,10 @@
             return {
                 showDealButton:false,
                 showUpdateLesson:false,
-                updateLesson: {
-                  title: '',
-                  chapter_id: '',
+                // 调整排序的API 的参数
+                updateSort: {
+                    type: '',
+                    lesson_id: '',
                 },
 
             }
@@ -75,9 +67,10 @@
             lesson: Object,
             index: Number,
         },
-
+        components:{
+            LessonTable,
+        },
         inject: ['reload'],
-
         methods: {
             handleDelLesson(){
                 delLesson(this.lesson.id).then(res=>{
@@ -88,20 +81,18 @@
                 })
             },
 
-            saveData:function(){
-                updateLesson(this.lesson.id,this.updateLesson).then(res=>{
-                        this.cancelShowInput();
-                        this.reload();
-                        console.log(res);
-                    }).catch(err=>{
-                        console.log(err);
-                    })
-
+            shiftShowTable(){
+                this.showUpdateLesson = !this.showUpdateLesson;
             },
 
-            cancelShowInput(){
-                    this.showUpdateLesson = false;
-                    this.updateLesson.title = '';
+            delUpdateSort(type){
+                this.updateSort.type = type;
+                this.updateSort.lesson_id = this.lesson.id;
+                updateLessonSort(this.updateSort).then(res=>{
+                    this.reload();
+                }).catch(err=>{
+                    console.log(err);
+                })
             },
 
             pushToCreateSectionPage(){
@@ -176,6 +167,10 @@
     .dealButtons{
         display: inline;
         float: right;
+    }
+
+    .dealButtons>button{
+        padding: 5px 10px;
     }
 
     .lessonsTitles{

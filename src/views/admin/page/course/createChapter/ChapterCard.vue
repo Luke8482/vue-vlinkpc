@@ -15,8 +15,8 @@
                         </span>
 
                         <div class="dealButton" v-show="showDealButton" >
-                            <el-button icon="el-icon-arrow-up"></el-button>
-                            <el-button icon="el-icon-arrow-down"></el-button>
+                            <el-button icon="el-icon-arrow-up"  @click="delUpdateSort('上移')"></el-button>
+                            <el-button icon="el-icon-arrow-down"  @click="delUpdateSort('下移')"></el-button>
                             <el-button @click="showUpdateChapter = !showUpdateChapter">修改</el-button>
                             <el-button @click="handleDelChapter">删除</el-button>
                         </div>
@@ -76,20 +76,11 @@
                                 </p>
                             </div>
 
-                            <div v-if="!showCreateLesson">
-                                <el-form :inline="true" :model="lesson" class="demo-form-inline"
-                                         abel-width="80px" style="width: 100%;">
-
-                                    <el-form-item label="课时名称" style="width: 70%;">
-                                        <el-input v-model="lesson.title" style="width: 300px"></el-input>
-                                    </el-form-item>
-
-                                    <el-form-item>
-                                        <el-button type="primary" @click="saveData('lessons')">保存</el-button>
-                                        <el-button @click="cancelShowInput('lessons')">取消</el-button>
-                                    </el-form-item>
-                                </el-form>
-                            </div>
+                            <LessonTable
+                                    v-if="!showCreateLesson"
+                                    :chapter = chapter
+                                    v-on:shiftShowTable = "shiftShowTable()"
+                            />
                         </div>
                     </div>
                 </div>
@@ -100,7 +91,9 @@
 
 <script>
     import LessonCard from "./LessonCard"
-    import {createLesson,delChapters,updateChapter} from "@/service/api";
+    import LessonTable from "./LessonTable";
+
+    import {createLesson,delChapters,updateChapter, updateChapterSort} from "@/service/api";
 
 
     export default {
@@ -112,7 +105,8 @@
         },
 
         components:{
-          LessonCard,
+            LessonCard,
+            LessonTable
         },
 
         inject: ['reload'],
@@ -131,13 +125,19 @@
                     title: '',
                     chapter_id:'',
 
-                }
+                },
+                // 调整排序的API 的参数
+                updateSort: {
+                    type: '',
+                    chapter_id: '',
+                },
             }
         },
 
 
         created(){
           this.lesson.chapter_id = this.chapter.id;
+          this.updateSort.chapter_id = this.chapter.id;
           this.updateChapter.course_id = this.chapter.course_id;
             if (this.chapter.lessons){
               this.data =this.chapter.lessons;
@@ -168,6 +168,10 @@
 
             },
 
+            shiftShowTable(){
+                this.showCreateLesson = !this.showCreateLesson;
+            },
+
             cancelShowInput:function(type){
                 if (type==="lessons"){
                     this.showCreateLesson = true;
@@ -178,6 +182,15 @@
 
                 }
 
+            },
+
+            delUpdateSort(type){
+                this.updateSort.type = type;
+                updateChapterSort(this.updateSort).then(res=>{
+                    this.reload();
+                }).catch(err=>{
+                    console.log(err);
+                })
             },
 
             handleDelChapter(){
@@ -298,12 +311,13 @@
         float: right;
     }
 
+    button{
+        padding: 5px 10px;
+    }
+
     .lessonsTitle{
         display: inline;
     }
 
-    .dealButton{
-        display: inline;
-        float: right;
-    }
+
 </style>
