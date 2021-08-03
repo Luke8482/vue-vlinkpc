@@ -522,3 +522,23 @@ export function updateVersion(id,value) {
         data:value,
     })
 }
+
+// 获取用户列表
+export function getUsers(value) {
+    return authRequest('/users?filter[id]='+value.id
+        +'&filter[name]='+value.name
+        +'&filter[create_before]='+value.createBefore
+        +'&filter[create_after]='+value.createAfter
+        +'&include=roles',{
+        method: 'get',
+    })
+}
+
+
+//  指派用户为管理员
+export function toBeMaintainer(value) {
+    return authRequest('/users/maintainer/',{
+        method: 'post',
+        data: value,
+    })
+}

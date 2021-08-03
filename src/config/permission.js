@@ -326,6 +326,16 @@ const permission = {
             "name": "删除教师信息",
             "url": "/teachers/**",
             "method": "DELETE"
+        },{
+            "id": "66",
+            "name": "获取用户列表",
+            "url": "/users",
+            "method": "GET"
+        },{
+            "id": "67",
+            "name": "指派用户为管理员",
+            "url": "/users/maintainer/",
+            "method": "POST"
         }
     ],
     resources_settings: [
@@ -455,6 +465,12 @@ const permission = {
     ],
     menus_users: [
         {
+            "id": 214,
+            "name": "",
+            "parent_id": 2,
+            "route": "users",
+            "summary": null
+        },{
             "id": 212,
             "name": "",
             "parent_id": 2,

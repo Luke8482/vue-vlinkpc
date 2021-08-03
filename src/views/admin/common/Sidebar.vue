@@ -173,11 +173,12 @@ export default {
                     title: '用户管理',
                     subs: [
                         {
+                            index: 'users',
+                            title: '用户列表'
+                        },{
                             index: 'createteachers',
                             title: '新增教师'
-                        },
-
-                        {
+                        },{
                             index: 'teachers',
                             title: '教师列表'
                         },

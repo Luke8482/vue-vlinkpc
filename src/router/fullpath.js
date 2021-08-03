@@ -158,6 +158,12 @@ export default  [
                     },
 
                     {
+                        path: 'users',
+                        component: () => import('../views/admin/page/users/UsersList.vue'),
+                        meta: { title: '教师列表' }
+                    },
+
+                    {
                         path: 'teachers',
                         component: () => import('../views/admin/page/users/TeacherList.vue'),
                         meta: { title: '教师列表' }
