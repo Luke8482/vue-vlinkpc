@@ -184,6 +184,10 @@ export default {
                         },
 
                     ]
+                },{
+                    icon: 'el-icon-document',
+                    index: 'orders',
+                    title: '订单列表'
                 }, {
                     icon: 'el-icon-setting',
                     index: '10',

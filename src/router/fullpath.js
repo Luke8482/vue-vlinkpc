@@ -160,7 +160,7 @@ export default  [
                     {
                         path: 'users',
                         component: () => import('../views/admin/page/users/UsersList.vue'),
-                        meta: { title: '教师列表' }
+                        meta: { title: '用户列表' }
                     },
 
                     {
@@ -177,6 +177,12 @@ export default  [
                     },
 
                     {
+                        path: 'orders',
+                        component: () => import('../views/admin/page/orders/OrdersList.vue'),
+                        meta: { title: '订单列表' }
+                    },
+
+                    {
                         path: 'agreements',
                         component: () => import('../views/admin/page/website/AgreementList.vue'),
                         meta: { title: '协议列表' }
@@ -188,6 +194,8 @@ export default  [
                         component: () => import( '../views/admin/page/website/CreateAgreement.vue'),
                         meta: { title: '新增协议' }
                     },
+
+
                 ]
             },
 

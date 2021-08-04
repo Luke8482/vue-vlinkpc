@@ -308,6 +308,11 @@ const permission = {
             "name": "调整节的顺序",
             "url": "/lessons/sort/",
             "method": "POST"
+        },{
+            "id": "68",
+            "name": "获取订单列表",
+            "url": "/orders",
+            "method": "GET"
         }
     ],
     resources_users: [
@@ -460,6 +465,12 @@ const permission = {
             "name": "",
             "parent_id": 2,
             "route": "createversions/:course_id",
+            "summary": null
+        },{
+            "id": 31,
+            "name": "",
+            "parent_id": 2,
+            "route": "orders",
             "summary": null
         },
     ],

@@ -542,3 +542,16 @@ export function toBeMaintainer(value) {
         data: value,
     })
 }
+
+// 获取用户列表
+export function getOrders(value) {
+    return authRequest('/orders?filter[no]='+value.no
+        +'&filter[closed]='+value.closed
+        +'&filter[create_before]='+value.createBefore
+        +'&filter[create_after]='+value.createAfter
+        +'&filter[paid_before]='+value.paidBefore
+        +'&filter[paid_after]='+value.paidAfter
+        +'&include=user,items.course',{
+        method: 'get',
+    })
+}

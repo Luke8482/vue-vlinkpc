@@ -3,24 +3,46 @@
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
-                    <i class="el-icon-lx-cascades"></i> 用户列表
+                    <i class="el-icon-lx-cascades"></i> 订单列表
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-input v-model="query.id" placeholder="用户id" class="handle-input mr10"></el-input>
-                <el-input v-model="query.name" placeholder="用户名" class="handle-input mr10"></el-input>
+                <el-input v-model="query.no" placeholder="订单号" class="handle-input mr10"></el-input>
+                <el-select v-model="query.closed" placeholder="订单状态">
+                    <el-option label="未关闭" value="false"></el-option>
+                    <el-option label="已关闭" value="true"></el-option>
+                </el-select>
+                <el-select v-model="query.refund_status" placeholder="退款状态">
+                    <el-option label="未发生" value="pending"></el-option>
+                    <el-option label="已申请" value="applied"></el-option>
+                    <el-option label="退款中" value="processing"></el-option>
+                    <el-option label="退款成功" value="success"></el-option>
+                    <el-option label="退款失败" value="failed"></el-option>
+                </el-select>
+
                 <el-date-picker
                         v-model="query.createAfter"
                         type="date"
                         value-format="yyyy-MM-dd"
-                        placeholder="最早注册时间">
+                        placeholder="最早创建时间（包含当天）">
                 </el-date-picker><el-date-picker
                         v-model="query.createBefore"
                         type="date"
                         value-format="yyyy-MM-dd"
-                        placeholder="最晚注册时间">
+                        placeholder="最晚创建时间（不含当天）">
+                </el-date-picker>
+                <el-date-picker
+                        v-model="query.paidAfter"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="最早支付时间（包含当天）">
+                </el-date-picker><el-date-picker
+                    v-model="query.paidBefore"
+                    type="date"
+                    value-format="yyyy-MM-dd"
+                    placeholder="最晚支付时间（不含当天）">
                 </el-date-picker>
                 <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
                 <el-button   @click="delReset">重置</el-button>
@@ -35,60 +57,58 @@
             >
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column prop="name" label="用户名"></el-table-column>
-                <el-table-column label="绑定电话" align="center">
+                <el-table-column prop="no" label="订单号"></el-table-column>
+                <el-table-column label="用户名" align="center">
                     <template slot-scope="scope">
-                        <el-tag
-                                :type="scope.row.bound_phone?'success':'danger'"
-                        >{{scope.row.bound_phone?scope.row.phone:'否'}}</el-tag>
+                        <div>{{scope.row.user.name}}</div>
                     </template>
                 </el-table-column>
-                <el-table-column label="绑定微信" align="center">
+                <el-table-column label="总价" align="center">
                     <template slot-scope="scope">
-                        <el-tag
-                                :type="scope.row.bound_wechat?'success':'danger'"
-                        >{{scope.row.bound_wechat?'是':'否'}}</el-tag>
+                        <div>{{scope.row.total_amount}}</div>
                     </template>
                 </el-table-column>
-                <el-table-column label="绑定email" align="center">
+                <el-table-column label="是否已支付" align="center">
                     <template slot-scope="scope">
                         <el-tag
-                                :type="scope.row.bound_email?'success':'danger'"
-                        >{{scope.row.bound_email?scope.row.email:'否'}}</el-tag>
+                                :type="scope.row.paid_at?'success':'danger'"
+                        >{{scope.row.paid_at?'是':'否'}}</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="角色" align="center">
+                <el-table-column label="支付方式" align="center">
+                    <template slot-scope="scope">
+                        <el-tag
+                                type="'success'"
+                        >{{scope.row.payment_method}}</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column label="退款状态" align="center">
+                    <template slot-scope="scope">
+                        <el-tag
+                                :type="scope.row.refund_status === 'pending'?'success':'danger'"
+                        >{{scope.row.refund_status === 'pending'? '无退款':'已申请'}}</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column label="订单内容" align="center">
                     <template slot-scope="scope" >
-                        <el-tag v-for="role in scope.row.roles ">
-                            {{role.name === 'Founder'?'站长':(role.name === 'Maintainer'?'管理员':'')}}
+                        <el-tag v-for="item in scope.row.items ">
+                            《{{item.course.title }}》
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="头像(查看大图)" align="center">
+                <el-table-column label="订单状态" align="center">
                     <template slot-scope="scope">
-                        <el-image
-                                class="table-td-thumb"
-                                :src="scope.row.avatar"
-                                :preview-src-list="[scope.row.avatar]"
-                        ></el-image>
+                        <el-tag
+                                :type="!scope.row.closed?'success':'danger'"
+                        >{{scope.row.closed? '已关闭':'正常'}}</el-tag>
+                    </template>
+                </el-table-column>
+                <el-table-column label="创建时间" >
+                    <template slot-scope="scope">
+                        <div>{{scope.row.created_at.slice(0,10)}}   {{scope.row.created_at.slice(11,19)}}</div>
                     </template>
                 </el-table-column>
 
-                <!--<el-table-column prop="created_at" label="注册时间" ></el-table-column>-->
-                <el-table-column label="注册时间" >
-                    <template slot-scope="scope">
-                        <div>{{scope.row.created_at}}</div>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
-                    <template slot-scope="scope">
-                        <el-button
-                                type="text"
-                                icon="el-icon-edit"
-                                @click="handleEdit(scope.$index, scope.row)"
-                        >切换管理员身份</el-button>
-                    </template>
-                </el-table-column>
             </el-table>
             <div class="pagination">
                 <el-pagination
@@ -102,47 +122,30 @@
             </div>
         </div>
 
-        <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="70px">
-                <el-form-item label="用户名">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="地址">
-                    <el-input v-model="form.address"></el-input>
-                </el-form-item>
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
-            </span>
-        </el-dialog>
     </div>
 </template>
 
 <script>
-    import {getUsers, toBeMaintainer} from "../../../../service/api";
+    import {getOrders} from "../../../../service/api";
 
     export default {
-        name: "UsersList",
+        name: "OrdersList",
         data() {
             return {
                 query: {
-                    id: '',
-                    name: '',
+                    no: '',
+                    closed: '',
+                    refund_status: '',
                     createBefore: '',
                     createAfter: '',
+                    paidBefore: '',
+                    paidAfter: '',
                     pageIndex: 1,
                     pageSize: 10
                 },
                 tableData: [],
                 multipleSelection: [],
-                delList: [],
-                editVisible: false,
                 pageTotal: 0,
-                form: {},
-                idx: -1,
-                id: -1,
 
             };
         },
@@ -153,11 +156,11 @@
         methods: {
             // 获取数据
             getData() {
-                getUsers(this.query).then(res => {
+                getOrders(this.query).then(res => {
                     console.log(res);
                     this.tableData = res.data;
-                    this.query.pageSize = res.meta.per_page;
-                    this.pageTotal = res.meta.total || 50;
+                    this.query.pageSize = res.per_page;
+                    this.pageTotal = res.total || 50;
                 });
             },
             // 触发搜索按钮
@@ -173,34 +176,22 @@
                 this.multipleSelection = val;
             },
 
-            // 编辑操作
-            handleEdit(index, row) {
-                var $form = {'user_id':row.id};
-                toBeMaintainer($form).then(res=>{
-                    this.reload();
-                    console.log(res);
-                }).catch(err=>{
-                    console.log(err);
-                })
 
-            },
-            // 保存编辑
-            saveEdit() {
-                this.editVisible = false;
-                this.$message.success(`修改第 ${this.idx + 1} 行成功`);
-                this.$set(this.tableData, this.idx, this.form);
-            },
             // 分页导航
             handlePageChange(val) {
                 this.$set(this.query, 'pageIndex', val);
                 this.getData();
             },
+
             //  清空搜索条件
             delReset(){
-                this.query.id = '';
-                this.query.name = '';
+                this.query.no = '';
+                this.query.closed = '';
+                this.query.refund_status = '';
                 this.query.createAfter = '';
                 this.query.createBefore = '';
+                this.query.paidAfter = '';
+                this.query.paidBefore = '';
             }
         }
     }
