@@ -33,7 +33,7 @@
                     header-cell-class-name="table-header"
                     @selection-change="handleSelectionChange"
             >
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
+                <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
                 <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
                 <el-table-column prop="name" label="用户名"></el-table-column>
                 <el-table-column label="绑定电话" align="center">
@@ -133,7 +133,7 @@
                     createBefore: '',
                     createAfter: '',
                     pageIndex: 1,
-                    pageSize: 10
+                    pageSize: 15
                 },
                 tableData: [],
                 multipleSelection: [],
@@ -154,9 +154,7 @@
             // 获取数据
             getData() {
                 getUsers(this.query).then(res => {
-                    console.log(res);
                     this.tableData = res.data;
-                    this.query.pageSize = res.meta.per_page;
                     this.pageTotal = res.meta.total || 50;
                 });
             },
@@ -178,7 +176,6 @@
                 var $form = {'user_id':row.id};
                 toBeMaintainer($form).then(res=>{
                     this.reload();
-                    console.log(res);
                 }).catch(err=>{
                     console.log(err);
                 })

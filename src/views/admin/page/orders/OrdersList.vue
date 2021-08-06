@@ -55,7 +55,7 @@
                     header-cell-class-name="table-header"
                     @selection-change="handleSelectionChange"
             >
-                <el-table-column type="selection" width="55" align="center"></el-table-column>
+                <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
                 <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
                 <el-table-column prop="no" label="订单号"></el-table-column>
                 <el-table-column label="用户名" align="center">
@@ -141,7 +141,7 @@
                     paidBefore: '',
                     paidAfter: '',
                     pageIndex: 1,
-                    pageSize: 10
+                    pageSize: 15
                 },
                 tableData: [],
                 multipleSelection: [],
@@ -157,15 +157,12 @@
             // 获取数据
             getData() {
                 getOrders(this.query).then(res => {
-                    console.log(res);
                     this.tableData = res.data;
-                    this.query.pageSize = res.per_page;
                     this.pageTotal = res.total || 50;
                 });
             },
             // 触发搜索按钮
             handleSearch() {
-                console.log(this.query.createAfter);
                 this.$set(this.query, 'pageIndex', 1);
                 this.getData();
 

@@ -183,6 +183,12 @@ export default  [
                     },
 
                     {
+                        path: 'files',
+                        component: () => import('../views/admin/page/files/FilesList.vue'),
+                        meta: { title: '文件列表' }
+                    },
+
+                    {
                         path: 'agreements',
                         component: () => import('../views/admin/page/website/AgreementList.vue'),
                         meta: { title: '协议列表' }

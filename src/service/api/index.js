@@ -529,7 +529,8 @@ export function getUsers(value) {
         +'&filter[name]='+value.name
         +'&filter[create_before]='+value.createBefore
         +'&filter[create_after]='+value.createAfter
-        +'&include=roles',{
+        +'&include=roles'
+        +'&page='+value.pageIndex,{
         method: 'get',
     })
 }
@@ -543,7 +544,7 @@ export function toBeMaintainer(value) {
     })
 }
 
-// 获取用户列表
+// 获取订单列表
 export function getOrders(value) {
     return authRequest('/orders?filter[no]='+value.no
         +'&filter[closed]='+value.closed
@@ -551,7 +552,31 @@ export function getOrders(value) {
         +'&filter[create_after]='+value.createAfter
         +'&filter[paid_before]='+value.paidBefore
         +'&filter[paid_after]='+value.paidAfter
-        +'&include=user,items.course',{
+        +'&include=user,items.course'
+        +'&page='+value.pageIndex,{
         method: 'get',
+    })
+}
+
+// 获取文件列表
+export function getFiles(value) {
+    return authRequest('/files?filter[id]='+value.id
+        +'&filter[name]='+value.name
+        +'&filter[file_type]='+value.file_type
+        +'&filter[lesson_id]='+value.lesson_id
+        +'&filter[course_id]='+value.course_id
+        +'&filter[create_before]='+value.createBefore
+        +'&filter[create_after]='+value.createAfter
+        +'&include=lesson,course'
+        +'&page='+value.pageIndex,{
+        method: 'get',
+    })
+}
+
+//  指派用户为管理员
+export function getAdminDashData(value) {
+    return authRequest('/data',{
+        method: 'post',
+        data: value,
     })
 }

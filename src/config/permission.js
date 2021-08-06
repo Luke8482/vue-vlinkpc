@@ -313,6 +313,16 @@ const permission = {
             "name": "获取订单列表",
             "url": "/orders",
             "method": "GET"
+        },{
+            "id": "69",
+            "name": "获取文件列表",
+            "url": "/files",
+            "method": "GET"
+        },{
+            "id": "70",
+            "name": "获取后台数据看板数据",
+            "url": "/data",
+            "method": "POST"
         }
     ],
     resources_users: [
@@ -471,6 +481,12 @@ const permission = {
             "name": "",
             "parent_id": 2,
             "route": "orders",
+            "summary": null
+        },{
+            "id": 32,
+            "name": "",
+            "parent_id": 2,
+            "route": "files",
             "summary": null
         },
     ],
