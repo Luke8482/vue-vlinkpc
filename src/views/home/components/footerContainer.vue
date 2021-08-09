@@ -32,7 +32,7 @@
 <style scoped>
     /*底部样式*/
     .footerContainer {
-        width: 100vw;
+        /*width: 100vw;*/
         height: 5vh;
         display: -webkit-box;
         display: -ms-flexbox;

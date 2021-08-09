@@ -22,11 +22,11 @@
 
 <style scoped>
     .btn {
-        color: #1fae9d;
+        color: #115a6b;
         padding: .3125vw 1.3542vw;
         font-size: .625vw;
         border-radius: .8333vw;
-        border: 1px solid #1fae9d;
+        border: 1px solid #115a6b;
         display: inline-block;
         cursor: pointer;
         font-weight: 700;

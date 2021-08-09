@@ -5,8 +5,8 @@
                 <div class="page_header">
                     <div class="header-content">
                         <div class="header_left">
-                            <img data-v-58fa0a4a="" src="//cdn.pyhot.cn/app/program/resource/cdn/logo_black.338832addf5132718d7245ac1a4700c4.png" class="triangle-icon">
-                            <img data-v-58fa0a4a="" src="//cdn.pyhot.cn/app/program/resource/cdn/wechatlog.7b412cf0c3fb63567bb0ab4d8bbc1577.png" class="wx_icon">
+                            <img  src="/动漫形象logo.jpg" class="triangle-icon">
+                            <img  src="/vlinkpc-logo.jpg" class="triangle-icon2">
                         </div>
                         <div>
                             <logoutButton/>
@@ -210,8 +210,14 @@
     }
 
     .triangle-icon {
-        width: 7.8125vw;
+        width: 2.6042vw;
         height: 2.6042vw;
+    }
+
+    .triangle-icon2 {
+        width: 6.5vw;
+        height: 2.5vw;
+        margin-top: 8px;
     }
 
     img {
@@ -252,8 +258,8 @@
 
     .punch-btn {
         color: #fff;
-        background: -webkit-gradient(linear,left top,left bottom,from(#ffc937),to(#faac1c));
-        background: linear-gradient(#ffc937,#faac1c);
+        background: -webkit-gradient(linear,left top,left bottom,from(#ffd23b),to(#f26622));
+        background: linear-gradient(#ffd23b,#f26622);
     }
 
     .new-bottom-panel-btn {

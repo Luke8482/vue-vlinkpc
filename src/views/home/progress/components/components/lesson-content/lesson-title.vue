@@ -5,7 +5,7 @@
             <div class="title-content">
                 <!---->
                 <span >
-                        {{lastLearnedLesson.course_title}}
+                       《 {{lastLearnedLesson.course_title}} 》
                     </span>
             </div>
         </div>
@@ -128,7 +128,7 @@
         display: block;
         border-radius: 1.58vw 1.58vw 0 0;
         height: 6.54vw;
-        background-color: #24c6b5;
+        background-color: #0F375A;
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
@@ -181,8 +181,8 @@
     .move-progress {
         width: 0;
         height: .5208vw;
-        background-image: -webkit-gradient(linear,right top,left top,from(#faac1c),to(#ffc937));
-        background-image: linear-gradient(-90deg,#faac1c,#ffc937);
+        background-image: -webkit-gradient(linear,right top,left top,from(#f26622),to(#ffd23b));
+        background-image: linear-gradient(-90deg,#f26622,#ffd23b);
         border-radius: .32vw;
     }
 
@@ -192,8 +192,8 @@
         width: 2.6042vw;
         position: absolute;
         height: 1.12vw;
-        background: -webkit-gradient(linear,left top,left bottom,from(#faac1c),to(#ffc937));
-        background: linear-gradient(#faac1c,#ffc937);
+        background: -webkit-gradient(linear,left top,left bottom,from(#f26622),to(#ffd23b));
+        background: linear-gradient(#f26622,#ffd23b);
         border-radius: .2604vw;
         display: -webkit-box;
         display: -ms-flexbox;
@@ -231,42 +231,6 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-    }
-
-    .button {
-        border: 0;
-        text-align: center;
-        text-decoration: none;
-        cursor: pointer;
-        outline: none;
-        padding: 0 1.8vw;
-        background: -webkit-gradient(linear,left top,left bottom,from(#ffc937),to(#faac1c));
-        background: linear-gradient(#ffc937,#faac1c);
-        border-radius: 1.05vw;
-        font-family: SourceHanSansCN;
-        font-size: .9375vw;
-        font-weight: 700;
-        font-stretch: normal;
-        letter-spacing: .19vw;
-        color: #fefefe;
-        line-height: 2.6042vw;
-    }
-
-    .level-hint-container {
-        margin-left: 1.0417vw;
-    }
-
-    .level-hint-container>div:first-child {
-        color: #6c747a;
-        font-size: .625vw;
-        font-family: SourceHanSansCN;
-    }
-
-    .level-hint-container>div:last-child {
-        color: #385061;
-        font-size: 1.0417vw;
-        margin-top: .5208vw;
-        font-family: SourceHanSansCN;
     }
 
     .fixed_progress {
@@ -338,7 +302,7 @@
         font-size: 1.0417vw;
         font-weight: 700;
         font-stretch: normal;
-        color: #385061;
+        color: #0F375A;
     }
 
     .btn {
@@ -387,8 +351,8 @@
         cursor: pointer;
         outline: none;
         padding: 0 1.8vw;
-        background: -webkit-gradient(linear,left top,left bottom,from(#ffc937),to(#faac1c));
-        background: linear-gradient(#ffc937,#faac1c);
+        background: -webkit-gradient(linear,left top,left bottom,from(#ffd23b),to(#f26622));
+        background: linear-gradient(#ffd23b,#f26622);
         border-radius: 1.05vw;
         font-family: SourceHanSansCN;
         font-size: .9375vw;

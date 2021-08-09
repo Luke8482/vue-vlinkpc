@@ -66,11 +66,9 @@
             <div  id="SectionBottom" class="section_bottom" style="height: 252.661px;"></div>
         </div>
         <div  class="bottom_btn ban-select" style="" @click="sectionLearn">
-            <img  src="//cdn.pyhot.cn/app/program/resource/cdn/enter_icon.2fe6f72fc3a01bc287e36adcd43f9757.png" class="">
+            <div style="font-size: 1.5vw; color: #294354; font-weight: bolder; padding-right: 0.4vw">Enter</div>
+            <img  src="/enter_icon.png" class="">
         </div>
-        <!--<div  class="bottom_btn_hover ban-select" style="">-->
-        <!--<img  src="//cdn.pyhot.cn/app/program/resource/cdn/enter_icon.2fe6f72fc3a01bc287e36adcd43f9757.png" class="">-->
-        <!--</div>-->
         <div   class="catalog_main ban-select">
             <div  class="main_box">
                 <div  class="catalog_wrap">
@@ -300,11 +298,12 @@
 
     /*主体框架样式*/
     .body{
-        background-image: url(//cdn.pyhot.cn/app/program/resource/cdn/main_background.afa2682d40947d9917170c133f69250e.png);
+        background-image: url(/learnPageBackground1.png);
         width: 100%;
         height: 100vh;/*TODO*/
         position: relative;
         background-color: #0a080f;
+        /*background-color: #19181e;*/
         display: -webkit-box;
         display: -ms-flexbox;
          -webkit-box-pack: start;
@@ -333,7 +332,7 @@
         color: #c2c1c6;
         position: relative;
         top: 3vh;
-        background-image: url(//cdn.pyhot.cn/app/program/resource/cdn/course_wrap.8372cbaf1559006ab0d15a5d8ac328fc.png);
+        background-image: url(/learnPageBackground2.png);
         background-repeat: no-repeat;
         background-size: 100% 100%;
         z-index: 5;
@@ -567,7 +566,7 @@
         transform: translateX(-50%);
         cursor: pointer;
         z-index: 799;
-        background-image: url(//cdn.pyhot.cn/app/program/resource/cdn/enter_bg.d6e8e26e2acba92f5a0a59972851a27c.png);
+        background-image: url(/enterBtn.png);
         background-repeat: no-repeat;
         background-size: cover;
         width: 24.58vw;
@@ -672,27 +671,3 @@
 </style>
 
 
-<!--<template>-->
-    <!--<div>-->
-        <!--<markdownEditor :content="content" @change="autoSave" type="editor"></markdownEditor>-->
-    <!--</div>-->
-<!--</template>-->
-
-<!--<script>-->
-    <!--import markdownEditor from './../../admin/page/course/createSection/MarkdownEditor';-->
-
-    <!--export default {-->
-        <!--components: { markdownEditor},-->
-        <!--data() {-->
-           <!--return{-->
-               <!--content:''//这里是初始化是编辑器回显内容-->
-           <!--}-->
-        <!--},-->
-        <!--methods: {-->
-            <!--//当编辑器内容改变时候，会触发该事件，并返回一个html和markdown文本-->
-            <!--autoSave(html, text) {-->
-
-            <!--}-->
-        <!--}-->
-    <!--}-->
-<!--</script>-->

@@ -13,11 +13,11 @@
             <div  class="mask_message">解锁课程</div>
         </div>
         <div class="top">
-            <div class="summary_btn">职场必备</div>
-            <div class="title">{{Course.title}}</div>
+            <div class="summary_btn" v-if="Course.label">{{Course.label}}</div>
+            <div class="title">《 {{Course.title}}》</div>
         </div>
         <div class="content">
-            <div class="content_text">用最简单实用的方式学Excel</div>
+            <div class="content_text">{{Course.subtitle}}</div>
         </div>
         <div class="progress-bar-info" v-if="Course.progress">
             <div class="progress-bar-info-word">学习进度</div>
@@ -113,7 +113,7 @@
         line-height: 1.25vw;
         height: 1.25vw;
         color: #fff;
-        background-color: #159afa;
+        background-color: #0F375A;
         border-radius: .3125vw;
         margin-left: 1vw;
         padding-left: .5208vw;
@@ -132,7 +132,7 @@
         font-size: 1.0417vw;
         margin-left: .5208vw;
         margin-right: .5208vw;
-        color: #385061;
+        color: #0F375A;
         font-weight: 600;
         width: 12.5vw;
         word-break: break-all;
@@ -181,7 +181,7 @@
     }
 
     .progress-bar-rate-text {
-        color: #24c7b5;
+        color: #f26622;
         font-size: .625vw;
         margin-right: .5208vw;
     }
@@ -196,7 +196,7 @@
 
     .new_move_progress {
         height: .4167vw;
-        background-color: #24c7b5;
+        background-color: #f26622;
         border-radius: .2083vw;
     }
 

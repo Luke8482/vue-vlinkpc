@@ -117,7 +117,7 @@
     }
 
     .item-right-title {
-        color: #385061;
+        color: #0F375A;
         font-size: .9375vw;
         line-height: 1.4583vw;
         font-family: SourceHanSansCN;
@@ -140,11 +140,11 @@
     }
 
     .blue, .blue:hover {
-        background: #24c7b5;
+        background: #0F375A;
     }
 
     .yellow, .yellow:hover {
-        background: #faac1c;
+        background: #f26622;
     }
 
     .grey, .grey:hover {

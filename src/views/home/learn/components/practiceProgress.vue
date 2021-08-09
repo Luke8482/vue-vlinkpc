@@ -54,8 +54,8 @@
 
     .move_progress {
         width: 1vw;
-        background-image: -webkit-gradient(linear,left bottom,left top,from(#fcd17b),to(#f76460));
-        background-image: linear-gradient(0deg,#fcd17b,#f76460);
+        background-image: -webkit-gradient(linear,left bottom,left top,from(#ffd23b),to(#f26622));
+        background-image: linear-gradient(0deg,#ffd23b,#f26622);
         opacity: .8;
         z-index: 10;
     }

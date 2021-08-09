@@ -4,12 +4,12 @@
             <div  class="top_title">
                 <div >切换课程版本</div>
                 <div  class="x_btn" @click="showBtn">
-                    <img  src="//cdn.pyhot.cn/app/program/resource/cdn/share_x_icon.59c12239bb382b7df8f8775ce46123fc.png">
+                    <img  src="/shutdownBtn.png">
                 </div>
             </div>
             <div  class="top_part">
                 <p  class="first_p">
-                     您好,为了满足每个学员的学习需求，<br >我们制作了多个课程版本，方便您随时切换。<br >更换版本会重置本关的学习进度哦~
+                     您好,根据不同学员的学习需求，<br >我们制作了多个课程版本，您可随时切换。<br >注意：更换版本，会重置本关的学习进度哟~
                 </p>
                 <div  class="filelist_title">
                     课程版本:
@@ -88,7 +88,7 @@
             color: #c2c1c6;
             position: relative;
             top: 3vh;
-            background-image: url(//cdn.pyhot.cn/app/program/resource/cdn/course_wrap.8372cbaf1559006ab0d15a5d8ac328fc.png);
+            background-image: url(/learnPageBackground2.png);
             background-repeat: no-repeat;
             background-size: 100% 100%;
             z-index: 5;
@@ -110,7 +110,7 @@
         position: absolute;
         width: 23.46vw;
         height: 100%;
-        background: #cdcc8e;
+        background: #E9D9BF;
         top: 0;
         left: 0;
         z-index: 999;
@@ -203,7 +203,7 @@
         width: 19.21vw;
         height: 6.66vw;
         border-radius: 1vw;
-        background-color: #dfde9d;
+        background-color: #D4920A;
         -webkit-box-shadow: 0 0.1vw 0.42vw 0 rgba(15,13,11,.1);
         box-shadow: 0 0.1vw 0.42vw 0 rgba(15,13,11,.1);
     }

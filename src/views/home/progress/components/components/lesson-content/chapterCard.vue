@@ -22,7 +22,8 @@
             </div>
         </div>
 
-        <advertising v-if="index === 0" />
+        <!--多个课程再开发-->
+        <!--<advertising v-if="index === 0" />-->
     </div>
 </template>
 

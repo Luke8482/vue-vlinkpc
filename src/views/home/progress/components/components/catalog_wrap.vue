@@ -3,7 +3,7 @@
 
         <!--隐藏目录部分-->
         <transition name="spread_button">
-            <div  id="spreadButton" class="spread_button"  v-show="!show" @click="show=!show">
+            <div  id="spreadButton" class="spread_button" :style="showMiniHeader?isNotMini:isMini"  v-show="!show" @click="show=!show">
             <span >目录</span>
             <img  :src="rightArr" class="spread_icon">
         </div>
@@ -66,7 +66,7 @@
 
 <style scoped>
     .spread_button {
-        background: #385061;
+        background: #0F375A;
         opacity: .96;
         position: fixed;
         top: 3.333vw;
@@ -130,7 +130,7 @@
         box-shadow: 0 5px 5px 2px rgba(99,99,99,.5);
         z-index: 20;
         height: 100%;
-        background-color: #385061;
+        background-color: #0F375A;
     }
 
     /*出入css动画*/
