@@ -1,105 +1,85 @@
 <template>
     <div class="contentContainer">
+        <div class="rightSide">
+            <div class="codeContainer">
+                <div class="otherQrcode" v-show="showPbQrcode">
+
+                    <div>
+                        <img src="/公众号二维码.jpg" alt="">
+                        <div>VlinkPC.com</div>
+                    </div>
+
+                </div>
+                <div class="title">微信扫码，开始学习</div>
+                <div class="qrcodeContainer">
+                    <div  class="qrcode">
+
+                        <wxlogin :appid="appid" :scope="scope" :redirect_uri="redirect_uri" :style="agreeAll?'filter: none':'filter: blur(3px);'"></wxlogin>
+                        <div class="qrcodeMask" v-show="!agreeAll">同意协议后才可登录</div>
+
+                    </div>
+                </div>
+                <div class="agreeContainer">
+                    <img :src="agreeAll?'/choose.png':'/notChoose.png'" class="agreeImg"  @click="agreeAll = !agreeAll">
+                    <div class="agreeText" >
+                        已阅读并同意
+                        <div class="protocolFile" @click="goToAgreement('用户协议')">
+                            《用户协议》
+                        </div>
+                        <div class="protocolFile" @click="goToAgreement('隐私政策')">
+                            《隐私政策》
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="leftSide">
-            <div class="title">最简单高效的职场课</div>
-            <div class="subtitle">人工智能陪伴式学习，零基础小白也能轻松入门</div>
+            <div class="title">简单易学、生动高效</div>
+            <div class="subtitle">人工+智能陪伴式学习，快速get职场技能</div>
             <div class="special">—课程特色—</div>
             <div class="descWrapper">
                 <div style="margin-right: 1.04vw; margin-top: 0px;">
                     <div >
-                        <img  src="//cdn.pyhot.cn/app/program/resource/cdn/ico1.f5d5f9d7bef00e25bbf04726b958a7c4.png">
+                        <img  src="/loginIcon1.png">
                         <div >
-                            <div  class="title">智能化课程安排</div>
+                            <div  class="title">交互学习</div>
                             <div  class="subtitle">
-                                根据用户使用习惯，智能安排课程，人性化提醒，助您掌握上课节奏。
+                                互动教学，模拟对话场景；不再被动学习，提高学习主观能动性。
                             </div>
                         </div>
                     </div>
                 </div>
                 <div style="margin-right: 0px; margin-top: 0px;">
                     <div>
-                        <img  src="//cdn.pyhot.cn/app/program/resource/cdn/ico2.5130fc88a148ec4c7ff6010b3ec0924f.png">
+                        <img  src="/loginIcon2.png">
                         <div >
-                            <div  class="title">交互式课堂</div>
+                            <div  class="title">智能教学</div>
                             <div  class="subtitle">
-                                互动教学，不再被动学习，提高学习主观能动性。
+                                根据不同用户，智能安排课程内容，人性化学习，助您掌握上课节奏。
                             </div>
                         </div>
                     </div>
                 </div>
                 <div style="margin-right: 1.04vw; margin-top: 2vh;">
                     <div>
-                        <img  src="//cdn.pyhot.cn/app/program/resource/cdn/ico3.491c3303bc54b6140a2da02cfddc9119.png">
+                        <img  src="/loginIcon3.png">
                         <div >
-                            <div  class="title">渐进式练习</div>
+                            <div  class="title">专属助教</div>
                             <div  class="subtitle">
-                                在学习的过程中，会由浅及深的抛出练习进行训练，提高学习效果。
+                                专属助教——协助学习，提供辅导、解答，监督学习完成情况。
                             </div>
                         </div>
                     </div>
                 </div>
                 <div style="margin-right: 0px; margin-top: 2vh;">
                     <div>
-                        <img  src="//cdn.pyhot.cn/app/program/resource/cdn/ico4.f5c85407783cba98e7a8a44a18baf4b2.png">
+                        <img  src="/loginIcon4.png">
                         <div >
-                            <div  class="title">全天候专属助教</div>
+                            <div  class="title">渐进练习</div>
                             <div  class="subtitle">
-                                专属助教协助学习，全天候提供辅导和解答。
+                                针对已学内容，由浅及深的抛出练习进行训练，巩固学习成果。
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="rightSide">
-            <div class="codeContainer">
-                <div class="otherQrcode" style="display:none;">
-                    <div>
-                        <img src="//cdn.pyhot.cn/app/program/resource/cdn/excel_wp_qrcode.c02767e630477e7adcc46cac8916150f.png" alt="">
-                        <div>Excel职场</div>
-                    </div>
-                    <div>
-                        <img src="//cdn.pyhot.cn/app/program/resource/cdn/mk_wp_qrcode.43320d5fa3119312e2086eea0000cb0c.png" alt="">
-                        <div>秒可职场</div>
-                    </div>
-                    <div >
-                        <img  src="//cdn.pyhot.cn/app/program/resource/cdn/storm_excel_qrcode.ce00263be6f7db7c0ce912ccafdc2dce.png">
-                        <div >闯关学Excel</div>
-                    </div>
-                </div>
-                <div class="title">微信扫码，开始学习</div>
-                <div class="qrcodeContainer">
-                    <div  class="qrcode">
-                        <!--原来代码-->
-                        <!--<img  src="https://public-milk.oss-cn-hangzhou.aliyuncs.com/program_public/qrcode/d7f16a3e548cbeb3b9f91cc5af7ea86f.png" style="opacity: 1;">-->
-                        <!--<div class="qrcodeMask" style="display: none;">-->
-                            <!--同意协议后才可登录-->
-                        <!--</div>-->
-
-                        <!--调试代码-->
-                        <!--<div id="login" class="login">-->
-                            <!--<iframe class="iframe"></iframe>-->
-                        <!--</div>-->
-                        <!--<div class="promptBox">-->
-
-                        <!--</div>-->
-
-
-                        <wxlogin :appid="appid" :scope="scope" :redirect_uri="redirect_uri"></wxlogin>
-
-
-                    </div>
-                </div>
-                <div class="agreeContainer">
-                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACrElEQVRYR8WXS2gTURSG/3OnD0WL4k6xTdpIXbhTUZeCiChoMy6sCEKb7BQf0OomCoJ14WOjortMlCJCF01SFEQXiisV3XRnoDaxqBsXSpsibeYeuZNOnCaTd3CyCpnc83/33P+cOZfg8Yfq1Q/EH+3KEe8F82YCtqj1DHwH0Y82pvcz+tCnemLWBBBIGN2mxCgIOjN3VxIgojkw4prAnZlgaK4aTEWAvlcTG8zsfIQknWPwmmrBnM8J9IcF39fWdd34cvDE73JrywL0Jse3s1yaYkZ/PcLF/yVCikTHsdmB05/d4rgC+OOx/QDHmXljM+L2WiL6BZCe1offlAAW/5Df+fK7Vok7IUi07yvOxKoMqDOXC/Mfmk172fMmpMT6rj1OT6wC8CWityBxqRVpLxtD4HYmGL5cyIz9ZaXUUvW6vV5YVR2aQL9dooUM+CeNuww+X29AF1NNC0EjpsRNgHe6O5/upY+HLqhnBQDfZFQ1ja3NABAw3dG+9kDq6KmfO15MbMouLnxzy6hqVmk91FMAsNormx9bJa7i+JOxk2zKp+VitpG2W7VtKwO+ROwMpHzQKIBz55Z4whhkiScAa+XNKM5mgsMP8wBx4zqYrzQC0JC4lXsay+ihqxaAP25EmTlUgTYiNPlcLuOZ0ycNi1v6ZKT1ULgqABFepvXwIQUXSI5vy5lLrxVEM+L5BDgAehPGmJQccc0AYVEI7fDswNDbfxC5i53tndeU22s+85J6dRxBVRMSZYUQR2wIZ6yaDOe2M+EwYU1l6ALRsDiAVWW4YsSv1aYdOCCaES9pRBZAra2YKEtAkhmDFeu8Qk0TXFqx5y+jfEf08HWsADwfSBSEpyOZ7RtPh1IbwtOx3Ibw9GLiLOO+qcc9MmeO/PermVsv8eRy2sigUuuav7x+njCb9i4YAAAAAElFTkSuQmCC" class="agreeImg">
-                    <div class="agreeText" style="margin-left: 4px;">
-                        已阅读并同意
-                        <a  href="/app/program/protocol" class="protocolFile" target="_blank">
-                            《用户协议》
-                        </a>
-                        <a href="/app/program/privacy" class="protocolFile" target="_blank">
-                            《隐私政策》
-                        </a>
                     </div>
                 </div>
             </div>
@@ -110,6 +90,8 @@
 
 <script>
     import wxlogin from 'vue-wxlogin';
+    import bus from '@/views/admin/common/bus'
+    import {getAgreementId} from "../../../service/api";
 
     export default {
 
@@ -122,12 +104,19 @@
                 appid : 'wxeca5e52e80598a8c',
                 scope : 'snsapi_login',
                 redirect_uri : 'https://abstest.tenpay.com/abs/auo',
+                showPbQrcode: false,
+                agreeAll: true,  // 同意网站协议
+
             }
         },
 
         created(){
             // this.getWxScanJs();
             // this.wechatHandleClick()
+
+            bus.$on('shiftShowQrcode',()=>{
+                this.showPbQrcode = !this.showPbQrcode;
+            })
         },
 
         methods:{
@@ -154,6 +143,13 @@
                     redirect_uri: "/",
                     href: ""
                 })
+            },
+            goToAgreement(title){
+                getAgreementId({'title':title}).then(res=>{
+                    this.$router.replace('/program/agreements?agreement_id='+res)
+                }).catch(err=>{
+                    console.log(err);
+                })
             }
         },
     }
@@ -165,8 +161,8 @@
         -webkit-box-flex: 1;
         -ms-flex: auto;
         flex: auto;
-        padding-left: 19.27vw;
-        padding-right: 19.27vw;
+        padding-left: 14.27vw;
+        padding-right: 14.27vw;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
         display: -webkit-box;
@@ -188,6 +184,8 @@
         -webkit-box-direction: normal;
         -ms-flex-direction: column;
         flex-direction: column;
+        margin-left: 6.25vw;
+
     }
 
     .contentContainer>.leftSide>.title {
@@ -199,7 +197,7 @@
     }
 
     .contentContainer>.leftSide>.subtitle {
-        color: #ffd7a6;
+        color: #ffd23b;
         font-size: 1.08vw;
         font-weight: 700;
         line-height: 2.08vw;
@@ -251,8 +249,9 @@
 
     .descWrapper>div>div>img{
         width: 3.4375vw;
-        height: 3.4375vw;
-        margin-right: 10px;
+        height: 2.4375vw;
+        padding: 0.5vw;
+        margin: auto;
     }
 
     .descWrapper>div>div>div {
@@ -274,8 +273,7 @@
     }
 
     .contentContainer>.rightSide {
-        width: 19.79vw;
-        margin-left: 6.25vw;
+        width: 20.79vw;
     }
 
     .codeContainer{
@@ -308,8 +306,8 @@
         background-color: #fff;
         z-index: 10;
         position: absolute;
-        top: -4.6875vw;
-        right: 0;
+        top: -19.4vh;
+        right: -44vw;
         height: 9.375vw;
         border-radius: 1.04vw;
         display: -webkit-box;
@@ -344,8 +342,8 @@
     }
 
     .codeContainer>.otherQrcode>div>img {
-        width: 4.166vw;
-        height: 4.166vw;
+        width: 6.166vw;
+        height: 6.166vw;
         display: block;
     }
 
@@ -370,25 +368,6 @@
         position: relative;
     }
 
-    .codeContainer>.qrcodeContainer>.qrcode{
-        width: 12vw;
-        height: 12vw;
-        z-index: 1;
-        border-radius: .4vw;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        background-color: rgba(99,99,99,.2);
-        position: relative;
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-    }
 
     .codeContainer>.qrcodeContainer>.qrcode{
         width: 12vw;
@@ -441,6 +420,7 @@
         display: -ms-flexbox;
         display: flex;
         margin-top: 4vh;
+        z-index: 1000;
     }
 
     .agreeContainer>.agreeImg {
@@ -454,9 +434,11 @@
     }
 
     .protocolFile {
-        color: #24c7b5;
+        color: #ffd23b;
         cursor: pointer;
         text-decoration: none;
+        display: inline;
+        cursor: pointer;
     }
 
 </style>

@@ -135,6 +135,11 @@ const permission = {
             "name": "更新课程版本",
             "url": "/versions/*/chooseVersion",
             "method": "GET"
+        },{
+            "id": "68",
+            "name": "根据课程名称获取对应的ID",
+            "url": "/agreements/title/",
+            "method": "POST"
         }
     ],
     resources_manage_contents: [

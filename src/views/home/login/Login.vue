@@ -35,8 +35,11 @@
         -webkit-box-direction: normal;
         -ms-flex-direction: column;
         flex-direction: column;
-        background: url(../../../assets/img/login.png) no-repeat 0 0;
-        background-size: 100vw 95vh;
+        /*background: url(../../../assets/img/login-bg.jpg) no-repeat 0 0;*/
+        background: url(/background.png) no-repeat 0 0;
+        /*background: -webkit-gradient(linear,left top,left bottom,from(#ffd23b),to(#f26622));*/
+        /*background: linear-gradient(to right, #ffd23b,#f26622);*/
+        background-size: 100vw 100vh;
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;

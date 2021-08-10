@@ -1,9 +1,12 @@
 <template>
     <div class="headerContainer">
         <div>
-            <img src="//cdn.pyhot.cn/app/program/resource/cdn/logo_black.338832addf5132718d7245ac1a4700c4.png" alt="">
+            <div class="header_left">
+                <img  src="/avatarLogo.png" class="triangle-icon">
+                <img  src="/vlink-logo.png" class="triangle-icon2">
+            </div>
         </div>
-        <div class="headerRightSide">
+        <div class="headerRightSide" @mouseenter="showQrcode" @mouseleave="showQrcode">
             <!--<div>服务热线：400-990-9669</div>-->
             <div class="concern">关注公众号</div>
         </div>
@@ -12,8 +15,16 @@
 </template>
 
 <script>
+    import bus from '@/views/admin/common/bus'
     export default {
-        name: "headerContainer"
+        name: "headerContainer",
+        methods:{
+            showQrcode(){
+                bus.$emit('shiftShowQrcode');
+            }
+        }
+
+
     }
 </script>
 
@@ -60,8 +71,7 @@
     }
 
     .headerRightSide>.concern {
-        color: #fff;
-        background-color: #24c7b5;
+        background-color: #ffd23b;
         padding: .6vh 1.04vw;
         border-radius: 16px;
         margin-left: 1.05vw;
@@ -69,5 +79,34 @@
 
     .headerRightSide>div {
         color: #385061;
+    }
+
+    .header-content .header_left, .header-content .header_vip, .header-content {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+
+
+    .triangle-icon {
+        width: 2.6042vw;
+        height: 2.6042vw;
+    }
+
+    .triangle-icon2 {
+        height: 1.0vw;
+        position: relative;
+        bottom: 50%;
+        margin-bottom: 0.5vw;
+    }
+
+    img {
+        pointer-events: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
 </style>

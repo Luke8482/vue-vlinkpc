@@ -427,7 +427,7 @@ export function createAgreement(value) {
 
 //  获取协议列表
 export function getAgreements() {
-    return authRequest('/agreements',{
+    return authRequest('/agreements', {
         method: 'get',
     })
 }
@@ -436,6 +436,14 @@ export function getAgreements() {
 export function getAgreement(id) {
     return request('/agreements/'+id,{
         method: 'get',
+    })
+}
+
+//  根据协议名称获取协议Id
+export function getAgreementId(value) {
+    return request('/agreements/title/',{
+        method: 'post',
+        data: value,
     })
 }
 

@@ -5,8 +5,8 @@
                 <div class="page_header">
                     <div class="header-content">
                         <div class="header_left">
-                            <img  src="/动漫形象logo.jpg" class="triangle-icon">
-                            <img  src="/vlinkpc-logo.jpg" class="triangle-icon2">
+                            <img  src="/avatarLogo.png" class="triangle-icon">
+                            <img  src="/vlink-logo.png" class="triangle-icon2">
                         </div>
                         <div>
                             <logoutButton/>
@@ -215,9 +215,10 @@
     }
 
     .triangle-icon2 {
-        width: 6.5vw;
-        height: 2.5vw;
-        margin-top: 8px;
+        height: 1.0vw;
+        position: relative;
+        bottom: 50%;
+        margin-bottom: 0.5vw;
     }
 
     img {
@@ -258,7 +259,7 @@
 
     .punch-btn {
         color: #fff;
-        background: -webkit-gradient(linear,left top,left bottom,from(#ffd23b),to(#f26622));
+            background: -webkit-gradient(linear,left top,left bottom,from(#ffd23b),to(#f26622));
         background: linear-gradient(#ffd23b,#f26622);
     }
 

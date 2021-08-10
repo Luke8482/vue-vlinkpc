@@ -7,7 +7,7 @@
         </div>
 
         <div  style="margin-left: 2.6vw;">Copyright©2020. 广州威领科技有限公司</div>
-        <a href="http://www.beian.miit.gov.cn/" style="margin-left: 2.6vw;">粤ICP备xxxx号-2</a>
+        <a href="http://www.n.miit.gov.cn/" style="margin-left: 2.6vw;">粤ICP备xxxx号-2</a>
     </div>
 
 </template>

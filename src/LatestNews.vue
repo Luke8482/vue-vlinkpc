@@ -4,7 +4,7 @@
 
         <div  v-if="!showCarousels">
             <div class="aside-container" @click="showRcmCourse">
-                <div class="top-messge">新课来了！！</div>
+                <div class="top-messge">推荐新课！！</div>
                 <div class="aside">
                     <i class="aside-icon"></i>
                 </div>
@@ -167,7 +167,7 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        background: url(//cdn.pyhot.cn/app/program/resource/cdn/pure_background.25ae52c2129ddb3aedc47ba492c6aed3.png) no-repeat 0 0;
+        background: url(/image/carouselPage/展示背景.png) no-repeat 0 0;
         background-size: 100% 100%;
         border-radius: .85vw;
         -webkit-box-sizing: border-box;
@@ -187,12 +187,12 @@
     }
 
     .latest-news .aside-container {
-        width: 302px;
+        width: 18vw;
         position: fixed;
-        bottom: 20%;
+        bottom: 5%;
         right: 0;
-        -webkit-transition: 4.5s;
-        transition: 4.5s;
+        -webkit-transition: 2s;
+        transition: 2s;
     }
 
     .latest-news .top-messge {
@@ -207,17 +207,18 @@
         padding-left: 98px;
         font-family: PingFangSC-Medium,PingFang SC;
         font-weight: 500;
-        color: #f5324b;
+        color: #ffd23b;
         line-height: 59px;
-        background: url(//cdn.pyhot.cn/app/program/resource/cdn/speaker.67f8cea27c715e99fa2be7397b8d13b1.png) no-repeat 0 0;
+        background: url(/image/carouselPage/喇叭.png) no-repeat 0 0;
+        background-size: 38%;
     }
 
     .latest-news .aside {
         width: 100%;
-        height: 89px;
+        height: 75px;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
-        background: url(//cdn.pyhot.cn/app/program/resource/cdn/bg@2x.0c9c2e48dc8b6cc7d9d2ce5aa203a64f.png) no-repeat,transparent;
+        background: url(/image/carouselPage/提示框.png) no-repeat,transparent;
         background-size: 100% 100%;
         border-left: none;
         cursor: pointer;
@@ -236,10 +237,11 @@
     .latest-news .aside .aside-icon {
         width: 74px;
         height: 100%;
-        background: url(//cdn.pyhot.cn/app/program/resource/cdn/button.b44e3a0298a98b24f0c64f64c7f4d37a.png) no-repeat 0 0;
+        background: url(/image/carouselPage/按钮.png) no-repeat 0 0;
         overflow: hidden;
         position: relative;
         left: 5%;
+        bottom: 7%;
     }
 
     .wraper-text-container {
