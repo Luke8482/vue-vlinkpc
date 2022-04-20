@@ -6,9 +6,6 @@
             :lesson = lesson
     />
 
-    <reLearnBtn
-            v-on:relearn = relearn
-    />
 
 
     <!--<div>内容学习区-->
@@ -24,6 +21,9 @@
 
 
     <div class="main_wrap">
+        <reLearnBtn
+                v-on:relearn = relearn
+        />
         <practiceProgress
                 :progressData = progressData
         />
@@ -44,12 +44,45 @@
                         </div>
                         <div  class="vertical_line"></div>
                         <div class="text_content pre-break-line markdown-body">
-                            <div v-html="section.content" v-if="section.type ==='对话'"></div>
+                            <div v-html="section.content" v-if="section.type ==='dialogue'"></div>
                             <videoBox v-if="section.type ==='video'" :content="section.content"/>
                             <audio  autoplay="" controls=""  v-if="section.type ==='audio'" style="width: 35vw;">
                                 <source :src="section.content" />
                             </audio>
                             <pdfBox v-if="section.type ==='graphic'" :content="section.content"/>
+                            <div class="demo-image__preview" v-if="section.type ==='image'" >
+                                <el-image
+                                        class="images"
+                                        :src="section.content"
+                                        :preview-src-list=[section.content]>
+                                </el-image>
+                            </div>
+                            <div  v-if="section.type ==='downloadFile'"
+                                  @click="downloadFile"
+                            >
+                                <el-image
+                                        class="images-downloadFile"
+                                        :src="section.content"
+                                >
+                                </el-image>
+                            </div>
+                            <div v-if="section.type === 'content1'"
+                                 class="section_content"
+                            >
+                                <h3>{{section.markdown}}</h3>
+                            </div>
+                            <div v-if="section.type === 'content2'"
+                                 class="section_content"
+                            >
+                                <h5>{{section.markdown}}</h5>
+                            </div>
+                            <exerciseBox
+                                    v-if="section.type ==='exercise'"
+                                    :exerciseId="section.content"
+                                    :isLearningPage = 'true'
+                                    :learned = "learned"
+                                    v-on:continueLearning = continueLearning
+                            />
                         </div>
 
                     </div>
@@ -78,20 +111,31 @@
                 </div>
             </div>
         </div>
+
+
+
+        <!--资料下载&版本切换-->
         <fileAndVersionBtn
                 :lesson =lesson
         />
     </div>
 
+        <!--目录-->
+        <rightSideContent
+                :contentSections = contentSections
+        />
     </div>
 </template>
 
 <script>
+    import bus from '@/views/admin/common/bus';
     import videoBox from '@/views/admin/common/VideoBox'
     import pdfBox from '@/views/admin/common/PdfBox'
+    import exerciseBox from '@/views/admin/common/ExerciseBox'
     import learnHeader from './components/learnHeader'
     import practiceProgress from './components/practiceProgress'
     import reLearnBtn from './components/reLearnBtn'
+    import rightSideContent from './components/rightSideContent'
     import changeVersion from './components/changeVersion'
     import fileAndVersionBtn from './components/fileAndVersionBtn'
     import {
@@ -109,8 +153,10 @@
             learnHeader,
             practiceProgress,
             reLearnBtn,
+            rightSideContent,
             changeVersion,
-            fileAndVersionBtn
+            fileAndVersionBtn,
+            exerciseBox,
         },
         data(){
             return{
@@ -126,6 +172,9 @@
                 recordData: {},
                 sectionsCount: '',    //  记录本节的总共section 数量，供计算进度使用
                 progressData: '',
+                continueLearn:true,   //出现习题时控制是否可以继续显示内容，回答正确后赋值为true，可继续学习
+                learned:true,  //控制习题显示正确答案，如果已经学过的习题显示正确答案。
+                contentSections:[]  // 记录本节目录信息
             }
         },
         created(){
@@ -135,7 +184,8 @@
                 this.sectionData = res.sections;
                 this.teacher = res.teacher;
                 this.lesson = res.lesson;
-                console.log(this.lesson);
+                this.contentSections = res.contentSections;
+                console.log(this.sectionData);
                 getSectionsCount(this.lesson_id).then(res=>{
                     this.sectionsCount = res;
                     //  计算百分比
@@ -150,6 +200,7 @@
             sectionLearn(this.lesson_id).then(res=>{
                 this.resData = res;
                 this.middleResData = res;
+                console.log(this.middleResData);
 
             }).catch(err=>{
                 console.log(err);
@@ -166,109 +217,80 @@
         },
         methods: {
             sectionLearn() {
-                var showSection = this.resData[this.sectionIndex];
+                if (this.continueLearn){   //判断是否可以继续学习
+                    var showSection = this.resData[this.sectionIndex];
 
-                if (!showSection) {
-                    //  TODO....完成学习的逻辑
-                } else {
-                    // 判断当前准备学习的section和 sectionData 的最后一项是否相同。如果不一样，则可以插入；如果一样，说明网络未请求到学习数据。
-                    var lastShowSection = this.sectionData[this.sectionData.length - 1];
-                    if (showSection !== lastShowSection) {
-                        //  往sectionData 内添加数据  即显示内容；
-                        this.sectionData.push(showSection);
+                    if (!showSection) {
+                        //  TODO....完成学习的逻辑
+                    } else {
+                        // 判断当前准备学习的section和 sectionData 的最后一项是否相同。如果不一样，则可以插入；如果一样，说明网络未请求到学习数据。
+                        var lastShowSection = this.sectionData[this.sectionData.length - 1];
+                        if (showSection !== lastShowSection) {
+                            //  往sectionData 内添加数据  即显示内容；
+                            this.sectionData.push(showSection);
 
-                        //  计算百分比
-                        this.progressData = Math.round(this.sectionData.length/this.sectionsCount * 100) / 1.00 + "%";
-
-                        // 显示后，调用学习记录API
-                        this.recordData.section_id = showSection.id;
-                        this.recordData.lesson_id = this.lesson_id;
-                        setRecord(this.recordData).then(res => {
-                            console.log(res);
-                            // 对响应无需处理。
-                        }).catch();
-
-                        //  如果学习到当前resData 的第一项，那么就立即请求后端获取学习数据
-                        if (this.sectionIndex === 0) {
-                            this.sort.sort = this.resData[this.resData.length - 1].sort;
-                            sectionLearn(this.lesson_id, this.sort).then(res => {
-                                this.middleResData = res;
-                            }).catch();
-                        }
-
-                        //  如果学习到当前 resData 的最后一项，需要判断resData 和middleResData 是否相等，相等则说明是第一次学习，不需要处理；  不等则判断是否为空，为空则说明已经学习完毕。
-                        if (this.sectionIndex === 5) {
-                            if (this.resData !== this.middleResData) {
-                                if (this.middleResData === null) {
-                                    //  TODO/....完成学习的逻辑
-
-                                } else {
-                                    this.resData = this.middleResData;
-                                    this.sectionIndex = 0;
-                                }
+                            if (showSection.type === 'exercise'){   // 如果插入的是习题，那么禁用回车继续学习功能，直到答对或跳过为止
+                                this.continueLearn = false;
+                                this.learned = false;
                             }
 
-                        } else {
-                            this.sectionIndex++;
-                        }
-                    } else {   // 未及时请求到数据，则需要判断是否请求到了数据，请求得到数据后对数据进行操作
 
-                        //  解决网络延迟，造成学习无法继续bug
-                        if (this.resData !== this.middleResData) {
-                            this.resData = this.middleResData;
-                            this.sectionIndex = 0;
+                            //  计算百分比
+                            this.progressData = Math.round(this.sectionData.length/this.sectionsCount * 100) / 1.00 + "%";
+
+                            // 显示后，调用学习记录API
+                            // if (lastShowSection) {    //记录上一次学习的内容（修复刷新后，习题未做完便跳转到下一个section的bug
+                                this.recordData.section_id = showSection.id;
+                                this.recordData.lesson_id = this.lesson_id;
+                                setRecord(this.recordData).then(res => {
+                                    console.log(res);
+                                    // 对响应无需处理。
+                                }).catch();
+                            // }
+
+
+                            //  如果学习到当前resData 的第一项，那么就立即请求后端获取学习数据
+                            if (this.sectionIndex === 0) {
+                                this.sort.sort = this.resData[this.resData.length - 1].sort;
+                                sectionLearn(this.lesson_id, this.sort).then(res => {
+                                    this.middleResData = res;
+                                }).catch();
+                            }
+
+                            //  如果学习到当前 resData 的最后一项，需要判断resData 和middleResData 是否相等，相等则说明是第一次学习，不需要处理；  不等则判断是否为空，为空则说明已经学习完毕。
+                            if (this.sectionIndex === 5) {
+                                if (this.resData !== this.middleResData) {
+                                    if (this.middleResData === null) {
+                                        //  TODO/....完成学习的逻辑
+
+                                    } else {
+                                        this.resData = this.middleResData;
+                                        this.sectionIndex = 0;
+                                    }
+                                }
+
+                            } else {
+                                this.sectionIndex++;
+                            }
+                        } else {   // 未及时请求到数据，则需要判断是否请求到了数据，请求得到数据后对数据进行操作
+
+                            //  解决网络延迟，造成学习无法继续bug
+                            if (this.resData !== this.middleResData) {
+                                this.resData = this.middleResData;
+                                this.sectionIndex = 0;
+                            }
+
                         }
 
                     }
-
-                }
-            },
-
-
-
-
-            dataURLtoFile(blobUrl, filename)
-                {//将base64转换为文件
-                    var eleLink = document.createElement('a')
-                    eleLink.download = filename
-                    eleLink.style.display = 'none'
-                    eleLink.href = blobUrl
-                    // 触发点击
-                    document.body.appendChild(eleLink)
-                    eleLink.click()
-                    // 然后移除
-                    document.body.removeChild(eleLink);
-                },
-
-
-            b64toBlob(b64Data, contentType, sliceSize) {
-                contentType = contentType || '';
-                sliceSize = sliceSize || 512;
-
-                var byteCharacters = window.atob(b64Data);
-                console.log("byteCharacters:", byteCharacters)
-                var byteArrays = [];
-
-                for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-                    var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-                    var byteNumbers = new Array(slice.length);
-                    for (var i = 0; i < slice.length; i++) {
-                        byteNumbers[i] = slice.charCodeAt(i);
-                    }
-
-                    var byteArray = new Uint8Array(byteNumbers);
-
-                    byteArrays.push(byteArray);
                 }
 
-                var blob = new Blob(byteArrays, {type: contentType});
-                console.log("blob", blob);
-                return blob;
             },
+
 
             //  重新学习的逻辑
             relearn(){
+                this.continueLearn = true; //修复学习到习题后，点击“重新学习”无法继续学习的Bug
                 //  只有学过内容，才能调用重学机制
                 if (this.sectionData !== []){
                     //  1.1、获取本节第一个section 对应的sort 值
@@ -285,6 +307,19 @@
                     this.sectionIndex = 0;
                 }
 
+            },
+
+            // 继续学习机制
+            continueLearning(value){
+                this.continueLearn = true;
+                if (value = true) {
+                    this.sectionLearn();
+                }
+            },
+
+            // 练习文件下载逻辑
+            downloadFile(){
+                bus.$emit('downloadFile')
             },
 
 
@@ -331,11 +366,11 @@
     .main_wrap {
         color: #c2c1c6;
         position: relative;
-        top: 3vh;
+        top: 6vh;
         background-image: url(/learnPageBackground2.png);
         background-repeat: no-repeat;
         background-size: 100% 100%;
-        z-index: 5;
+        z-index: 15;
         width: 92%;
         height: 100%;
     }
@@ -566,7 +601,7 @@
         transform: translateX(-50%);
         cursor: pointer;
         z-index: 799;
-        background-image: url(/enterBtn.png);
+        background-image: url(/enterBtn2.png);
         background-repeat: no-repeat;
         background-size: cover;
         width: 24.58vw;
@@ -614,7 +649,7 @@
          -webkit-transform: translateX(-50%);
         transform: translateX(-50%);
         cursor: pointer;
-        background-image: url(//cdn.pyhot.cn/app/program/resource/cdn/enter_bg_hover.159a925ef6addf968301411d6779dccc.png);
+        background-image: url(/enterBtn.png);
         background-repeat: no-repeat;
         background-size: cover;
         width: 24.58vw;
@@ -667,6 +702,21 @@
         height: 3vw;
     }
 
+
+
+    /*自行设计*/
+    .images{
+        border-radius: 10px;
+        max-width: 60vw;
+    }
+    .images-downloadFile{
+        border-radius: 10px;
+        max-width: 60vw;
+        cursor: pointer;
+    }
+    .section_content{
+        color: rgba(255,204,51);
+    }
 
 </style>
 

@@ -7,7 +7,7 @@
             <div class="level_num">
                 <span class="level_index">{{lesson.sort_int}}</span>
             </div>
-            <div title="让数据会说话" class="level_name">
+            <div title="" class="level_name">
                 第{{lesson.sort_int}}关 {{lesson.title}}
             </div>
         </div>

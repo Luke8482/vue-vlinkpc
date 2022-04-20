@@ -30,16 +30,18 @@
         mounted(){
             bus.$on('showBtn', msg=>{
                 this.showBtn = !this.showBtn;
-            })
+            });
+            bus.$on('downloadFile', msg=>{
+                this.downloadFile();
+            });
         },
         methods:{
             downloadFile() {
-                downloadFile({'lesson_id': this.lesson_id}).then(res => {
+                downloadFile({'lesson_id': this.lesson.id}).then(res => {
                     if (res.content) {
                         var blob = this.b64toBlob(res.content, "application/zip");
                         var url = window.URL.createObjectURL(blob);
-                        this.dataURLtoFile(url, '测试');
-                        //todo“”“后端传递文件名称
+                        this.dataURLtoFile(url, res.file_name);
 
                     } else {
                         alert("获取文件失败：", data.msg);
@@ -49,6 +51,48 @@
                     console.log(err);
                 })
             },
+
+            dataURLtoFile(blobUrl, filename)
+            {//将base64转换为文件
+                var eleLink = document.createElement('a');
+                eleLink.download = filename;
+                eleLink.style.display = 'none';
+                eleLink.href = blobUrl;
+                // 触发点击
+                document.body.appendChild(eleLink);
+                eleLink.click();
+                // 然后移除
+                document.body.removeChild(eleLink);
+            },
+
+
+            b64toBlob(b64Data, contentType, sliceSize) {
+                contentType = contentType || '';
+                sliceSize = sliceSize || 512;
+
+                var byteCharacters = window.atob(b64Data);
+                // console.log("byteCharacters:", byteCharacters)
+                var byteArrays = [];
+
+                for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                    var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                    var byteNumbers = new Array(slice.length);
+                    for (var i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+
+                    var byteArray = new Uint8Array(byteNumbers);
+
+                    byteArrays.push(byteArray);
+                }
+
+                var blob = new Blob(byteArrays, {type: contentType});
+                // console.log("blob", blob);
+                return blob;
+            },
+
+
             changeVersion(){
                 this.showBtn = false;
                 var res = [this.lesson, this.$route.query.course_id];
@@ -64,7 +108,7 @@
         position: absolute;
         z-index: 10;
         bottom: 8vh;
-        right: -3vw;
+        right: -7vw;
     }
 
     .utils-wrap>div:not(:last-child) {

@@ -140,7 +140,12 @@ const permission = {
             "name": "根据课程名称获取对应的ID",
             "url": "/agreements/title/",
             "method": "POST"
-        }
+        },{
+            "id": "74",
+            "name": "某个习题的详情",
+            "url": "/exercises/**",
+            "method": "GET"
+        },
     ],
     resources_manage_contents: [
         {
@@ -328,6 +333,21 @@ const permission = {
             "name": "获取后台数据看板数据",
             "url": "/data",
             "method": "POST"
+        },{
+            "id": "71",
+            "name": "新建习题",
+            "url": "/exercises",
+            "method": "POST"
+        },{
+            "id": "72",
+            "name": "修改习题",
+            "url": "/exercises/**",
+            "method": "PATCH"
+        },{
+            "id": "73",
+            "name": "删除习题",
+            "url": "/exercises/**",
+            "method": "DELETE"
         }
     ],
     resources_users: [

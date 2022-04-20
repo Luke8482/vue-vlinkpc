@@ -1,56 +1,79 @@
 <template>
-    <div   class="text_nodes"  >
-        <div class="icon_wraps">
-            <div  class="icon_avatars ban-selects">
-                <img  :src="teacher.avatar">
+    <div>
+        <div   class="text_nodes"  >
+            <div class="icon_wraps"  >
+                <div  class="icon_avatars ban-selects">
+                    <img  :src="teacher.avatar">
+                </div>
+                <div  class="nicknames">
+                    {{teacher.nickname}}
+                </div>
             </div>
-            <div  class="nicknames">
-                {{teacher.nickname}}
+            <div  class="vertical_lines"></div>
+            <div
+                    @mouseenter="showDealButton=!showDealButton"
+                    @mouseleave="showDealButton=!showDealButton"
+                    class="text_contents pre-break-lines markdown-body"
+                    v-if="!showUpdateSection && !showInsertSection"
+            >
+                <div v-html="section.content" v-if="section.type ==='dialogue'"></div>
+                <videoBox v-if="section.type ==='video'" :content="section.content"/>
+                <audio  autoplay="" controls=""  v-if="section.type ==='audio'" style="width: 35vw;">
+                    <source :src="section.content" />
+                </audio>
+                <pdfBox v-if="section.type ==='graphic'" :content="section.content"/>
+                <div class="demo-image__preview" v-if="section.type ==='image'" >
+                    <el-image
+                            class="images"
+                            :src="section.content"
+                            :preview-src-list=[section.content]>
+                    </el-image>
+                </div>
+                <div  v-if="section.type ==='downloadFile'">
+                    <el-image
+                            class="images-downloadFile"
+                            :src="section.content"
+                    >
+                    </el-image>
+                </div>
+                <exerciseBox
+                        v-if="section.type ==='exercise'"
+                        :exerciseId = section.content
+                />
+
+
+                <div class="text_contents"  v-if="showDealButton" style="width: 500px">
+                    <el-button icon="el-icon-arrow-up" @click="delUpdateSort('上移')"></el-button>
+                    <el-button icon="el-icon-arrow-down" @click="delUpdateSort('下移')"></el-button>
+                    <el-button @click="shiftShowTable">插入</el-button>
+                    <el-button @click="shiftShowTable('update')">修改</el-button>
+                    <el-button @click="handleDelSection">删除</el-button>
+                </div>
             </div>
+
+            <!--插入section 的表单-->
+            <SectionTable
+                    v-if="showInsertSection"
+                    :sectionSort = section.sort
+                    v-on:shiftShowTable = shiftShowTable
+            />
+
+            <!--修改表单-->
+            <SectionTable
+                    v-if="showUpdateSection"
+                    :section="section"
+                    v-on:shiftShowTable = shiftShowTable
+            />
+
+
         </div>
-        <div  class="vertical_lines"></div>
-        <div
-                @mouseenter="showDealButton=!showDealButton"
-                @mouseleave="showDealButton=!showDealButton"
-                class="text_contents pre-break-lines markdown-body"
-                v-if="!showUpdateSection && !showInsertSection"
-        >
-            <div v-html="section.content" v-if="section.type ==='dialogue'"></div>
-            <videoBox v-if="section.type ==='video'" :content="section.content"/>
-            <audio  autoplay="" controls=""  v-if="section.type ==='audio'" style="width: 35vw;">
-                <source :src="section.content" />
-            </audio>
-            <pdfBox v-if="section.type ==='graphic'" :content="section.content"/>
-
-            <div class="text_contents"  v-if="showDealButton" style="width: 500px">
-                <el-button icon="el-icon-arrow-up" @click="delUpdateSort('上移')"></el-button>
-                <el-button icon="el-icon-arrow-down" @click="delUpdateSort('下移')"></el-button>
-                <el-button @click="shiftShowTable">插入</el-button>
-                <el-button @click="shiftShowTable('update')">修改</el-button>
-                <el-button @click="handleDelSection">删除</el-button>
-            </div>
-        </div>
-
-        <!--插入section 的表单-->
-        <SectionTable
-                v-if="showInsertSection"
-                v-on:shiftShowTable = shiftShowTable
-        />
-
-        <!--修改表单-->
-        <SectionTable
-                v-if="showUpdateSection"
-                :section="section"
-                v-on:shiftShowTable = shiftShowTable
-        />
-
-
     </div>
 </template>
 
 <script>
     import videoBox from '@/views/admin/common/VideoBox'
     import pdfBox from '@/views/admin/common/PdfBox'
+    import exerciseBox from '@/views/admin/common/ExerciseBox'
     import SectionTable from './SectionTable'
     import {delSection, updateSort} from "../../../../../service/api";
 
@@ -73,6 +96,7 @@
             videoBox,
             pdfBox,
             SectionTable,
+            exerciseBox
         },
         props:{
             section: Object,
@@ -109,7 +133,8 @@
                 }else{
                     this.showInsertSection = !this.showInsertSection;
                 }
-            }
+            },
+
         }
     }
 </script>
@@ -218,5 +243,17 @@
         -ms-user-select: none;
         user-select: none;
     }
+
+    /*自行设计*/
+    .images{
+        border-radius: 10px;
+        max-width: 60vw;
+    }
+    .images-downloadFile{
+        border-radius: 10px;
+        max-width: 60vw;
+        cursor: pointer;
+    }
+
 
 </style>

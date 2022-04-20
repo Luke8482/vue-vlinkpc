@@ -25,7 +25,6 @@
 
                             <!--新增section的表单-->
                             <SectionTable
-                                    v-if="showCreateSection"
                                     v-on:shiftShowTable = shiftShowTable
                             />
 
@@ -59,7 +58,7 @@
             </div>
             <div  class="utils-wrap">
                 <div class="file_download" v-if="!showUploadForm" @click="shiftShowUploadForm">
-                    <img  src="//cdn.pyhot.cn/app/program/resource/cdn/download_file.088e50d16968813db374999f3545c9a3.png">
+                    <img  src="/upload.png">
                     <div  class="need_help">上传资料</div>
                 </div>
 
@@ -110,7 +109,7 @@
             practiceProgress,
             sectionCard,
             elUploads,
-            SectionTable
+            SectionTable,
         },
         data() {
             return {
@@ -168,10 +167,8 @@
         methods: {
             //  切换显示表格
             shiftShowTable(type){
-                if (type === 'update') {
-                    this.showUpdateSection = !this.showUpdateSection;
-                }else{
-                    this.showInsertSection = !this.showInsertSection;
+                if (type !== 'update') {
+                    this.showCreateSection = !this.showCreateSection;
                 }
             },
 
@@ -190,7 +187,7 @@
 
     /*主体框架样式*/
     .body{
-        background-image: url(//cdn.pyhot.cn/app/program/resource/cdn/main_background.afa2682d40947d9917170c133f69250e.png);
+        background-image: url(/learnPageBackground1.png);
         width: 100%;
         height: 100vh;/*TODO*/
         position: relative;
@@ -264,7 +261,7 @@
         color: #c2c1c6;
         position: relative;
         top: 3vh;
-        background-image: url(//cdn.pyhot.cn/app/program/resource/cdn/course_wrap.8372cbaf1559006ab0d15a5d8ac328fc.png);
+        background-image: url(/learnPageBackground2.png);
         background-repeat: no-repeat;
         background-size: 100% 100%;
         z-index: 5;
@@ -498,7 +495,7 @@
         transform: translateX(-50%);
         cursor: pointer;
         z-index: 799;
-        background-image: url(//cdn.pyhot.cn/app/program/resource/cdn/enter_bg.d6e8e26e2acba92f5a0a59972851a27c.png);
+        background-image: url(/enterBtn2.png);
         background-repeat: no-repeat;
         background-size: cover;
         width: 24.58vw;
@@ -546,7 +543,7 @@
         -webkit-transform: translateX(-50%);
         transform: translateX(-50%);
         cursor: pointer;
-        background-image: url(//cdn.pyhot.cn/app/program/resource/cdn/enter_bg_hover.159a925ef6addf968301411d6779dccc.png);
+        background-image: url(/enterBtn.png);
         background-repeat: no-repeat;
         background-size: cover;
         width: 24.58vw;
@@ -602,7 +599,7 @@
     .utils-wrap {
         position: absolute;
         z-index: 10;
-        bottom: 8vh;
+        bottom: 20vh;
         right: -3vw;
     }
 
@@ -630,7 +627,7 @@
 
     .file_download>img, .switch-course>img {
         width: 2vw;
-        height: 2vw;
+        /*height: 2vw;*/
     }
 
     .need_help {

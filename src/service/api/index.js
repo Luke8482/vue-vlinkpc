@@ -588,3 +588,33 @@ export function getAdminDashData(value) {
         data: value,
     })
 }
+
+// 创建习题
+export function createExercises(value) {
+    return authRequest('/exercises',{
+        method: 'post',
+        data: value,
+    })
+}
+
+// 修改习题信息
+export function updateExercise(id,value) {
+    return authRequest('/exercises/'+id,{
+        method: 'patch',
+        data:value,
+    })
+}
+
+// 某个习题的详情
+export function getExercise(id) {
+    return authRequest('/exercises/'+id,{
+        method: 'get',
+    })
+}
+
+// 删除习题
+export function delExercise(id) {
+    return authRequest('/exercises/'+id,{
+        method: 'delete'
+    })
+}

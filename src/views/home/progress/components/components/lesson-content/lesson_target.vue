@@ -57,7 +57,7 @@
         methods:{
             goToLearning(){
                 if (this.lesson.isUnlock) {
-                    this.$router.replace('/dashboard/learn/'+this.lesson.id)
+                    this.$router.replace('/dashboard/learn?course_id='+this.$route.query.course_id+'&lesson_id='+this.lesson.id)
                 }
             },
 
