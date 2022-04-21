@@ -4,6 +4,7 @@
     <learnHeader
             :course_id = course_id
             :lesson = lesson
+
     />
 
 
@@ -27,11 +28,14 @@
         <practiceProgress
                 :progressData = progressData
         />
+
+
         <div  id="mainBox" class="content">
             <!--<div class="header"></div>-->
+
             <div >
-                <div >
-                    <div   class="text_node" v-for="section in sectionData">
+                <div>
+                    <div   class="text_node" v-for="section in sectionData" :id = "'vlinkpc'+ section.id">
                         <div class="icon_wrap">
                             <div  class="icon_avatar ban-select">
                                 <img  :src="teacher.avatar">
@@ -43,7 +47,7 @@
                             </div>
                         </div>
                         <div  class="vertical_line"></div>
-                        <div class="text_content pre-break-line markdown-body">
+                        <div class="text_content pre-break-line markdown-body" >
                             <div v-html="section.content" v-if="section.type ==='dialogue'"></div>
                             <videoBox v-if="section.type ==='video'" :content="section.content"/>
                             <audio  autoplay="" controls=""  v-if="section.type ==='audio'" style="width: 35vw;">
@@ -102,15 +106,6 @@
             <div style="font-size: 1.5vw; color: #294354; font-weight: bolder; padding-right: 0.4vw">Enter</div>
             <img  src="/enter_icon.png" class="">
         </div>
-        <div   class="catalog_main ban-select">
-            <div  class="main_box">
-                <div  class="catalog_wrap">
-                    <div  class="catalog_body">
-                        <div  class="footer"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
 
@@ -123,6 +118,8 @@
         <!--目录-->
         <rightSideContent
                 :contentSections = contentSections
+                :notLearned = notLearned
+                :bugfixed = bugfixed
         />
     </div>
 </template>
@@ -138,6 +135,8 @@
     import rightSideContent from './components/rightSideContent'
     import changeVersion from './components/changeVersion'
     import fileAndVersionBtn from './components/fileAndVersionBtn'
+    import Pubsub from 'pubsub-js'
+
     import {
         sectionLearn,
         setRecord,
@@ -174,7 +173,10 @@
                 progressData: '',
                 continueLearn:true,   //出现习题时控制是否可以继续显示内容，回答正确后赋值为true，可继续学习
                 learned:true,  //控制习题显示正确答案，如果已经学过的习题显示正确答案。
-                contentSections:[]  // 记录本节目录信息
+                contentSections:[],  // 记录本节目录信息
+                notLearned: true,  //控制目录组件“序言 ”是否已学
+                bugfixed: true,
+                lastDomId:'',    //初步加载后，最后一个显示的dom id
             }
         },
         created(){
@@ -185,7 +187,18 @@
                 this.teacher = res.teacher;
                 this.lesson = res.lesson;
                 this.contentSections = res.contentSections;
-                console.log(this.sectionData);
+
+                //页面创建判断，是否已开始学过&给目录添加是否学过信息
+                if (this.sectionData.length !== 0) {
+                    this.notLearned = false;
+
+                    // 页面加载完毕后定位到最后的section
+                    this.lastDomId = 'vlinkpc'+this.sectionData[this.sectionData.length-1].id;
+
+                }
+                this.contentIsLearned();
+
+
                 getSectionsCount(this.lesson_id).then(res=>{
                     this.sectionsCount = res;
                     //  计算百分比
@@ -215,6 +228,18 @@
                 }
             }
         },
+        mounted(){
+            // 发布事件，供目录调用
+            Pubsub.subscribe('scrollto',(msg,token)=>{
+                this.scrollToTarget(token)
+            });
+        },
+
+        updated(){
+            // 更新界面时，定位到最后学习的section
+            this.scrollToTarget(this.lastDomId);
+        },
+
         methods: {
             sectionLearn() {
                 if (this.continueLearn){   //判断是否可以继续学习
@@ -228,6 +253,10 @@
                         if (showSection !== lastShowSection) {
                             //  往sectionData 内添加数据  即显示内容；
                             this.sectionData.push(showSection);
+                            this.notLearned = false; // 控制目录里的序言为已学过
+
+                            this.bugfixed = !this.bugfixed;  //辅助参数，解决更新了contentSections后，无法更新目录的bug
+                            this.contentIsLearned();
 
                             if (showSection.type === 'exercise'){   // 如果插入的是习题，那么禁用回车继续学习功能，直到答对或跳过为止
                                 this.continueLearn = false;
@@ -295,7 +324,7 @@
                 if (this.sectionData !== []){
                     //  1.1、获取本节第一个section 对应的sort 值
                     this.sort.sort = this.sectionData[0].sort-1;
-                    //  1.2、 调用分布获取学习内容Api 获取学习内容
+                    //  1.2、 调用分步获取学习内容Api 获取学习内容
                     sectionLearn(this.lesson_id, this.sort).then(res => {
                         this.resData = res;
                         this.middleResData = res;
@@ -303,6 +332,12 @@
 
                     //  1.3、 将sectionData 置空（即不显示任何内容）
                     this.sectionData = [];
+
+                    this.contentIsLearned();
+                    this.notLearned = true;
+
+
+
                     //  1.4、 将sectionIndex 置0,
                     this.sectionIndex = 0;
                 }
@@ -321,6 +356,40 @@
             downloadFile(){
                 bus.$emit('downloadFile')
             },
+
+            // 控制目录是否显示学过的样式
+            contentIsLearned(){
+                var i = 0;
+                var section = {};
+                var contentSection = {};
+                for (i; i < this.contentSections.length; i++) {
+                    contentSection = this.contentSections[i];
+                    this.contentSections[i].notLearned = true;
+
+                    var j = 0;
+                    for (j; j < this.sectionData.length; j++) {
+                        section = this.sectionData[j];
+                        if(contentSection.id === section.id){
+                            this.contentSections[i].notLearned = false;
+                            break;
+                        }
+                    }
+
+                }
+
+
+            },
+
+            // 滚动到对应位置
+            scrollToTarget(token){
+                let element = document.getElementById("mainBox");
+                let height = document.getElementById(token).offsetTop;
+                element.scroll({
+                    top: height, //向上移动的距离，如果有fixede布局， 直接减去对应距离即可
+                    behavior: 'smooth', // 平滑移动
+                });
+            }
+
 
 
         }

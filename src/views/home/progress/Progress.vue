@@ -29,9 +29,9 @@
             detail_wrap,
             footerContainer,
         },
-        mounted () {
-            window.addEventListener('scroll', this.handleScroll)
-        },
+        // mounted () {
+        //     // window.addEventListener('scroll', this.handleScroll)
+        // },
 
     }
 </script>

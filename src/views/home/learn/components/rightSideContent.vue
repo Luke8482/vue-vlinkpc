@@ -10,85 +10,46 @@
 
                 <div class="mulu-Tab" v-if="showContent">
                     <div class="munu_line"></div>
-                    <div class="xu-Line">
+                    <div class="xu-Line" @click="scrollToTarget()">
                         <div class="preface remove_back">
-                        <span class="serial_number active_xuhao">0</span>
+                        <span :class="['serial_number',notLearned?'':'active_xuhao']">0</span>
                         序言
-                        <span class="history_lable check_icon_2">
-                            </span>
+                        <span :class="['history_lable',notLearned?'':'check_icon_2']"></span>
                         </div>
                     </div>
 
                     <!--循环显示目录内容-->
-                    <div class="xu-Line" v-for="section in contentSections">
+                    <div class="xu-Line" v-for="(section, index) in contentSections">
                         <!--一级目录-->
-                        <div class="one_level remove_back"
+                        <div
+                             class="one_level remove_back"
                              style="pointer-events: auto;"
                              v-if="section.type === 'content1'"
+                             @click="scrollToTarget(section)"
                         >
-                            <span class="serial_number active_xuhao">3</span>
+                           <span
+                               :class="['serial_number',section.notLearned?'':'active_xuhao']"
+                               v-text="dealWithNumber(index)"
+                           ></span>
                             {{section.markdown}}
-                            <span class="history_lable check_icon"></span>
+                            <span :class="['history_lable',section.notLearned?'':'check_icon']" ></span>
                         </div>
 
-                        
+
+
                         <!--二级目录-->
                         <div class="two_level remove_back"
                              style="pointer-events: auto;"
                              v-if="section.type === 'content2'"
+                             @click="scrollToTarget(section)"
                         >
                             {{section.markdown}}
-                            <span class="history_lable check_icon_2"></span>
+                            <span :class="['history_lable',section.notLearned?'':'check_icon_2']"></span>
                         </div>
+
+                        <!--bug辅助-->
+                        <div v-if="bugfixed"></div>
                     </div>
-
-
-
-                    <!--<div class="xu-Line">-->
-                        <!--<div class="one_level active_item add_back" style="pointer-events: auto;">-->
-                            <!--<span class="serial_number active_xuhao">1</span>-->
-                            <!--目标确定-->
-                            <!--<span class="history_lable check_icon"></span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!---->
-                    <!--<div class="xu-Line">-->
-                        <!--<div class="one_level remove_back" style="pointer-events: auto;">-->
-                            <!--<span class="serial_number active_xuhao">2</span>-->
-                                <!--数据获取与处理-->
-                            <!--<span class="history_lable check_icon">-->
-                            <!--</span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="xu-Line">-->
-                        <!--<div class="one_level remove_back" style="pointer-events: auto;">-->
-                            <!--<span class="serial_number active_xuhao">3</span>-->
-                            <!--数据分析-->
-                            <!--<span class="history_lable check_icon"></span>-->
-                        <!--</div>-->
-                        <!--<div class="two_level remove_back" style="pointer-events: auto;">-->
-                            <!--辅助表及分析方法-->
-                            <!--<span class="history_lable check_icon_2"></span>-->
-                        <!--</div>-->
-                        <!--<div class="two_level remove_back" style="pointer-events: auto;">-->
-                        <!--公式常见问题-->
-                        <!--<span class="history_lable check_icon_2"></span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-
-                    <!--<div class="xu-Line">-->
-                        <!--<div class="two_level remove_back" style="pointer-events: auto;">-->
-                            <!--辅助表及分析方法-->
-                            <!--<span class="history_lable check_icon_2"></span>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="xu-Line">-->
-                        <!--<div class="one_level remove_back" style="pointer-events: auto;">-->
-                            <!--<span class="serial_number active_xuhao">4</span>-->
-                            <!--结果呈现-->
-                            <!--<span class="history_lable check_icon"></span>-->
-                        <!--</div>-->
-                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -96,6 +57,9 @@
 </template>
 
 <script>
+    import Pubsub from 'pubsub-js'
+
+    let number = 0;
     export default {
         name: "rightSideContent",
         data(){
@@ -105,29 +69,31 @@
         },
         props:{
             contentSections: Array,
+            notLearned: Boolean,
+            bugfixed: Boolean,
         },
-        computed:{
-            contents: function () {
-                var i = 0;
-                var j = 0;
-                var k = 0;
-                console.log(this.contentSections);
-                var content1 = [];
-                for (i=0; i < this.contentSections.length; i++) {
-                    var section = this.contentSections[i];
-                    if (section.type === 'content1') {
-                        content1[j] = section ;
-                        j++;
-                        k = 0;
-                    } else {
-                        content1[j].content2[k] = section;
-                        k++;
-                    }
-                }
-                console.log(content1);
-                return content1;
-            }
+        beforeUpdate(){
+            number = 0;
+        },
 
+        methods:{
+            dealWithNumber(value){
+                var section = this.contentSections[value];
+                if (section.type === 'content1'){
+                    number += 1;
+                }
+
+                return number;
+            },
+
+            scrollToTarget(value){
+                if (value) {
+                    Pubsub.publish('scrollto', 'vlinkpc'+value.id);
+                } else {
+                    Pubsub.publish('scrollto', 'mainBox');
+                }
+
+            },
         }
     }
 </script>
@@ -253,7 +219,7 @@
 
     .mulu-Tab .munu_line {
         width: 100%;
-        height: 93%;
+        height: 90%;
         border-left: 1px dashed #ccc;
         position: absolute;
         left: 1.45833333vw;
