@@ -21,7 +21,7 @@
     <!--</div>-->
 
 
-    <div class="main_wrap">
+    <div class="main_wrap" ref="mainBox">
         <reLearnBtn
                 v-on:relearn = relearn
         />
@@ -34,8 +34,15 @@
             <!--<div class="header"></div>-->
 
             <div >
-                <div>
-                    <div   class="text_node" v-for="section in sectionData" :id = "'vlinkpc'+ section.id">
+                <div id="content">
+                    <div
+                           v-for="section in sectionData"
+                           :class= "['text_node',section.type === 'image'
+                           ||section.type === 'downloadFile'
+                           ||section.type === 'video'
+                           ||section.type === 'graphic'
+                           ?'imageSection':'dialogueSection']"
+                           :id = "'vlinkpc'+ section.id">
                         <div class="icon_wrap">
                             <div  class="icon_avatar ban-select">
                                 <img  :src="teacher.avatar">
@@ -90,20 +97,37 @@
                         </div>
 
                     </div>
-                    <!--<div  class="title_node">-->
-                    <!--<div  class="icon_avatar ban-select">&lt;!&ndash;&ndash;&gt;</div>-->
-                    <!--<div  class="title_content ban-select">-->
-                    <!--&lt;!&ndash;&ndash;&gt; &lt;!&ndash;&ndash;&gt;-->
-                    <!--</div>-->
-                    <!--</div>-->
-                </div>
-                <!----> <!----> <!----> <!---->
 
-            </div> <!---->
-            <div  id="SectionBottom" class="section_bottom" style="height: 252.661px;"></div>
+                    <!--学习完成，跳转下一关按钮-->
+                    <div class="_2YkAGZyGWj_HlqwLKJs-Yc _1b1IPQFbr_kkPFVhzFfDtf"
+                         v-if="finishLearnd&&!finishedAll"
+                    >
+                        <div>下一关 &gt;&gt;&gt;</div>
+                        <div class="_1Q1tqxXKpWiTTVZ3VTa2E1"
+                             @click="learnNextLesson"
+                        >
+                            <img class="_2jKZPi31gbt6254PWqRUru" :src="nextLesson.cover" :alt="nextLesson.title">
+                            <div class="_1AcqqNB8S_mBTSAa87zjAI">{{nextLesson.title}}</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div  id="SectionBottom" class="section_bottom" style="height: 25vh;"></div>
+            </div>
+
         </div>
-        <div  class="bottom_btn ban-select" style="" @click="sectionLearn">
+        <div  class="bottom_btn ban-select" style="" @click="sectionLearn" v-if="!finishLearnd">
             <div style="font-size: 1.5vw; color: #294354; font-weight: bolder; padding-right: 0.4vw">Enter</div>
+            <img  src="/enter_icon.png" class="">
+        </div>
+
+        <div  class="bottom_btn ban-select" style="" @click="learnNextLesson" v-if="finishLearnd">
+            <div style="font-size: 1.5vw; color: #294354; font-weight: bolder; padding-right: 0.4vw"
+                 v-if="!finishedAll"
+            >下一关</div>
+            <div style="font-size: 1.5vw; color: #294354; font-weight: bolder; padding-right: 0.4vw"
+                 v-if="finishedAll"
+            >已学完</div>
             <img  src="/enter_icon.png" class="">
         </div>
 
@@ -166,6 +190,7 @@
                 sectionData: [],
                 teacher: {},   //  课程相关教师信息
                 lesson: {},  //  本节的信息
+                nextLesson: {},  // 下一节信息
                 sectionIndex: 0,
                 sort: {},
                 recordData: {},
@@ -177,8 +202,11 @@
                 notLearned: true,  //控制目录组件“序言 ”是否已学
                 bugfixed: true,
                 lastDomId:'',    //初步加载后，最后一个显示的dom id
+                finishLearnd: false,  // 控制 本节 是否学完
+                finishedAll: false,  // 控制 本课 是否学完
             }
         },
+        inject:['reload'],
         created(){
             this.lesson_id = this.$route.query.lesson_id;
             this.course_id = this.$route.query.course_id;
@@ -187,6 +215,9 @@
                 this.teacher = res.teacher;
                 this.lesson = res.lesson;
                 this.contentSections = res.contentSections;
+                if (res.nextLesson !== null){
+                    this.nextLesson = res.nextLesson;
+                }
 
                 //页面创建判断，是否已开始学过&给目录添加是否学过信息
                 if (this.sectionData.length !== 0) {
@@ -203,6 +234,12 @@
                     this.sectionsCount = res;
                     //  计算百分比
                     this.progressData = Math.round(this.sectionData.length/res * 100) / 1.00 + "%";
+
+                    // 如果学习进度为100%，那么进入页面后就已经学完了
+                    if (this.sectionData.length === res){
+                        this.finishLearnd = true;
+                    }
+
                 }).catch(err=>{
                     console.log(err);
                 });
@@ -233,11 +270,31 @@
             Pubsub.subscribe('scrollto',(msg,token)=>{
                 this.scrollToTarget(token)
             });
+
         },
 
+        // watch:{
+        //     'sectionData':'scrollToBottom'
+        // },
         updated(){
             // 更新界面时，定位到最后学习的section
-            this.scrollToTarget(this.lastDomId);
+            if (this.lastDomId !== '') {
+                console.log(1);
+                this.scrollToTarget(this.lastDomId);
+            }
+
+            // let element = document.getElementById("mainBox");
+            // element.scrollTop = document.getElementById('content').scrollHeight;
+
+            // this.$nextTick(()=>{
+            //     let element = document.getElementById("mainBox");
+            //     element.scrollTop = element.scrollHeight;
+            //     console.log(2);
+            //
+            //     // this.$refs.mainBox.scrollTop = this.$refs.mainBox.scrollHeight;
+            // });
+
+
         },
 
         methods: {
@@ -246,7 +303,7 @@
                     var showSection = this.resData[this.sectionIndex];
 
                     if (!showSection) {
-                        //  TODO....完成学习的逻辑
+                        this.finishLearnThisLesson();
                     } else {
                         // 判断当前准备学习的section和 sectionData 的最后一项是否相同。如果不一样，则可以插入；如果一样，说明网络未请求到学习数据。
                         var lastShowSection = this.sectionData[this.sectionData.length - 1];
@@ -263,19 +320,25 @@
                                 this.learned = false;
                             }
 
+                            // 每次插入新的section，都要保证页面中央显示新section
+                            this.lastDomId = 'SectionBottom';
+
+                            // if (lastShowSection) {
+                            //     this.scrollToTarget('vlinkpc'+lastShowSection.id);
+                            // }
+
+
 
                             //  计算百分比
                             this.progressData = Math.round(this.sectionData.length/this.sectionsCount * 100) / 1.00 + "%";
 
                             // 显示后，调用学习记录API
-                            // if (lastShowSection) {    //记录上一次学习的内容（修复刷新后，习题未做完便跳转到下一个section的bug
-                                this.recordData.section_id = showSection.id;
-                                this.recordData.lesson_id = this.lesson_id;
-                                setRecord(this.recordData).then(res => {
-                                    console.log(res);
-                                    // 对响应无需处理。
-                                }).catch();
-                            // }
+                            this.recordData.section_id = showSection.id;
+                            this.recordData.lesson_id = this.lesson_id;
+                            setRecord(this.recordData).then(res => {
+                                console.log(res);
+                                // 对响应无需处理。
+                            }).catch();
 
 
                             //  如果学习到当前resData 的第一项，那么就立即请求后端获取学习数据
@@ -290,8 +353,7 @@
                             if (this.sectionIndex === 5) {
                                 if (this.resData !== this.middleResData) {
                                     if (this.middleResData === null) {
-                                        //  TODO/....完成学习的逻辑
-
+                                        this.finishLearnThisLesson();
                                     } else {
                                         this.resData = this.middleResData;
                                         this.sectionIndex = 0;
@@ -333,10 +395,12 @@
                     //  1.3、 将sectionData 置空（即不显示任何内容）
                     this.sectionData = [];
 
-                    this.contentIsLearned();
+                    this.contentIsLearned();  // 控制目录显示样式
                     this.notLearned = true;
 
-
+                    this.finishLearnd = false;
+                    this.finishedAll = false;
+                    this.lastDomId = '';
 
                     //  1.4、 将sectionIndex 置0,
                     this.sectionIndex = 0;
@@ -344,7 +408,7 @@
 
             },
 
-            // 继续学习机制
+            // 继续学习机制 (遇到习题，被锁定）
             continueLearning(value){
                 this.continueLearn = true;
                 if (value = true) {
@@ -388,6 +452,37 @@
                     top: height, //向上移动的距离，如果有fixede布局， 直接减去对应距离即可
                     behavior: 'smooth', // 平滑移动
                 });
+            },
+
+            scrollToBottom(){
+                this.$nextTick(()=>{
+                    let element = document.getElementById("mainBox");
+                    element.scrollTop = element.scrollHeight;
+                    console.log(2);
+
+                    // this.$refs.mainBox.scrollTop = this.$refs.mainBox.scrollHeight;
+                });
+            },
+
+            // 进入下一关学习
+            learnNextLesson(){
+                console.log(JSON.stringify(this.nextLesson) !== {});
+                if (JSON.stringify(this.nextLesson) !== {}) {
+                    this.$router.replace('/dashboard/learn?course_id='+this.course_id+'&lesson_id='+this.nextLesson.id);
+                    this.reload();
+                } else {
+                    // 学完本课跳转回进度页
+                    this.$router.replace('/dashboard/progress?course_id='+this.course_id);
+                }
+
+            },
+
+            // 学习完本节Section，后的处理逻辑
+            finishLearnThisLesson(){
+                this.finishLearnd = true;
+                if (JSON.stringify(this.nextLesson) === '{}') {
+                    this.finishedAll = true;
+                }
             }
 
 
@@ -397,9 +492,6 @@
 </script>
 
 <style scoped>
-
-
-
     /*主体框架样式*/
     .body{
         background-image: url(/learnPageBackground1.png);
@@ -441,7 +533,7 @@
         background-size: 100% 100%;
         z-index: 15;
         width: 92%;
-        height: 100%;
+        height: 94vh;
     }
 
     /*显示区样式*/
@@ -786,6 +878,54 @@
     .section_content{
         color: rgba(255,204,51);
     }
+
+    ._2YkAGZyGWj_HlqwLKJs-Yc {
+        margin: 3vh 5vw;
+    }
+
+    ._1b1IPQFbr_kkPFVhzFfDtf {
+        color: #fff;
+    }
+
+    ._1Q1tqxXKpWiTTVZ3VTa2E1 {
+        position: relative;
+        width: 18vw;
+        margin-top: 8px;
+        cursor: pointer;
+    }
+
+    ._2jKZPi31gbt6254PWqRUru {
+        width: 100%;
+        border-radius: 16px;
+    }
+
+    img {
+        vertical-align: middle;
+        border-style: none;
+    }
+
+    ._1AcqqNB8S_mBTSAa87zjAI {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        left: 16px;
+        padding: 0 16px;
+        color: #385061;
+        font-weight: bolder;
+        font-size: 18px;
+        line-height: 30px;
+        background-color: #fff;
+        border-radius: 15px;
+    }
+    .imageSection:last-child{
+        min-height: 50vh;
+    }
+    .dialogueSection:last-child{
+        margin-bottom: 10vh;
+    }
+
+
+
 
 </style>
 

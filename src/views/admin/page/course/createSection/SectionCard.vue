@@ -36,6 +36,16 @@
                     >
                     </el-image>
                 </div>
+                <div v-if="section.type === 'content1'"
+                     class="section_content"
+                >
+                    <h3>{{section.markdown}}</h3>
+                </div>
+                <div v-if="section.type === 'content2'"
+                     class="section_content"
+                >
+                    <h5>{{section.markdown}}</h5>
+                </div>
                 <exerciseBox
                         v-if="section.type ==='exercise'"
                         :exerciseId = section.content
@@ -253,6 +263,9 @@
         border-radius: 10px;
         max-width: 60vw;
         cursor: pointer;
+    }
+    .section_content{
+        color: rgba(255,204,51);
     }
 
 

@@ -121,7 +121,7 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        margin: 2vh 2.5vw;
+        margin: 2vh 0.5vw 3vh 2.5vw;
         z-index: 9;
     }
 
@@ -138,8 +138,8 @@
 
     .study_catalogue_icon {
         display: inline-block;
-        width: 24px;
-        height: 24px;
+        width: 1vw;
+        height: 1vw;
     }
 
     .study_course_catalogue:hover .show_catalogue {
@@ -157,7 +157,7 @@
     }
 
     .study_catalogue_name {
-        font-size: 16px;
+        font-size: 1vw;
         color: silver;
         margin-left: 10px;
         font-family: Medium;
@@ -199,7 +199,7 @@
     }
 
     .prog {
-        width: 13vw;
+        width: 12vw;
         height: 100%;
         position: absolute;
         top: 16vh;
@@ -248,6 +248,10 @@
         color: silver;
         padding-left: .83333333vw;
         position: relative;
+        overflow: hidden;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .two_level {
@@ -259,6 +263,10 @@
         font-size: .72916667vw;
         text-align: left;
         padding-left: 3.38541667vw;
+        overflow: hidden;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .add_back:hover, .one_level:hover, .preface:hover, .two_level:hover {
@@ -298,7 +306,7 @@
         width: .78125vw;
         height: .57291667vw;
         position: absolute;
-        right: .98958333vw;
+        right: -0.01vw;
     }
 
     .check_icon, .check_icon_2 {
