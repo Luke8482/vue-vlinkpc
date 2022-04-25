@@ -1,5 +1,18 @@
 <template>
     <div>
+        <div v-if="selection !== null&&isChooseFile" style="text-align:center;">
+            <el-image
+                    style="height: 100px; width: 200px;"
+                    fit="contain"
+                    :src="selection.path"
+                    :preview-src-list="[selection.path]">
+            </el-image>
+            <div style="display:inline-block;margin-left: 20px;">
+                <div style="margin: 2vh 0;">文件名：{{selection.name}}</div>
+                <el-button type="primary" @click="choosedFile">确认选择</el-button>
+            </div>
+
+        </div>
         <div class="crumbs">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
@@ -42,13 +55,24 @@
                     :data="tableData"
                     border
                     class="table"
-                    ref="multipleTable"
+                    ref="singleTable"
+                    highlight-current-row
                     header-cell-class-name="table-header"
-                    @selection-change="handleSelectionChange"
+                    @current-change="handleCurrentChange"
             >
                 <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
                 <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
                 <el-table-column prop="name" label="文件名"></el-table-column>
+                <el-table-column label="预览图" align="center">
+                    <template slot-scope="scope">
+                        <el-image
+                                style="height: 50px; width: 100px;"
+                                fit="contain"
+                                :src="scope.row.path"
+                                :preview-src-list="[scope.row.path]">
+                        </el-image>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="file_type" label="文件类型"></el-table-column>
                 <el-table-column label="课程名称" align="center">
                     <template slot-scope="scope" v-if="scope.row.course">
@@ -102,10 +126,13 @@
                 },
                 courses:{},  //  课程下拉选项参数
                 tableData: [],
-                multipleSelection: [],
+                selection: null,
                 pageTotal: 0,
 
             };
+        },
+        props:{
+            isChooseFile:Boolean,
         },
         created() {
             this.getData();
@@ -131,9 +158,14 @@
 
             },
 
-            // 多选操作
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
+            // 选择操作
+            handleCurrentChange(val) {
+                this.selection = val;
+            },
+
+            //  选择文件
+            choosedFile(){
+                this.$emit('choosedFile',this.selection)
             },
 
 

@@ -93,7 +93,7 @@
         methods:{
             goToLearning(){
                 console.log(this.lastLearnedLesson.lesson.id);
-                this.$router.replace('/dashboard/learn?course_id='+this.$route.query.course_id+'&lesson_id='+this.lastLearnedLesson.lesson.id)
+                this.$router.push('/dashboard/learn?course_id='+this.$route.query.course_id+'&lesson_id='+this.lastLearnedLesson.lesson.id)
             },
 
             //  处理头部栏，吸顶显示

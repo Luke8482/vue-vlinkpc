@@ -22,7 +22,7 @@
         <el-form-item label="section内容" prop="markdown">
             <markdownEditor
                     :onchange="contentOnChange"
-                    :init-data = "sectionForm.markdown"
+                    :init-data = "markdownInitData"
                     v-if="sectionForm.type==='dialogue'
                     ||sectionForm.type==='content1'
                     ||sectionForm.type==='content2'"
@@ -74,7 +74,7 @@
                     markdown: '',
                     lesson_id: '',
                 },
-                contentInitData: '', //  markdown 初始值，修改时引入
+                markdownInitData: '', //  markdown 初始值，修改时引入
                 url_list: [],   //  传递图片预览地址
                 exerciseId:'',
                 rules: {
@@ -112,6 +112,7 @@
             if (this.section){
                 this.sectionForm = this.section;
                 this.rules = {};
+                this.markdownInitData = this.section.markdown;
 
                 // 判断section类型是否为习题，如果是则传递习题的ID给习题表单，以便更新。否则习题均视为新建
                 if (this.section.type === "exercise") {
@@ -131,7 +132,7 @@
             },
             getUploadedFileUrl(data){
                 this.sectionForm.content = data;
-                this.sectionForm.markdown = toString(data);
+                this.sectionForm.markdown = data;
             },
 
             //触发提交section的表单

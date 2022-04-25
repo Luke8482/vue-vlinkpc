@@ -54,7 +54,7 @@
                 if (this.notInMyCourse){
                     bus.$emit('showCarousels', this.Course )
                 } else {
-                    this.$router.replace('/dashboard/progress?course_id='+this.Course.id)
+                    this.$router.push('/dashboard/progress?course_id='+this.Course.id)
                 }
 
             }

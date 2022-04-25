@@ -24,7 +24,7 @@
         components:{logoutButton},
         methods: {
             goToHome() {
-                    this.$router.replace('/dashboard/home')
+                    this.$router.push('/dashboard/home')
             },
         }
     }

@@ -24,7 +24,7 @@
         methods:{
             goToProgress(){
                 console.log(this.course_id);
-                this.$router.replace('/dashboard/progress?course_id='+this.course_id)
+                this.$router.push('/dashboard/progress?course_id='+this.course_id)
             }
         }
     }

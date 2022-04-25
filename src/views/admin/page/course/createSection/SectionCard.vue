@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div   class="text_nodes"  >
+        <div   class="text_nodes"
+               @mouseenter="showDealButton=!showDealButton"
+               @mouseleave="showDealButton=!showDealButton"
+        >
             <div class="icon_wraps"  >
                 <div  class="icon_avatars ban-selects">
                     <img  :src="teacher.avatar">
@@ -11,8 +14,7 @@
             </div>
             <div  class="vertical_lines"></div>
             <div
-                    @mouseenter="showDealButton=!showDealButton"
-                    @mouseleave="showDealButton=!showDealButton"
+
                     class="text_contents pre-break-lines markdown-body"
                     v-if="!showUpdateSection && !showInsertSection"
             >

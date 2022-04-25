@@ -1,6 +1,21 @@
 <template>
     <div>
+        <el-switch
+                v-model="multiple"
+                active-text="批量上传"
+                style="margin:2vh 5vw"
+                :disabled="multiple_disabled"
+        >
+        </el-switch>
+        <el-button type="primary" @click="chooseFile">选择文件</el-button>
+        <el-dialog title="请选择文件" :modal="false" :visible.sync="dialogTableVisible">
+            <filesList
+                    :isChooseFile = "true"
+                    @choosedFile="choosedFile"
+            />
+        </el-dialog>
         <el-form-item class="upload-bg register-bg" label="上传文件" prop="ad_url">
+
             <div class="hide-video-box"></div>
             <el-upload
                     class="avatar-uploader"
@@ -11,9 +26,10 @@
                     :on-remove="handleRemove"
                     :on-exceed="handleExceed"
                     :file-list="ad_url_list"
-                    :limit="1"
+                    :multiple = "multiple"
+                    :limit="multiple?100:1"
                     :http-request="uploadSectionFile">
-                <span class="font-14">选择文件</span>
+                <span class="font-14">选择本地文件</span>
                 <!--<div slot="tip" class="el-upload__tip">尺寸750*1125px，大小2M以内，视频支持MP4</div>-->
             </el-upload>
             <!--<div class="bg-box">广告背景图预览</div>-->
@@ -22,6 +38,7 @@
 </template>
 
 <script>
+    import filesList from '@/views/admin/page/files/FilesList'
     import {uploadFiles} from '@/service/api/index'
 
 
@@ -33,8 +50,14 @@
                 upload_name: '',//图片或视频名称
                 ad_url: '',//上传后的图片或视频URL
                 ad_url_list: [],//预览列表
-                image_path: ''// 图片上传后的存储地址,
+                image_path: '',// 图片上传后的存储地址,
+                multiple: false,  // 控制是否批量上传
+                multiple_disabled:false,
+                dialogTableVisible:false, // 控制选择文件对话框显示
             }
+        },
+        components:{
+            filesList,
         },
         props: {
             lesson_id: Number,
@@ -159,7 +182,12 @@
                 uploadFiles(formData)
                     .then(function (res) {
                         // self.image_path = res.path ;
-                        self.$emit('uploadedFile', res.path);
+
+                        console.log(self.multiple);
+                        if (!self.multiple){   // 不是批量上传文件，需要反馈上传的文件地址
+                            self.$emit('uploadedFile', res.path);
+                        }
+
                         self.ad_url_list.push({url:res.path});
                         // console.log(self.image_path);
                         // if (res.result === '0000') {
@@ -193,6 +221,21 @@
                         self.$alert('上传失败，请重新上传', '提示', { type: 'error' });
                         console.error(err);
                     });
+            },
+
+            // 选择已上传好的文件
+            chooseFile(){
+                this.multiple = false;
+                this.multiple_disabled = true;
+                this.dialogTableVisible = true;
+            },
+
+            // 选好文件后调用
+            choosedFile(value){
+                this.$emit('uploadedFile', value.path);
+                this.ad_url_list.push({url:value.path});
+
+                this.dialogTableVisible = false;
             }
         }
     }

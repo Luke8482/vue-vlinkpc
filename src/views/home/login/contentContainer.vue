@@ -146,7 +146,7 @@
             },
             goToAgreement(title){
                 getAgreementId({'title':title}).then(res=>{
-                    this.$router.replace('/program/agreements?agreement_id='+res)
+                    this.$router.push('/program/agreements?agreement_id='+res)
                 }).catch(err=>{
                     console.log(err);
                 })
