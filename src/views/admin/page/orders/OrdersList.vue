@@ -15,7 +15,7 @@
                     <el-option label="已关闭" value="true"></el-option>
                 </el-select>
                 <el-select v-model="query.refund_status" placeholder="退款状态">
-                    <el-option label="未发生" value="pending"></el-option>
+                    <el-option label="未申请" value="pending"></el-option>
                     <el-option label="已申请" value="applied"></el-option>
                     <el-option label="退款中" value="processing"></el-option>
                     <el-option label="退款成功" value="success"></el-option>
@@ -57,53 +57,61 @@
             >
                 <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
                 <el-table-column prop="id" label="ID" width="55" align="center"></el-table-column>
-                <el-table-column prop="no" label="订单号"></el-table-column>
-                <el-table-column label="用户名" align="center">
+                <el-table-column prop="no" width="180" label="订单号"></el-table-column>
+                <el-table-column label="用户名" width="150" align="center">
                     <template slot-scope="scope">
                         <div>{{scope.row.user.name}}</div>
                     </template>
                 </el-table-column>
-                <el-table-column label="总价" align="center">
+                <el-table-column label="总价" width="80" align="center">
                     <template slot-scope="scope">
                         <div>{{scope.row.total_amount}}</div>
                     </template>
                 </el-table-column>
-                <el-table-column label="是否已支付" align="center">
+                <el-table-column label="支付" width="80" align="center">
                     <template slot-scope="scope">
                         <el-tag
                                 :type="scope.row.paid_at?'success':'danger'"
                         >{{scope.row.paid_at?'是':'否'}}</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="支付方式" align="center">
+                <el-table-column label="支付方式" width="80" align="center">
                     <template slot-scope="scope">
                         <el-tag
                                 type="'success'"
                         >{{scope.row.payment_method}}</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="退款状态" align="center">
+                <el-table-column label="退款状态" width="250" align="center">
                     <template slot-scope="scope">
-                        <el-tag
+                        <el-tag style="margin-right: 5px;"
                                 :type="scope.row.refund_status === 'pending'?'success':'danger'"
-                        >{{scope.row.refund_status === 'pending'? '无退款':'已申请'}}</el-tag>
+                        >{{chineseRefundStatus(scope.row.refund_status)}}</el-tag>
+                        <el-button
+                                v-if="scope.row.refund_status === 'applied'"
+                                type="primary"
+                        >同意</el-button>
+                        <el-button
+                                v-if="scope.row.refund_status === 'applied'"
+                                type="warning"
+                        >不同意</el-button>
                     </template>
                 </el-table-column>
-                <el-table-column label="订单内容" align="center">
+                <el-table-column label="订单内容"  align="center">
                     <template slot-scope="scope" >
                         <el-tag v-for="item in scope.row.items ">
                             《{{item.course.title }}》
                         </el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="订单状态" align="center">
+                <el-table-column label="订单状态" width="80" align="center">
                     <template slot-scope="scope">
                         <el-tag
                                 :type="!scope.row.closed?'success':'danger'"
                         >{{scope.row.closed? '已关闭':'正常'}}</el-tag>
                     </template>
                 </el-table-column>
-                <el-table-column label="创建时间" >
+                <el-table-column label="创建时间" width="180" >
                     <template slot-scope="scope">
                         <div>{{scope.row.created_at.slice(0,10)}}   {{scope.row.created_at.slice(11,19)}}</div>
                     </template>
@@ -189,6 +197,30 @@
                 this.query.createBefore = '';
                 this.query.paidAfter = '';
                 this.query.paidBefore = '';
+            },
+
+            //  转换为中文退款状态
+            chineseRefundStatus(val){
+                let $status = '';
+                switch (val) {
+                    case 'applied':
+                        $status = '已申请退款';
+                        break;
+                    case 'processing':
+                        $status = '退款中';
+                        break;
+                    case 'success':
+                        $status = '退款成功';
+                        break;
+                    case 'failed':
+                        $status = '退款失败';
+                        break;
+                    default :
+                        $status = '未申请';
+                        break;
+                }
+
+                return $status;
             }
         }
     }

@@ -61,13 +61,14 @@
 </template>
 
 <script>
-    import { createOrder} from "../../../service/api";
+    import {createOrder, testAlipay, testWechat, alipayReturn} from "../../../service/api";
 
     export default {
         name: "Footer",
         data(){
             return{
                 payType: 'wechat',    // 支付方式
+                msg:'',   //支付成功回调信息
             }
         },
         props:{
@@ -76,14 +77,61 @@
             type: String,
             originPrice: Number,
         },
+        inject:['reload'],
+        created(){
+            let $query = this.$route.query;
+            if ($query.method === "alipay.trade.wap.pay.return") {
+                // 支付宝支付完成后的前端回调逻辑
+                alipayReturn($query).then(res=>{
+                    this.msg = res.msg;
+                    this.$alert(this.msg, '提示', {
+                            confirmButtonText: '确定',
+                            callback: action => {
+                                this.$emit('finishedPain');
+                            }
+                        });
+                }).catch(err=>{
+                    console.log(err);
+                })
+            } else {
+                //  微信支付完成的前端回调逻辑
 
+            }
+
+        },
         methods:{
             createOrder(){
                 createOrder(this.form).then(res=>{
                     if (this.payType === 'wechat'){
                         //  调用微信支付接口
+                        testWechat(res.id).then(res=>{
+                            if(res.data.code === 0) {
+                                const pay_params = res.data.data;
+                                if (typeof WeixinJSBridge === "undefined"){
+                                    if(document.addEventListener){
+                                        document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);
+                                    }else if (document.attachEvent){
+                                        document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady);
+                                        document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady);
+                                    }
+                                }else{
+                                    this.onBridgeReady(pay_params);
+                                }
+                            }else{
+                                alert('微信支付调起失败！');
+                            }
+                        }).catch(err=>{
+                            console.log(err);
+                        })
                     }else {
                         //  调用支付宝支付接口
+                        testAlipay(res.id).then(res=>{
+                            document.querySelector("body").innerHTML = res;
+                            document.forms[0].submit();
+
+                        }).catch(err=>{
+                            console.log(err);
+                        })
                     }
                     console.log(res);
                 }).catch(err=>{
@@ -100,7 +148,57 @@
               }else{
                   this.payType = 'wechat';
               }
-            }
+            },
+
+
+            //  微信支付参考代码
+            // payOrder() {
+            //     this.postRequestWWW(this.baseUrl + '/pay/generalQRCode',{
+            //         sessionId: this.sessionId,
+            //         userId: localStorage.getItem('userId')
+            //     }).then((res) => {
+            //         if(res.data.code === 0) {
+            //         const pay_params = res.data.data;
+            //         if (typeof WeixinJSBridge === "undefined"){
+            //             if(document.addEventListener){
+            //                 document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);
+            //             }else if (document.attachEvent){
+            //                 document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady);
+            //                 document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady);
+            //             }
+            //         }else{
+            //             this.onBridgeReady(pay_params);
+            //         }
+            //     }else{
+            //         alert('微信支付调起失败！');
+            //     }
+            // }).catch((err) => {
+            //         console.log(err);
+            // })
+            // },
+            onBridgeReady(params) {
+                var that = this;
+                WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest', {
+                        "appId": params.appId,  //公众号名称，由商户传入
+                        "timeStamp": params.timeStamp, //支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                        "nonceStr": params.nonceStr,  //支付签名随机串，不长于 32 位
+                        "package": params.package,//统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                        "signType": 'MD5',  //签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                        "paySign": params.sign, //支付签名
+                    },
+                    function (res) {
+                        if (res.err_msg === "get_brand_wcpay_request:ok") {
+                            alert('支付成功！');
+                            that.$router.push({path: '/program/course-cart'}); // TODO... 修改为本项目的回调地址
+                            this.$emit('finishedPain');
+                        } else if (res.err_msg === "get_brand_wcpay_request:fail") {
+                            alert('支付失败！');
+                        }
+                    });
+            },
+
+
         }
     }
 </script>
@@ -441,5 +539,12 @@
         font-size: 5vw;
         -ms-touch-action: none;
         touch-action: none;
+    }
+
+</style>
+
+<style>
+    .el-message-box {
+        max-width: 80vw;
     }
 </style>

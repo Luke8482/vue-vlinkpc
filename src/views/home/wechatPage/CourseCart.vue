@@ -51,6 +51,7 @@
                 :totalPrice = totalPrice
                 :type = type
                 :originPrice = originPrice
+                @finishedPain = finishedPain
         />
         </div>
 </template>
@@ -116,7 +117,14 @@
                 }else{
                     this.showHotCourses = true;
                 }
+            },
+
+            //  支付完成后，显示已购课程
+            finishedPain(){
+                this.showHotCourses = false;
+                this.activeIndex = '2';
             }
+
         }
     }
 </script>

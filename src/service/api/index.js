@@ -233,6 +233,21 @@ export function testAlipay(order_id) {
     })
 }
 
+// 测试微信支付功能
+export function testWechat(order_id) {
+    return authRequest('/payment/'+order_id+'/alipay', {
+        method: 'get',
+    })
+}
+
+// 支付宝支付成功前端回调API
+export function alipayReturn(value) {
+    return authRequest('/payment/alipay/return/', {
+        method: 'post',
+        data: value,
+    })
+}
+
 // 获取权限
 export function getPermissons() {
     return authRequest('/user/permissions/', {
@@ -556,6 +571,7 @@ export function toBeMaintainer(value) {
 export function getOrders(value) {
     return authRequest('/orders?filter[no]='+value.no
         +'&filter[closed]='+value.closed
+        +'&filter[refund_status]='+value.refund_status
         +'&filter[create_before]='+value.createBefore
         +'&filter[create_after]='+value.createAfter
         +'&filter[paid_before]='+value.paidBefore
@@ -563,6 +579,13 @@ export function getOrders(value) {
         +'&include=user,items.course'
         +'&page='+value.pageIndex,{
         method: 'get',
+    })
+}
+
+// 用户获取已购订单列表
+export  function getUserOderList() {
+    return authRequest('/user/orders?include=user,items.course',{
+        method:'get',
     })
 }
 
@@ -616,5 +639,13 @@ export function getExercise(id) {
 export function delExercise(id) {
     return authRequest('/exercises/'+id,{
         method: 'delete'
+    })
+}
+
+// 申请退款API
+export function applyRefund(id,value) {
+    return authRequest('/orders/'+id+'/apply_refund',{
+        method: 'post',
+        data: value,
     })
 }

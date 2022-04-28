@@ -1,7 +1,10 @@
 <template>
     <div>
         <button class="item_course" @click="dealCheckStatus">
-            <div class="isCheck" :class="{active_course: isChecked}" style="display: block;"></div>
+            <div class="isCheck" :class="{active_course: isChecked}"
+                 style="display: block;"
+                 v-if="!hasPained"
+            ></div>
             <div class="course_mess" :class="{active_course_bg: isChecked}">
                 <div class="course_left_cont">
                     <div class="course_img">
@@ -45,9 +48,14 @@
         created(){
             this.isChecked = false;  // 条件渲染，初始数据
             //  创建课程详情链接数据
-            if (this.course.mainSku[0]) {
-                this.courseHref = 'http://vlinkpc.tests:8080/#/program/lesson-detail?sku_id='+this.course.mainSku[0].id;
+            if (this.course.mainSku) {   // 用户订单页容错判断
+                if (this.course.mainSku[0]) {
+                    // TODO..... 课程链接需要维护到环境配置里
+                    this.courseHref = 'http://vlinkpc.tests:8080/#/program/lesson-detail?sku_id='
+                        +this.course.mainSku[0].id;
+                }
             }
+
         },
         methods:{
             dealCheckStatus(){
@@ -199,7 +207,7 @@
     .course_describe {
         font-size: 3.2vw;
         color: #999;
-        margin-top: 1.3333vw;
+        margin-top: 0;
     }
     .course_bottom_cont {
         width: 100%;
@@ -212,7 +220,7 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        margin-top: 1.2vw;
+        margin-top: 0;
     }
     .permanent {
         font-size: 2.6667vw;

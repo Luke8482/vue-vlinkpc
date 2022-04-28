@@ -150,6 +150,14 @@ let baseRoute = [
         name: '课程购物车',
         component: () => import('../views/home/wechatPage/CourseCart.vue' )
     },{
+        path: '/program/refund',
+        name: '退款界面',
+        component: () => import('../views/home/refundPage/RefundPage.vue' )
+    },{
+        path: '/program/user-order-list',
+        name: '用户订单列表',
+        component: () => import('../views/home/refundPage/UserOrderList.vue' )
+    },{
         path: '/program/agreements',
         name: '网站协议',
         component: () => import('../views/home/agreements/Agreement.vue' )

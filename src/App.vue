@@ -112,7 +112,7 @@
 
                     if (!resourcePermission[config.method + ',' + perName]) {
                         this.$message({
-                            message: '无访问权限，请联系企业管理员',
+                            message: '无访问权限，请联系企业管理员yoyo',
                             type: 'warning'
                         });
                         return Promise.reject({

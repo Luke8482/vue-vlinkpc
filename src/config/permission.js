@@ -145,7 +145,27 @@ const permission = {
             "name": "某个习题的详情",
             "url": "/exercises/**",
             "method": "GET"
-        },
+        },{
+            "id": "75",
+            "name": "微信支付功能",
+            "url": "/payment/*/wechat",
+            "method": "GET"
+        },{
+            "id": "76",
+            "name": "支付宝前端回调api功能",
+            "url": "/payment/alipay/return/",
+            "method": "POST"
+        },{
+            "id": "77",
+            "name": "用户获取已支付订单列表",
+            "url": "/user/orders/",
+            "method": "GET"
+        },{
+            "id": "78",
+            "name": "用户申请退款",
+            "url": "/orders/*/apply_refund",
+            "method": "POST"
+        }
     ],
     resources_manage_contents: [
         {
