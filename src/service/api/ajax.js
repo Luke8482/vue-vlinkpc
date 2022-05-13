@@ -2,8 +2,8 @@ import axios from 'axios'
 import store from '@/store/index'
 import * as util from './../../utils/permisson';
 
-// todo。。。自行设计代码
-const host = 'http://larabbs.test/api/v1';
+// 把API基础路由维护到环境变量内
+const host = process.env.VUE_APP_AJAX_HOST;
 
 // 普通请求
 const request = async (url, configs = {}) => {

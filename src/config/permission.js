@@ -165,6 +165,11 @@ const permission = {
             "name": "用户申请退款",
             "url": "/orders/*/apply_refund",
             "method": "POST"
+        },{
+            "id": "79",
+            "name": "后台处理用户申请退款",
+            "url": "/orders/*/refund",
+            "method": "POST"
         }
     ],
     resources_manage_contents: [

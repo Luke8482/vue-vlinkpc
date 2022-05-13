@@ -235,7 +235,7 @@ export function testAlipay(order_id) {
 
 // 测试微信支付功能
 export function testWechat(order_id) {
-    return authRequest('/payment/'+order_id+'/alipay', {
+    return authRequest('/payment/'+order_id+'/wechat', {
         method: 'get',
     })
 }
@@ -642,9 +642,17 @@ export function delExercise(id) {
     })
 }
 
-// 申请退款API
+// 用户申请退款API
 export function applyRefund(id,value) {
     return authRequest('/orders/'+id+'/apply_refund',{
+        method: 'post',
+        data: value,
+    })
+}
+
+//  管理员后台处理退款申请
+export function handleRefund(id,value) {
+    return authRequest('/orders/'+id+'/refund',{
         method: 'post',
         data: value,
     })

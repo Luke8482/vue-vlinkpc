@@ -105,6 +105,7 @@
                     if (this.payType === 'wechat'){
                         //  调用微信支付接口
                         testWechat(res.id).then(res=>{
+                            console.log(1);
                             if(res.data.code === 0) {
                                 const pay_params = res.data.data;
                                 if (typeof WeixinJSBridge === "undefined"){
@@ -190,7 +191,7 @@
                     function (res) {
                         if (res.err_msg === "get_brand_wcpay_request:ok") {
                             alert('支付成功！');
-                            that.$router.push({path: '/program/course-cart'}); // TODO... 修改为本项目的回调地址
+                            that.$router.push({path: '/program/course-cart'}); // 修改为本项目的回调地址
                             this.$emit('finishedPain');
                         } else if (res.err_msg === "get_brand_wcpay_request:fail") {
                             alert('支付失败！');

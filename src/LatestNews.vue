@@ -115,8 +115,8 @@
                 //  请求获取课程对应轮播图API
                 getCarousels(msg.id).then(res=>{
                     this.carousels = res.carousels;
-                    //   todo... 配置基础路由Url
-                    this.courseDetailUrl = 'http://vlinkpc.tests:8080/program/course_detail?skuId='+res.courseSku[0].id;
+                    //   配置基础路由Url
+                    this.courseDetailUrl = process.env.VUE_APP_URL+'/program/course_detail?skuId='+res.courseSku[0].id;
                     console.log(this.courseDetailUrl);
                 }).catch(err=>{
                     console.log(err);

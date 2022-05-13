@@ -10,11 +10,11 @@
                     </div>
 
                 </div>
-                <div class="title">微信扫码，开始学习</div>
+                <div class="title" style="z-index:1000">微信扫码，开始学习</div>
                 <div class="qrcodeContainer">
                     <div  class="qrcode">
 
-                        <wxlogin :appid="appid" :scope="scope" :redirect_uri="redirect_uri" :style="agreeAll?'filter: none':'filter: blur(3px);'"></wxlogin>
+                        <wxlogin :appid="appid" :scope="scope" :href="href" :redirect_uri="redirect_uri" :style="agreeAll?'filter: none':'filter: blur(3px);'"></wxlogin>
                         <div class="qrcodeMask" v-show="!agreeAll">同意协议后才可登录</div>
 
                     </div>
@@ -23,12 +23,8 @@
                     <img :src="agreeAll?'/choose.png':'/notChoose.png'" class="agreeImg"  @click="agreeAll = !agreeAll">
                     <div class="agreeText" >
                         已阅读并同意
-                        <div class="protocolFile" @click="goToAgreement('用户协议')">
-                            《用户协议》
-                        </div>
-                        <div class="protocolFile" @click="goToAgreement('隐私政策')">
-                            《隐私政策》
-                        </div>
+                        <div class="protocolFile" @click="goToAgreement('用户协议')">《用户协议》</div>
+                        <div class="protocolFile" @click="goToAgreement('隐私政策')">《隐私政策》</div>
                     </div>
                 </div>
             </div>
@@ -101,9 +97,11 @@
         },
         data(){
             return{
-                appid : 'wxeca5e52e80598a8c',
+                //  TODO...配置公众号基础信息
+                appid : process.env.VUE_APP_WX_APPID,
                 scope : 'snsapi_login',
-                redirect_uri : 'https://abstest.tenpay.com/abs/auo',
+                redirect_uri : '',
+                href:process.env.VUE_APP_URL+'/wxLogin.css',  //  地址要维护到环境变量内
                 showPbQrcode: false,
                 agreeAll: true,  // 同意网站协议
 
@@ -112,7 +110,16 @@
 
         created(){
             // this.getWxScanJs();
-            // this.wechatHandleClick()
+            // this.wechatHandleClick();
+
+            //  判断路由是否有重定向参数，如果有赋值给微信扫码登录的重定向uri
+            var redirect = this.$route.query.redirect;
+            if (redirect) {
+                this.redirect_uri = process.env.VUE_APP_REDIRECT_URL+redirect;
+            } else {
+                this.redirect_uri = process.env.VUE_APP_REDIRECT_URL;
+            }
+
 
             bus.$on('shiftShowQrcode',()=>{
                 this.showPbQrcode = !this.showPbQrcode;
@@ -120,30 +127,30 @@
         },
 
         methods:{
-            getWxScanJs(){
-                Api.getWxScanJs(param)
-                    .then(res=>{
-                        this.appid=res.data.appid
-                        this.redirectUri = res.data.redirectUri
-                        this.scope = res.data.scope
-                        this.state = res.data.state
-                        this.wechatHandleClick();
-                    })
-                    .catch(err => {
-                        console.log('err=',err)
-                    })
-            },
-            wechatHandleClick(){
-                const appid = this.appid;
-
-                var obj = new WxLogin({
-                    id: "login",
-                    appid: "wxeca5e52e80598a8c",
-                    scope: "snsapi_login",
-                    redirect_uri: "/",
-                    href: ""
-                })
-            },
+            // getWxScanJs(){
+            //     Api.getWxScanJs(param)
+            //         .then(res=>{
+            //             this.appid=res.data.appid
+            //             this.redirectUri = res.data.redirectUri
+            //             this.scope = res.data.scope
+            //             this.state = res.data.state
+            //             this.wechatHandleClick();
+            //         })
+            //         .catch(err => {
+            //             console.log('err=',err)
+            //         })
+            // },
+            // wechatHandleClick(){
+            //     const appid = this.appid;
+            //
+            //     var obj = new WxLogin({
+            //         id: "login",
+            //         appid: "wxeca5e52e80598a8c",
+            //         scope: "snsapi_login",
+            //         redirect_uri: "/",
+            //         href: ""
+            //     })
+            // },
             goToAgreement(title){
                 getAgreementId({'title':title}).then(res=>{
                     this.$router.push('/program/agreements?agreement_id='+res)
@@ -154,6 +161,13 @@
         },
     }
 </script>
+
+<style>
+    iframe{
+        width:12vw;
+        height: 12vw;
+    }
+</style>
 
 <style scoped>
     /*内容样式*/

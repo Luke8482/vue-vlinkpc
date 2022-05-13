@@ -1,0 +1,19 @@
+
+
+
+.title{
+    display: none;
+}
+
+#wx_default_tip{
+    display: none;
+}
+
+.impowerBox .qrcode {
+    width: 98%;
+    margin-top: 4px;
+    border: 1px solid #e2e2e2;
+}
+
+
+

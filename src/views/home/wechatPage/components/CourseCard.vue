@@ -50,8 +50,8 @@
             //  创建课程详情链接数据
             if (this.course.mainSku) {   // 用户订单页容错判断
                 if (this.course.mainSku[0]) {
-                    // TODO..... 课程链接需要维护到环境配置里
-                    this.courseHref = 'http://vlinkpc.tests:8080/#/program/lesson-detail?sku_id='
+                    // 课程链接需要维护到环境配置里
+                    this.courseHref = process.env.VUE_APP_URL+'/program/lesson-detail?sku_id='
                         +this.course.mainSku[0].id;
                 }
             }

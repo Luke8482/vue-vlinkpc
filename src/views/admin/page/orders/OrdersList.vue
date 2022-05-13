@@ -85,16 +85,29 @@
                 <el-table-column label="退款状态" width="250" align="center">
                     <template slot-scope="scope">
                         <el-tag style="margin-right: 5px;"
-                                :type="scope.row.refund_status === 'pending'?'success':'danger'"
-                        >{{chineseRefundStatus(scope.row.refund_status)}}</el-tag>
-                        <el-button
+                                :type="chineseRefundStatus(scope.row,'type')"
+                        >{{chineseRefundStatus(scope.row)}}</el-tag>
+
+                        <el-popover
                                 v-if="scope.row.refund_status === 'applied'"
-                                type="primary"
-                        >同意</el-button>
-                        <el-button
-                                v-if="scope.row.refund_status === 'applied'"
-                                type="warning"
-                        >不同意</el-button>
+                                placement="top-start"
+                                title="退款理由"
+                                width="200"
+                                trigger="hover"
+                                :content="scope.row.extra.refund_reason">
+                            <div slot="reference" style="display: inline">
+                                <el-button
+                                        type="primary"
+                                        @click="dealWithRefund(scope.row.id, true)"
+                                >同意</el-button>
+                                <el-button
+                                        type="warning"
+                                        @click="dealWithRefund(scope.row.id, false)"
+                                >不同意</el-button>
+                            </div>
+
+                        </el-popover>
+
                     </template>
                 </el-table-column>
                 <el-table-column label="订单内容"  align="center">
@@ -134,7 +147,7 @@
 </template>
 
 <script>
-    import {getOrders} from "../../../../service/api";
+    import {getOrders, handleRefund} from "../../../../service/api";
 
     export default {
         name: "OrdersList",
@@ -200,28 +213,80 @@
             },
 
             //  转换为中文退款状态
-            chineseRefundStatus(val){
+            chineseRefundStatus(val, type){
                 let $status = '';
-                switch (val) {
+                let $refundTagType = '';
+                switch (val.refund_status) {
                     case 'applied':
                         $status = '已申请退款';
+                        $refundTagType = 'danger';
                         break;
                     case 'processing':
                         $status = '退款中';
+                        $refundTagType = 'danger';
                         break;
                     case 'success':
                         $status = '退款成功';
+                        $refundTagType = 'danger';
                         break;
                     case 'failed':
                         $status = '退款失败';
+                        $refundTagType = 'danger';
+                        break;
+                    case 'pending':
+                        if (val.extra !== null) {
+                            if (val.extra.hasOwnProperty('refund_disagree_reason')){
+                                $status = '已拒绝退款';
+                                $refundTagType = 'danger';
+                            }
+                        } else {
+                            $status = '未申请';
+                            $refundTagType = 'success';
+                        }
                         break;
                     default :
                         $status = '未申请';
+                        $refundTagType = 'success';
                         break;
                 }
+                if (type === 'type') {
+                    return $refundTagType;
+                } else {
+                    return $status;
+                }
 
-                return $status;
-            }
+            },
+
+            //  处理用户退款申请
+            dealWithRefund(val, agree){
+                let FormData = {};
+                FormData.agree = Boolean(agree);
+
+                //  如果是不同意，需要添加理由
+                if (!Boolean(agree)){
+                    this.$prompt('请输入不同意退款的理由', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                    }).then(({ value }) => {
+                        //  调用退款申请API
+                        FormData.reason = value;
+                        handleRefund(val,FormData).then(res=>{
+                            this.reload();
+                        }).catch(err=>{
+                            console.log(err);
+                        })
+
+                    }).catch(() => {
+
+                    });
+                } else {
+                    handleRefund(val, FormData).then(res=>{
+                        this.reload();
+                    }).catch(err=>{
+                        console.log(err);
+                    })
+                }
+            },
         }
     }
 </script>

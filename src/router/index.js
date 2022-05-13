@@ -193,20 +193,41 @@ let router = new Router({
         let routeName = to.meta.name || to.name;
         window.document.title = (routeName ? routeName + ' - ' : '') + 'VlinkPc';
 
-        if (to.path !== '/login' && to.path !== '/dashboard/home' && to.path !== '/program/agreements') {  //验证是否登录
-            if (auth) {  //已经登录
-                next();
-            } else if (code) {  // 如果未登录，且跳转路径不是登录界面，但是包含code，则调用仓库的login方法，并放行。
-                // console.log(router.app.$options.store.dispatch('login',code));
-                router.app.$options.store.dispatch('login', code);//todo 是否要考虑容错机制
+        if (to.path !== '/login' && to.path !== '/dashboard/home' && to.path !== '/program/agreements') { //验证是否登录
 
+           // 增加判断是否为微信界面路由，以及是否在微信端打开，如果是对应路由，且不再微信打开，就next到wxError界面
+            var isWxRouter = to.path === '/program/lesson-detail'
+                || to.path === '/program/course-cart'
+                || to.path === '/program/refund'
+                || to.path === '/program/user-order-list';
 
-                next();
+            var useragent = navigator.userAgent;
+            if (isWxRouter && useragent.match(/MicroMessenger/i) != 'MicroMessenger') {  // 注意：使用 != 而不是!==
+                window.location.href = "/wxError.html";
             } else {
-                console.log('重定向到login');
+                if (auth) {  //已经登录
+                    next();
+                } else if (code) {  // 如果未登录，且跳转路径不是登录界面，但是包含code，则调用仓库的login方法，并放行。
+                    // console.log(router.app.$options.store.dispatch('login',code));
+                    router.app.$options.store.dispatch('login', code);//todo 是否要考虑容错机制
 
-                next('/login?redirect=' + to.path);
+
+                    next();
+                } else {
+                    if(isWxRouter){
+                        //判断路由是否是微信页面，那么直接跳转到授权页  配置公众号相关信息，最好是配置到环境变量内
+                        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
+                            +process.env.VUE_APP_WX_APPID
+                            +'&redirect_uri='
+                            +process.env.VUE_APP_REDIRECT_URL+to.path
+                            +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+                    } else {  //  否则跳转到登录页面，扫码登录
+                        console.log('重定向到login');
+                        next('/login?redirect=' + to.path);
+                    }
+                }
             }
+
         } else {  //不需要验证
             next();
         }
