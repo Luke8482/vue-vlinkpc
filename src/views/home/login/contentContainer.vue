@@ -5,7 +5,7 @@
                 <div class="otherQrcode" v-show="showPbQrcode">
 
                     <div>
-                        <img src="/公众号二维码.jpg" alt="">
+                        <img src="/wxgongzong.jpg" alt="">
                         <div>VlinkPC.com</div>
                     </div>
 

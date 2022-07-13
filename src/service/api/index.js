@@ -2,12 +2,10 @@ import {request, authRequest} from './ajax'
 
 
 //自行设计代码
-export function  logins(code) {
+export function  logins(value) {
     return request('/socials/wechat/authorizations/', {
         method: 'post',
-        data: {
-            code:code,
-        }
+        data: value
     })
 }
 

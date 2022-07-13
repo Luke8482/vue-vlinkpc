@@ -167,7 +167,7 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        background: url(/image/carouselPage/展示背景.png) no-repeat 0 0;
+        background: url(/image/carouselPage/background.png) no-repeat 0 0;
         background-size: 100% 100%;
         border-radius: .85vw;
         -webkit-box-sizing: border-box;
@@ -209,7 +209,7 @@
         font-weight: 500;
         color: #ffd23b;
         line-height: 59px;
-        background: url(/image/carouselPage/喇叭.png) no-repeat 0 0;
+        background: url(/image/carouselPage/horn.png) no-repeat 0 0;
         background-size: 38%;
     }
 
@@ -218,7 +218,7 @@
         height: 75px;
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
-        background: url(/image/carouselPage/提示框.png) no-repeat,transparent;
+        background: url(/image/carouselPage/promptBox.png) no-repeat,transparent;
         background-size: 100% 100%;
         border-left: none;
         cursor: pointer;
@@ -237,7 +237,7 @@
     .latest-news .aside .aside-icon {
         width: 74px;
         height: 100%;
-        background: url(/image/carouselPage/按钮.png) no-repeat 0 0;
+        background: url(/image/carouselPage/button.png) no-repeat 0 0;
         overflow: hidden;
         position: relative;
         left: 5%;

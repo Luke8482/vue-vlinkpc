@@ -188,7 +188,6 @@ let router = new Router({
         // 获取仓库里的登录信息
         const auth = router.app.$options.store.getters.isLoggedIn;
         const code = to.query.code;
-        console.log(auth);
 
         let routeName = to.meta.name || to.name;
         window.document.title = (routeName ? routeName + ' - ' : '') + 'VlinkPc';
@@ -209,15 +208,20 @@ let router = new Router({
                     next();
                 } else if (code) {  // 如果未登录，且跳转路径不是登录界面，但是包含code，则调用仓库的login方法，并放行。
                     // console.log(router.app.$options.store.dispatch('login',code));
-                    router.app.$options.store.dispatch('login', code);//todo 是否要考虑容错机制
 
+                    var loginData = {          //   登录携带不同微信应用的appId
+                        code: code,
+                        appId: to.query.appId
+                    };
+                    router.app.$options.store.dispatch('login', loginData).then(res=>{
+                                            next();
+                                        });//todo 是否要考虑容错机制
 
-                    next();
                 } else {
                     if(isWxRouter){
                         //判断路由是否是微信页面，那么直接跳转到授权页  配置公众号相关信息，最好是配置到环境变量内
                         window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
-                            +process.env.VUE_APP_WX_APPID
+                            +to.query.appId
                             +'&redirect_uri='
                             +process.env.VUE_APP_REDIRECT_URL+to.path
                             +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';

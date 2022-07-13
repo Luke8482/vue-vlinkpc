@@ -23,11 +23,11 @@ var getters = {
 
 // 定义 actions
 const actions = {
-    async login ({ dispatch, commit }, code) {
+    async login ({ dispatch, commit }, loginData) {
 
         //自行设计的代码
 
-        const authResponse = await logins(code);
+        const authResponse = await logins(loginData);
         console.log(authResponse);
 
         commit('setToken', authResponse);

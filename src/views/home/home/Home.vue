@@ -48,7 +48,7 @@
                             />
                         </div>
                         <div v-if="showAlertContent" style="margin-left: 25vw">
-                            <img src="/首页提醒.png" style="height: 150px;">
+                            <img src="/homePageTips.png" style="height: 150px;">
                             <p style="color: #385061; ">您还未解锁任何课程，赶紧去 解锁 吧！</p>
                         </div>
                         <div>
