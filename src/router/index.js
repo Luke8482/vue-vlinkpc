@@ -174,7 +174,8 @@ let baseRoute = [
 ];
 
 let router = new Router({
-    routes: baseRoute
+    routes: baseRoute,
+    mode: 'history'
 });
 
 // router.beforeEach((to, from, next) => {
