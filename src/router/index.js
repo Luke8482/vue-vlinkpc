@@ -171,11 +171,11 @@ let baseRoute = [
     component: () => import('../views/admin/page/404.vue' )
     },
 
+
 ];
 
 let router = new Router({
     routes: baseRoute,
-    mode: 'history'
 });
 
 // router.beforeEach((to, from, next) => {
