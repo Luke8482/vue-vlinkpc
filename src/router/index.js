@@ -176,6 +176,7 @@ let baseRoute = [
 
 let router = new Router({
     routes: baseRoute,
+    mode: 'history'
 });
 
 // router.beforeEach((to, from, next) => {
@@ -221,11 +222,22 @@ let router = new Router({
                 } else {
                     if(isWxRouter){
                         //判断路由是否是微信页面，那么直接跳转到授权页  配置公众号相关信息，最好是配置到环境变量内
-                        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
+                        let url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
                             +to.query.appId
                             +'&redirect_uri='
-                            +process.env.VUE_APP_REDIRECT_URL+to.path
-                            +'&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect';
+                            +process.env.VUE_APP_REDIRECT_URL+to.path+'?appId='
+                            +to.query.appId
+                            +'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+
+                        let curUrl = url.replace(/#/g, `&v=${new Date().getTime()}#`);
+
+                        window.location.href = curUrl;
+
+                        // window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='
+                        //     +to.query.appId
+                        //     +'&redirect_uri='
+                        //     +process.env.VUE_APP_REDIRECT_URL+to.path
+                        //     +'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
                     } else {  //  否则跳转到登录页面，扫码登录
                         console.log('重定向到login');
                         next('/login?redirect=' + to.path);
@@ -234,7 +246,11 @@ let router = new Router({
             }
 
         } else {  //不需要验证
-            next();
+            if (auth && to.path === '/login'){
+                next('/');
+            }else{
+                next();
+            }
         }
     });
 

@@ -399,9 +399,10 @@
                 */
 
                 //  TODO/.... 路由守卫完成调整机制，不需要回调 跳转页面
-                this.signin(() => {
-                    this.$router.replace({path: newPath || '/'});
-                });
+                // this.signin(() => {
+                //     this.$router.replace({path: newPath || '/'});
+                // });
+                this.signin();
             },
             logoutDirect: function(){
                 /*
