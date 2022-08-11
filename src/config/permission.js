@@ -170,6 +170,21 @@ const permission = {
             "name": "后台处理用户申请退款",
             "url": "/orders/*/refund",
             "method": "POST"
+        },{
+            "id": "80",
+            "name": "微信支付回调api功能",
+            "url": "/payment/wechat/notify/",
+            "method": "POST"
+        },{
+            "id": "81",
+            "name": "微信退款回调api功能",
+            "url": "/payment/wechat/refund_notify/",
+            "method": "POST"
+        },{
+            "id": "82",
+            "name": "支付宝支付回调api功能",
+            "url": "/payment/alipay/notify/",
+            "method": "POST"
         }
     ],
     resources_manage_contents: [

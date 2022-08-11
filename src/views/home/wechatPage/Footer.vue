@@ -62,6 +62,7 @@
 
 <script>
     import {createOrder, testAlipay, testWechat, alipayReturn} from "../../../service/api";
+    import ls from '@/utils/localStorage'   //已修改修改为localStorage
 
     export default {
         name: "Footer",
@@ -105,9 +106,8 @@
                     if (this.payType === 'wechat'){
                         //  调用微信支付接口
                         testWechat(res.id).then(res=>{
-                            console.log(1);
-                            if(res.data.code === 0) {
-                                const pay_params = res.data.data;
+                            if(res.paySign) {   // 返回值内不存在code，暂时以paySign 判断是否api调取成功
+                                const pay_params = res;
                                 if (typeof WeixinJSBridge === "undefined"){
                                     if(document.addEventListener){
                                         document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);
@@ -125,16 +125,27 @@
                             console.log(err);
                         })
                     }else {
-                        //  调用支付宝支付接口
-                        testAlipay(res.id).then(res=>{
-                            document.querySelector("body").innerHTML = res;
-                            document.forms[0].submit();
+                        //  如果是支付宝支付，那么就跳转到支付宝引导界面
+                        this.$router.push({
+                            path:'/program/pay-mask',
+                            query:{
+                                orderId: res.id,
+                                access_token: ls.getItem('access_token'),
+                                user: JSON.stringify(ls.getItem('user')),
+                                access_token_expired_at: ls.getItem('access_token_expired_at'),
+                            }
+                        });
 
-                        }).catch(err=>{
-                            console.log(err);
-                        })
+
+                        //  调用支付宝支付接口 ( 电脑端调用支付宝适用 ）
+                        // testAlipay(res.id).then(res=>{
+                        //     document.querySelector("body").innerHTML = res;
+                        //     document.forms[0].submit();
+                        //
+                        // }).catch(err=>{
+                        //     console.log(err);
+                        // })
                     }
-                    console.log(res);
                 }).catch(err=>{
                     console.log(err);
                 })
@@ -186,7 +197,7 @@
                         "nonceStr": params.nonceStr,  //支付签名随机串，不长于 32 位
                         "package": params.package,//统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
                         "signType": 'MD5',  //签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                        "paySign": params.sign, //支付签名
+                        "paySign": params.paySign, //支付签名
                     },
                     function (res) {
                         if (res.err_msg === "get_brand_wcpay_request:ok") {

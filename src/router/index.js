@@ -138,9 +138,9 @@ let baseRoute = [
     {path: '/', redirect: '/dashboard'},
 
     {
-    path: '/login',
-    name: '登录',
-    component: () => import('../views/home/login/Login.vue' )
+        path: '/login',
+        name: '登录',
+        component: () => import('../views/home/login/Login.vue' )
     },{
         path: '/program/lesson-detail',
         name: '课程介绍',
@@ -161,6 +161,10 @@ let baseRoute = [
         path: '/program/agreements',
         name: '网站协议',
         component: () => import('../views/home/agreements/Agreement.vue' )
+    },{
+        path: '/program/pay-mask',
+        name: '支付宝支付',
+        component: () => import('../views/home/wechatPage/PayMask.vue' )
     }, {
     path: '/401',
     name: '无权访问',
@@ -194,7 +198,7 @@ let router = new Router({
         let routeName = to.meta.name || to.name;
         window.document.title = (routeName ? routeName + ' - ' : '') + 'VlinkPc';
 
-        if (to.path !== '/login' && to.path !== '/dashboard/home' && to.path !== '/program/agreements') { //验证是否登录
+        if (to.path !== '/login' && to.path !== '/dashboard/home' && to.path !== '/program/agreements' && to.path !== '/program/pay-mask') { //验证是否登录
 
            // 增加判断是否为微信界面路由，以及是否在微信端打开，如果是对应路由，且不再微信打开，就next到wxError界面
             var isWxRouter = to.path === '/program/lesson-detail'

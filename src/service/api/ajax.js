@@ -25,61 +25,61 @@ const request = async (url, configs = {}) => {
 
 
 
-            // 缓存
-            let subscribers = [];
-            function onAccessTokenFetched() {
-                subscribers.forEach((callback)=>{
-                    callback()
-                });
-                subscribers = [];
-            }
+// 缓存
+let subscribers = [];
+function onAccessTokenFetched() {
+    subscribers.forEach((callback)=>{
+        callback()
+    });
+    subscribers = [];
+}
 
-            function addSubscriber(callback) {
-                subscribers.push(callback)
-            }
+function addSubscriber(callback) {
+    subscribers.push(callback)
+}
 
-            let isRefreshing = false;    //  设立是否真正刷新token的标志
-            const checkToken = async (url, configs) => {
+let isRefreshing = false;    //  设立是否真正刷新token的标志
+const checkToken = async (url, configs) => {
 
-                // 从缓存中取出 Token
-                const accessToken = store.getters.accessToken;
-                const expiredAt = store.getters.accessTokenExpiredAt;
-                // 如果 token 过期了，则调用刷新方法
-                if (accessToken && new Date().getTime() > expiredAt  && !isRefreshing) {  // 增加不在刷新中，的条件
-                    isRefreshing = true;
-                    try {
-                         await store.dispatch('refresh');
-                        isRefreshing = false;
-                    } catch (err) {
-                        return store.dispatch('logout');
-                    }
-                }
-
-
+    // 从缓存中取出 Token
+    const accessToken = store.getters.accessToken;
+    const expiredAt = store.getters.accessTokenExpiredAt;
+    // 如果 token 过期了，则调用刷新方法
+    if (accessToken && new Date().getTime() > expiredAt  && !isRefreshing) {  // 增加不在刷新中，的条件
+        isRefreshing = true;
+        try {
+             await store.dispatch('refresh');
+            isRefreshing = false;
+        } catch (err) {
+            return store.dispatch('logout');
+        }
+    }
 
 
-            };
-            // 普通请求
-            const authRequest = async (url, configs = {}) => {
-                await checkToken(url, configs);
 
-                if (isRefreshing){   //  如果正在刷新token，  那么就缓存请求
-                    // 将token刷新成功后的回调请求缓存
-                    const retryOriginalRequest = new Promise((resolve) => {
-                        addSubscriber(()=> {
-                            resolve(authRequest(url, configs))
-                        })
-                    });
-                    return retryOriginalRequest;
-                }else{
-                    onAccessTokenFetched();
-                }
 
-                configs.headers = {
-                    Authorization: 'Bearer ' + store.getters.accessToken
-                };
-                return await request(url, configs)
-            };
+};
+// 普通请求
+const authRequest = async (url, configs = {}) => {
+    await checkToken(url, configs);
+
+    if (isRefreshing){   //  如果正在刷新token，  那么就缓存请求
+        // 将token刷新成功后的回调请求缓存
+        const retryOriginalRequest = new Promise((resolve) => {
+            addSubscriber(()=> {
+                resolve(authRequest(url, configs))
+            })
+        });
+        return retryOriginalRequest;
+    }else{
+        onAccessTokenFetched();
+    }
+
+    configs.headers = {
+        Authorization: 'Bearer ' + store.getters.accessToken
+    };
+    return await request(url, configs)
+};
 
 //
 // // var isRefreshing = false;   //  设立是否真正刷新token的标志
