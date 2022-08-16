@@ -75,6 +75,7 @@
                 hotCourses: {},  //  显示可以购买的课程
                 activeIndex: '1',   //  控制顶端菜单显示
                 showHotCourses: true,   //  控制是否显示推荐课程
+                isGoBack: false  // 判断当前页面是否隐藏
             }
         },
         components:{
@@ -82,14 +83,64 @@
             CourseCard
         },
         created(){
+            // alert('course-cart 文件的created 钩子！');
+            // wxGetCourse().then(res=>{
+            //     this.myCourses = res.myCourses;
+            //     this.hotCourses = res.hotCourses;
+            //
+            //     // 通过路由传递参数控制，是否显示已购课程
+            //     if(this.$route.query.paid || res.hotCourses.length == 0 ){
+            //         this.showHotCourses = false;
+            //         this.activeIndex = '2';
+            //     }
+            //
+            //     console.log(res);
+            // }).catch(err=>{
+            //     console.log(err);
+            // });
+
+        },
+        mounted(){
             wxGetCourse().then(res=>{
                 this.myCourses = res.myCourses;
                 this.hotCourses = res.hotCourses;
+
+                // 通过路由传递参数控制，是否显示已购课程
+                if(this.$route.query.paid || res.hotCourses.length == 0 ){
+                    this.showHotCourses = false;
+                    this.activeIndex = '2';
+                }
+
                 console.log(res);
             }).catch(err=>{
+                if (err.message === 'no permission') {
+                    window.location.href = window.location.href;
+                };
                 console.log(err);
-            })
+            });
+
+            // //解决微信界面后退，页面提示‘无权限访问’的bug
+            // window.addEventListener('pageshow', function (e) {
+            //     // 通过persisted属性判断是否存在 BF Cache
+            //     if (e.persisted) {
+            //         // location.reload();
+            //         window.location.href = window.location.href;
+            //     }
+            //     // if (this.isPageHide) {
+            //     //     // window.location.reload();
+            //     //     window.location.href = window.location.href;
+            //     // }
+            // });
+            //
+            // window.addEventListener('pagehide', function () {
+            //     // this.isPageHide = true;
+            // });
         },
+        // beforeDestroy(){
+        //     alert('页面即将销毁！');
+        //     window.removeEventListener('pageshow');
+        //     window.removeEventListener('pagehide');
+        // },
         methods:{
             dealCheckStatus(course){
                 //  1.1、判断skuId 数组内是否存在该课程的skuId ， 如果存在则执行删除操作， 如果不存在则执行添加操作

@@ -94,11 +94,22 @@
 
         },
         created(){
-            getRcmCourses().then(res=>{
-                this.course = res;
-            }).catch(err=>{
-                console.log(err);
-            })
+            if (this.$route.path === '/login'
+                || this.$route.path === '/dashboard/home'
+                || this.$route.path === '/dashboard/progress'
+            ){
+                getRcmCourses().then(res=>{
+                    // 判断是否推荐课程为空，为空则不显示内容
+                    if (Array.isArray(res)) {
+                        this.show = false;
+                    } else {
+                        this.course = res;
+                    };
+                }).catch(err=>{
+                    console.log(err);
+                })
+            };
+
         },
         mounted(){
             //  发布事件，供进度页的广告触发

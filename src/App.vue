@@ -49,6 +49,11 @@
 <template>
   <div id="app">
 
+    <!--<keep-alive>-->
+      <!--<router-view v-if="$route.meta.keepAlive && isRouterAlive"></router-view>-->
+    <!--</keep-alive>-->
+    <!--<router-view v-if="!$route.meta.keepAlive && isRouterAlive"></router-view>-->
+
     <router-view  v-if="isRouterAlive"></router-view>
 
     <!--統一引入editor.md 樣式-->

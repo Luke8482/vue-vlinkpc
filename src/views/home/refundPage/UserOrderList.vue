@@ -126,7 +126,9 @@
                         let FormData = {};
                         FormData.reason = value;
                         applyRefund(orderId,FormData).then(res=>{
-                            this.reload();
+                            // this.reload();
+                            window.location.href = window.location.href;
+                            // this.$router.push('/program/user-order-list');
                         }).catch(err=>{
                             console.log(err);
                         })

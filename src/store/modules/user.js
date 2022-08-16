@@ -62,14 +62,22 @@ const actions = {
 
     // 退出登录的action
     async logout ({ commit, state }) {
-        await logout(state.accessToken);
+        try {
+            await logout(state.accessToken);
 
-        // 清空 storage  TODO...建议增加调用后台退出登录的API
-        ls.logout();
-        commit('resetState');
+            // 清空 storage
+            ls.logout();
+            commit('resetState');
 
-        // 设置权限，监听退出事件，退出登录，则调用APP文件内的 logoutDirect 方法
-        bus.$emit("logoutDirect");
+            // 设置权限，监听退出事件，退出登录，则调用APP文件内的 logoutDirect 方法
+            bus.$emit("logoutDirect");
+        } catch (e) {    //  报错，如：token多次刷新被列入黑名单，也需要清除本地登录信息，执行退出操作
+            ls.logout();
+            commit('resetState');
+
+            // 设置权限，监听退出事件，退出登录，则调用APP文件内的 logoutDirect 方法
+            bus.$emit("logoutDirect");
+        }
     }
 };
 

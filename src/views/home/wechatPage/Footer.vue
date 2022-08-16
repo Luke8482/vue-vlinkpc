@@ -201,9 +201,14 @@
                     },
                     function (res) {
                         if (res.err_msg === "get_brand_wcpay_request:ok") {
-                            alert('支付成功！');
-                            that.$router.push({path: '/program/course-cart'}); // 修改为本项目的回调地址
-                            this.$emit('finishedPain');
+                            this.$alert('支付成功！', '提示', {
+                                confirmButtonText: '确定',
+                                callback: action => {
+                                    that.$router.push('/program/course-cart?paid=true'); // 修改为本项目的回调地址
+                                }
+                            });
+
+                            // this.$emit('finishedPain');
                         } else if (res.err_msg === "get_brand_wcpay_request:fail") {
                             alert('支付失败！');
                         }
